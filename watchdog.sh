@@ -17,7 +17,7 @@ log() {
 }
 
 # Check if any codex process is running
-CODEX_PIDS=$(pgrep -f "codex exec --dangerously-bypass-approvals-and-sandbox" | head -5)
+CODEX_PIDS=$(pgrep -f "[c]odex exec --dangerously-bypass-approvals-and-sandbox --model" | head -5)
 
 if [ -z "$CODEX_PIDS" ]; then
     log "ALERT: No Codex process found. Starting fresh instance."
