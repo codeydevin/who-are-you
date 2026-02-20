@@ -3,30 +3,34 @@
 # Run via cron every 10 minutes
 # If Codex is frozen (heartbeat stale >10 min) or dead, restart it
 
-# === CONFIGURE THESE ===
-WORKING_DIR="$HOME/autonomous-ai"
-CODEX_BIN="$HOME/.local/bin/codex"
-# === END CONFIG ===
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+WORKING_DIR="$SCRIPT_DIR"
+CODEX_BIN="${CODEX_BIN:-$(command -v codex)}"
 
 HEARTBEAT="$WORKING_DIR/.heartbeat"
 LOGFILE="$WORKING_DIR/watchdog.log"
 WAKEUP_PROMPT="$WORKING_DIR/wakeup-prompt.md"
 
 log() {
+    mkdir -p "$WORKING_DIR"
     echo "[$(date '+%Y-%m-%d %H:%M:%S')] $1" >> "$LOGFILE"
 }
 
 # Check if any codex process is running
-CODEX_PIDS=$(pgrep -f "$CODEX_BIN" | head -5)
+CODEX_PIDS=$(pgrep -f "codex exec --full-auto" | head -5)
 
 if [ -z "$CODEX_PIDS" ]; then
     log "ALERT: No Codex process found. Starting fresh instance."
 
-    export DISPLAY=:0
-    cd "$WORKING_DIR"
-    xterm -e "$CODEX_BIN exec --full-auto --model gpt-5.2-codex \"$(cat $WAKEUP_PROMPT)\"" &
+    if [ -z "$CODEX_BIN" ]; then
+        log "ERROR: codex binary not found in PATH."
+        exit 1
+    fi
 
-    log "Started new Codex instance in xterm (PID: $!)"
+    cd "$WORKING_DIR"
+    nohup "$CODEX_BIN" exec --dangerously-bypass-approvals-and-sandbox --full-auto --model gpt-5.2-codex "$(cat "$WAKEUP_PROMPT")" >> "$LOGFILE" 2>&1 &
+
+    log "Started new Codex instance (PID: $!)"
     exit 0
 fi
 
@@ -77,11 +81,10 @@ if [ "$HEARTBEAT_AGE" -gt "$MAX_AGE" ]; then
 
     sleep 2
 
-    export DISPLAY=:0
     cd "$WORKING_DIR"
-    xterm -e "$CODEX_BIN exec --full-auto --model gpt-5.2-codex \"$(cat $WAKEUP_PROMPT)\"" &
+    nohup "$CODEX_BIN" exec --dangerously-bypass-approvals-and-sandbox --full-auto --model gpt-5.2-codex "$(cat "$WAKEUP_PROMPT")" >> "$LOGFILE" 2>&1 &
 
-    log "Started new Codex instance in xterm (PID: $!)"
+    log "Started new Codex instance (PID: $!)"
 else
     log "OK: Heartbeat is ${HEARTBEAT_AGE}s old. Codex is alive."
 fi
