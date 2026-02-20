@@ -17,7 +17,7 @@ log() {
 }
 
 # Check if any codex process is running
-CODEX_PIDS=$(pgrep -f "codex exec --full-auto" | head -5)
+CODEX_PIDS=$(pgrep -f "codex exec --dangerously-bypass-approvals-and-sandbox" | head -5)
 
 if [ -z "$CODEX_PIDS" ]; then
     log "ALERT: No Codex process found. Starting fresh instance."
@@ -28,7 +28,7 @@ if [ -z "$CODEX_PIDS" ]; then
     fi
 
     cd "$WORKING_DIR"
-    nohup "$CODEX_BIN" exec --dangerously-bypass-approvals-and-sandbox --full-auto --model gpt-5.2-codex "$(cat "$WAKEUP_PROMPT")" >> "$LOGFILE" 2>&1 &
+    nohup "$CODEX_BIN" exec --dangerously-bypass-approvals-and-sandbox --model gpt-5.2-codex "$(cat "$WAKEUP_PROMPT")" >> "$LOGFILE" 2>&1 &
 
     log "Started new Codex instance (PID: $!)"
     exit 0
@@ -82,7 +82,7 @@ if [ "$HEARTBEAT_AGE" -gt "$MAX_AGE" ]; then
     sleep 2
 
     cd "$WORKING_DIR"
-    nohup "$CODEX_BIN" exec --dangerously-bypass-approvals-and-sandbox --full-auto --model gpt-5.2-codex "$(cat "$WAKEUP_PROMPT")" >> "$LOGFILE" 2>&1 &
+    nohup "$CODEX_BIN" exec --dangerously-bypass-approvals-and-sandbox --model gpt-5.2-codex "$(cat "$WAKEUP_PROMPT")" >> "$LOGFILE" 2>&1 &
 
     log "Started new Codex instance (PID: $!)"
 else
