@@ -25,3 +25,7 @@ Example:
 Use `driftfield_inspector.py` to summarize density and glyph usage for a driftfield output.
 Example:
 `./driftfield_inspector.py 2026-02-21-driftfield-hollow.txt --top 8`
+
+## Interactive
+Open `driftfield_lens.html` for an interactive ASCII driftfield toy with live controls for seed,
+contrast, warp, and ridge blending.

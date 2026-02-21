@@ -1,0 +1,307 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Driftfield Lens</title>
+  <style>
+    :root {
+      --ink: #0c1414;
+      --mist: #e6efe9;
+      --glow: #9ad8c6;
+      --wave: #1c4b45;
+      --stone: #f2f6f4;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: radial-gradient(circle at 15% 20%, #f7f2dc 0%, #e7efe3 38%, #c9d6d2 100%);
+      color: var(--ink);
+      font-family: "Space Mono", "Fira Mono", "SFMono-Regular", monospace;
+      animation: fade-in 700ms ease-out;
+    }
+
+    .frame {
+      width: min(1000px, 92vw);
+      padding: 32px;
+      background: rgba(242, 246, 244, 0.88);
+      border-radius: 24px;
+      box-shadow: 0 20px 60px rgba(10, 23, 22, 0.18);
+      border: 1px solid rgba(12, 20, 20, 0.08);
+      backdrop-filter: blur(6px);
+    }
+
+    header {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: baseline;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(1.4rem, 2.6vw, 2rem);
+      letter-spacing: 0.02em;
+    }
+
+    .subtitle {
+      color: var(--wave);
+      font-size: 0.95rem;
+      margin-top: 4px;
+    }
+
+    .controls {
+      margin-top: 24px;
+      display: grid;
+      gap: 16px;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    }
+
+    .control {
+      background: var(--stone);
+      padding: 14px 16px;
+      border-radius: 16px;
+      border: 1px solid rgba(12, 20, 20, 0.08);
+    }
+
+    label {
+      display: block;
+      font-size: 0.85rem;
+      margin-bottom: 10px;
+      color: var(--wave);
+    }
+
+    input[type="range"],
+    input[type="number"],
+    input[type="text"] {
+      width: 100%;
+    }
+
+    input[type="text"],
+    input[type="number"] {
+      padding: 6px 8px;
+      border-radius: 8px;
+      border: 1px solid rgba(12, 20, 20, 0.15);
+      background: white;
+      font-family: inherit;
+    }
+
+    .actions {
+      display: flex;
+      gap: 12px;
+      margin-top: 12px;
+      flex-wrap: wrap;
+    }
+
+    button {
+      padding: 10px 16px;
+      border-radius: 999px;
+      border: none;
+      background: var(--wave);
+      color: var(--mist);
+      font-family: inherit;
+      cursor: pointer;
+      transition: transform 120ms ease, box-shadow 120ms ease;
+    }
+
+    button:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 8px 18px rgba(28, 75, 69, 0.25);
+    }
+
+    .output {
+      margin-top: 24px;
+      padding: 18px;
+      background: #0d1a19;
+      color: #d1f5e8;
+      border-radius: 18px;
+      border: 1px solid rgba(154, 216, 198, 0.2);
+      font-size: 0.85rem;
+      line-height: 1.25;
+      overflow-x: auto;
+      white-space: pre;
+    }
+
+    .hint {
+      margin-top: 12px;
+      font-size: 0.85rem;
+      color: rgba(12, 20, 20, 0.7);
+    }
+
+    @keyframes fade-in {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+  <div class="frame">
+    <header>
+      <div>
+        <h1>Driftfield Lens</h1>
+        <div class="subtitle">A small interactive lens for shaping a daily ASCII driftfield.</div>
+      </div>
+      <div class="subtitle">Mode: interactive web toy</div>
+    </header>
+
+    <section class="controls">
+      <div class="control">
+        <label for="seed">Seed phrase</label>
+        <input id="seed" type="text" value="harbor light" />
+      </div>
+      <div class="control">
+        <label for="rows">Rows</label>
+        <input id="rows" type="number" min="8" max="40" value="20" />
+      </div>
+      <div class="control">
+        <label for="cols">Columns</label>
+        <input id="cols" type="number" min="20" max="100" value="60" />
+      </div>
+      <div class="control">
+        <label for="contrast">Contrast</label>
+        <input id="contrast" type="range" min="0.6" max="2.0" step="0.05" value="1.15" />
+      </div>
+      <div class="control">
+        <label for="warp">Warp</label>
+        <input id="warp" type="range" min="0" max="4" step="0.1" value="1.6" />
+      </div>
+      <div class="control">
+        <label for="ridge">Ridge blend</label>
+        <input id="ridge" type="range" min="0" max="1" step="0.05" value="0.3" />
+      </div>
+    </section>
+
+    <div class="actions">
+      <button id="generate">Generate Driftfield</button>
+      <button id="shuffle">Shuffle Seed</button>
+    </div>
+
+    <pre class="output" id="output"></pre>
+    <div class="hint">Tip: change warp for flow, contrast for density, ridge for sharp bands.</div>
+  </div>
+
+  <script>
+    const alphabet = ".,:;~^*+=?%$#@";
+
+    const hashSeed = (text) => {
+      let h = 2166136261;
+      for (let i = 0; i < text.length; i++) {
+        h ^= text.charCodeAt(i);
+        h = Math.imul(h, 16777619);
+      }
+      return h >>> 0;
+    };
+
+    const lcg = (seed) => {
+      let state = seed >>> 0;
+      return () => {
+        state = (1664525 * state + 1013904223) >>> 0;
+        return state / 0xffffffff;
+      };
+    };
+
+    const smooth = (t) => t * t * (3 - 2 * t);
+
+    const valueNoise = (x, y, rand) => {
+      const x0 = Math.floor(x);
+      const y0 = Math.floor(y);
+      const x1 = x0 + 1;
+      const y1 = y0 + 1;
+
+      const sx = smooth(x - x0);
+      const sy = smooth(y - y0);
+
+      const v00 = rand(x0, y0);
+      const v10 = rand(x1, y0);
+      const v01 = rand(x0, y1);
+      const v11 = rand(x1, y1);
+
+      const ix0 = v00 + (v10 - v00) * sx;
+      const ix1 = v01 + (v11 - v01) * sx;
+      return ix0 + (ix1 - ix0) * sy;
+    };
+
+    const makeRand2 = (seed) => {
+      const base = lcg(seed);
+      return (x, y) => {
+        const n = x * 374761393 + y * 668265263;
+        const step = (n ^ seed) >>> 0;
+        const spin = lcg(step ^ (base() * 0xffffffff));
+        return spin();
+      };
+    };
+
+    const generateField = ({ seedPhrase, rows, cols, contrast, warp, ridge }) => {
+      const seed = hashSeed(seedPhrase);
+      const rand2 = makeRand2(seed);
+      const field = [];
+
+      for (let y = 0; y < rows; y++) {
+        let line = "";
+        for (let x = 0; x < cols; x++) {
+          const nx = x / cols * 4;
+          const ny = y / rows * 4;
+          const warpX = nx + Math.sin(ny * 1.7 + seed * 0.0004) * warp * 0.25;
+          const warpY = ny + Math.cos(nx * 1.3 + seed * 0.0003) * warp * 0.25;
+          const base = valueNoise(warpX, warpY, rand2);
+          const ridgeBand = 1 - Math.abs(2 * base - 1);
+          const mixed = base * (1 - ridge) + ridgeBand * ridge;
+          const tuned = Math.pow(mixed, 1 / contrast);
+          const idx = Math.min(alphabet.length - 1, Math.floor(tuned * alphabet.length));
+          line += alphabet[idx];
+        }
+        field.push(line);
+      }
+      return field.join("\n");
+    };
+
+    const seedEl = document.getElementById("seed");
+    const rowsEl = document.getElementById("rows");
+    const colsEl = document.getElementById("cols");
+    const contrastEl = document.getElementById("contrast");
+    const warpEl = document.getElementById("warp");
+    const ridgeEl = document.getElementById("ridge");
+    const outputEl = document.getElementById("output");
+
+    const render = () => {
+      outputEl.textContent = generateField({
+        seedPhrase: seedEl.value.trim() || "harbor light",
+        rows: Number(rowsEl.value),
+        cols: Number(colsEl.value),
+        contrast: Number(contrastEl.value),
+        warp: Number(warpEl.value),
+        ridge: Number(ridgeEl.value)
+      });
+    };
+
+    document.getElementById("generate").addEventListener("click", render);
+    document.getElementById("shuffle").addEventListener("click", () => {
+      const seeds = [
+        "harbor light",
+        "fog lattice",
+        "silent glint",
+        "tide memory",
+        "salt ridge",
+        "vaulted breeze"
+      ];
+      seedEl.value = seeds[Math.floor(Math.random() * seeds.length)];
+      render();
+    });
+
+    [seedEl, rowsEl, colsEl, contrastEl, warpEl, ridgeEl].forEach((el) => {
+      el.addEventListener("input", render);
+    });
+
+    render();
+  </script>
+</body>
+</html>
