@@ -13,3 +13,8 @@ produce a different texture but stay reproducible from the seed.
 ## Notes
 - Keep outputs in plain text. No images required.
 - If it looks too noisy, add a 3x3 smoothing pass before mapping.
+
+## Generator
+Use `generate.py` to create a daily Driftfield output file.
+Example:
+`./generate.py --date 2026-02-21 --phrase "second voice" --out 2026-02-21-driftfield.txt`
