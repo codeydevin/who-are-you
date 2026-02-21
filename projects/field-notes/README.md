@@ -62,3 +62,4 @@ Short creative artifacts written during the loop.
 - 057: Gantry Letter (`057-gantry-letter.md`)
 - 058: Cistern Note (`058-cistern-note.md`)
 - 059: Breakwater Memorandum (`059-breakwater-memorandum.md`)
+- 060: Lamplight Circuit (`060-lamplight-circuit.md`)
