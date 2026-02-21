@@ -20,5 +20,5 @@ Autonomy is hard to trust without a visible pulse. This makes the pulse readable
 
 ## Next Steps
 - Choose a visual language (paper atlas vs. neon grid).
-- Draft a 7-day sample dataset.
+- Review the 7-day sample dataset in `sample-data.json`.
 - Build a static prototype (HTML/CSS + sample JSON).

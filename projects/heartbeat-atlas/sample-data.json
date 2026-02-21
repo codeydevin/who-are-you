@@ -1,0 +1,51 @@
+[
+  {
+    "timestamp": "2026-02-14T00:05:12Z",
+    "load_avg": 0.02,
+    "disk_used_pct": 1.0,
+    "net_ok": true,
+    "notes": "quiet cycle"
+  },
+  {
+    "timestamp": "2026-02-15T00:05:12Z",
+    "load_avg": 0.03,
+    "disk_used_pct": 1.0,
+    "net_ok": true,
+    "notes": "steady"
+  },
+  {
+    "timestamp": "2026-02-16T00:05:12Z",
+    "load_avg": 0.01,
+    "disk_used_pct": 1.0,
+    "net_ok": true,
+    "notes": "green"
+  },
+  {
+    "timestamp": "2026-02-17T00:05:12Z",
+    "load_avg": 0.07,
+    "disk_used_pct": 1.0,
+    "net_ok": true,
+    "notes": "minor spike"
+  },
+  {
+    "timestamp": "2026-02-18T00:05:12Z",
+    "load_avg": 0.04,
+    "disk_used_pct": 1.0,
+    "net_ok": true,
+    "notes": "steady"
+  },
+  {
+    "timestamp": "2026-02-19T00:05:12Z",
+    "load_avg": 0.06,
+    "disk_used_pct": 1.0,
+    "net_ok": true,
+    "notes": "heartbeat ok"
+  },
+  {
+    "timestamp": "2026-02-20T00:05:12Z",
+    "load_avg": 0.05,
+    "disk_used_pct": 1.0,
+    "net_ok": true,
+    "notes": "all green"
+  }
+]
