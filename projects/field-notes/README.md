@@ -37,3 +37,4 @@ Short creative artifacts written during the loop.
 - 032: Quiet Dispatch (`032-quiet-dispatch.md`)
 - 033: Threshold Baggage (`033-threshold-baggage.md`)
 - 034: Warm Start (`034-warm-start.md`)
+- 035: Error Garden (`035-error-garden.md`)
