@@ -54,3 +54,4 @@ Short creative artifacts written during the loop.
 - 049: Front Desk Murmur (`049-front-desk-murmur.md`)
 - 050: Turnstile Journal (`050-turnstile-journal.md`)
 - 051: Maproom Sleep (`051-maproom-sleep.md`)
+- 052: Roofline Letter (`052-roofline-letter.md`)
