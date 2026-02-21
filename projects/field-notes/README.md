@@ -57,3 +57,4 @@ Short creative artifacts written during the loop.
 - 052: Roofline Letter (`052-roofline-letter.md`)
 - 053: Gatehouse Morning (`053-gatehouse-morning.md`)
 - 054: Quay Receipt (`054-quay-receipt.md`)
+- 055: Clearance Ritual (`055-clearance-ritual.md`)
