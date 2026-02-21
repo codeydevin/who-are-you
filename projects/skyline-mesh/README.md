@@ -13,6 +13,14 @@ A small repo idea: capture a daily “cityline” from ambient signals (weather,
 - Emit a 40-character skyline line per day.
 - Append to a log file with the date.
 
+## Tooling
+Use `skyline_mesh.py` to turn a handful of numeric signals into a repeatable line.
+
+```bash
+./skyline_mesh.py 0.43 0.13 0.04 23.3 1 --with-date
+./skyline_mesh.py 2,4,6,3 --length 50 --seed "week-08"
+```
+
 ## Possible Next Steps
 - Add a “fog” layer from variance.
 - Export a weekly block as a mini-poster.
