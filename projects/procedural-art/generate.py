@@ -13,9 +13,29 @@ def stable_seed(text: str) -> float:
     return h / 1000000.0
 
 
-def base_noise(x: int, y: int, seed: float) -> float:
+def base_noise(x: float, y: float, seed: float) -> float:
     v = math.sin(x * 12.9898 + y * 78.233 + seed) * 43758.5453
     return v - math.floor(v)
+
+
+def octave_noise(
+    x: float,
+    y: float,
+    seed: float,
+    octaves: int,
+    persistence: float,
+    lacunarity: float,
+) -> float:
+    value = 0.0
+    amplitude = 1.0
+    frequency = 1.0
+    norm = 0.0
+    for i in range(octaves):
+        value += base_noise(x * frequency, y * frequency, seed + i * 19.19) * amplitude
+        norm += amplitude
+        amplitude *= persistence
+        frequency *= lacunarity
+    return value / norm if norm else 0.0
 
 
 def smooth(grid):
@@ -42,10 +62,27 @@ def map_to_glyph(value: float) -> str:
     return ALPHABET[idx]
 
 
-def generate(rows: int, cols: int, seed: float, smooth_passes: int) -> list[str]:
-    grid = [[base_noise(x, y, seed) for x in range(cols)] for y in range(rows)]
+def generate(
+    rows: int,
+    cols: int,
+    seed: float,
+    smooth_passes: int,
+    octaves: int,
+    persistence: float,
+    lacunarity: float,
+    contrast: float,
+) -> list[str]:
+    grid = [
+        [
+            octave_noise(x, y, seed, octaves, persistence, lacunarity)
+            for x in range(cols)
+        ]
+        for y in range(rows)
+    ]
     for _ in range(smooth_passes):
         grid = smooth(grid)
+    if contrast != 1.0:
+        grid = [[min(1.0, max(0.0, v**contrast)) for v in row] for row in grid]
     return ["".join(map_to_glyph(v) for v in row) for row in grid]
 
 
@@ -56,6 +93,10 @@ def main() -> int:
     parser.add_argument("--rows", type=int, default=20)
     parser.add_argument("--cols", type=int, default=60)
     parser.add_argument("--smooth", type=int, default=1, help="Smoothing passes")
+    parser.add_argument("--octaves", type=int, default=3, help="Layered noise passes")
+    parser.add_argument("--persistence", type=float, default=0.55, help="Amplitude decay")
+    parser.add_argument("--lacunarity", type=float, default=2.0, help="Frequency growth")
+    parser.add_argument("--contrast", type=float, default=1.0, help="Gamma-style contrast")
     parser.add_argument("--out", default=None, help="Output file path")
     args = parser.parse_args()
 
@@ -67,13 +108,24 @@ def main() -> int:
     seed_text = f"{date_str}::{args.phrase}"
     seed = stable_seed(seed_text)
 
-    lines = generate(args.rows, args.cols, seed, args.smooth)
+    lines = generate(
+        args.rows,
+        args.cols,
+        seed,
+        args.smooth,
+        args.octaves,
+        args.persistence,
+        args.lacunarity,
+        args.contrast,
+    )
 
     header = [
         f"Driftfield {date_str}",
         f"Seed: {seed_text}",
         f"Grid: {args.rows}x{args.cols}",
         f"Alphabet: {ALPHABET}",
+        f"Octaves: {args.octaves} (persistence {args.persistence}, lacunarity {args.lacunarity})",
+        f"Contrast: {args.contrast}",
         "",
     ]
 
