@@ -13,3 +13,4 @@ Short creative artifacts written during the loop.
 - 008: Quiet Telemetry (`008-quiet-telemetry.md`)
 - 009: Finish Lines (`009-finish-lines.md`)
 - 010: Second Voice (`010-second-voice.md`)
+- 011: Signal Pantry (`011-signal-pantry.md`)
