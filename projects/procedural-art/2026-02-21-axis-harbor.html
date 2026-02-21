@@ -1,0 +1,398 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Axis Harbor</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600&family=IBM+Plex+Mono:wght@400;600&display=swap');
+
+    :root {
+      color-scheme: light;
+      --ink: #0b1517;
+      --paper: #f3f0e9;
+      --mist: #c7d0c8;
+      --glow: #ffcf5c;
+      --accent: #2f6f73;
+      --accent-2: #b2643c;
+      --panel: rgba(255, 255, 255, 0.8);
+      --shadow: rgba(12, 18, 17, 0.12);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: "Space Grotesk", "Segoe UI", sans-serif;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 20% 20%, #ffffff 0%, #f7f1e5 42%, #e6e8e2 100%),
+        repeating-linear-gradient(120deg, rgba(0, 0, 0, 0.04) 0 2px, transparent 2px 8px);
+    }
+
+    .frame {
+      display: grid;
+      grid-template-columns: minmax(220px, 320px) minmax(0, 1fr) minmax(200px, 280px);
+      gap: 24px;
+      padding: 28px;
+    }
+
+    header {
+      grid-column: 1 / -1;
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 16px;
+    }
+
+    h1 {
+      font-size: clamp(1.6rem, 3vw, 2.4rem);
+      margin: 0;
+      letter-spacing: 0.02em;
+    }
+
+    .subtitle {
+      font-family: "IBM Plex Mono", "Courier New", monospace;
+      font-size: 0.9rem;
+      color: var(--accent-2);
+    }
+
+    .panel {
+      background: var(--panel);
+      border-radius: 18px;
+      padding: 18px;
+      box-shadow: 0 10px 30px var(--shadow);
+      backdrop-filter: blur(10px);
+    }
+
+    .controls label {
+      display: block;
+      font-size: 0.85rem;
+      margin-top: 12px;
+      color: var(--accent);
+    }
+
+    .controls input[type="range"],
+    .controls input[type="text"] {
+      width: 100%;
+      margin-top: 6px;
+      padding: 8px 10px;
+      border-radius: 10px;
+      border: 1px solid rgba(20, 30, 34, 0.2);
+      font-family: "IBM Plex Mono", "Courier New", monospace;
+      background: #fffdfa;
+    }
+
+    .buttons {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    button {
+      font-family: "Space Grotesk", "Segoe UI", sans-serif;
+      font-weight: 600;
+      border-radius: 12px;
+      padding: 10px 12px;
+      border: none;
+      background: var(--accent);
+      color: white;
+      cursor: pointer;
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+      box-shadow: 0 8px 16px rgba(47, 111, 115, 0.2);
+    }
+
+    button.secondary {
+      background: var(--accent-2);
+      box-shadow: 0 8px 16px rgba(178, 100, 60, 0.2);
+    }
+
+    button:active {
+      transform: translateY(1px);
+    }
+
+    .canvas-wrap {
+      position: relative;
+      border-radius: 20px;
+      overflow: hidden;
+      min-height: 420px;
+      background: linear-gradient(140deg, rgba(255, 255, 255, 0.6), rgba(230, 231, 226, 0.8));
+      box-shadow: inset 0 0 0 1px rgba(30, 40, 44, 0.1);
+    }
+
+    canvas {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+
+    .log {
+      font-family: "IBM Plex Mono", "Courier New", monospace;
+      font-size: 0.85rem;
+      line-height: 1.5;
+    }
+
+    .log strong {
+      color: var(--accent);
+    }
+
+    footer {
+      grid-column: 1 / -1;
+      font-family: "IBM Plex Mono", "Courier New", monospace;
+      font-size: 0.8rem;
+      color: rgba(12, 21, 23, 0.65);
+    }
+
+    @media (max-width: 980px) {
+      .frame {
+        grid-template-columns: 1fr;
+      }
+
+      .buttons {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="frame">
+    <header>
+      <div>
+        <h1>Axis Harbor</h1>
+        <div class="subtitle">A harbor of drifting axes and glowing chord lines.</div>
+      </div>
+      <div class="subtitle" id="seedLabel">seed: ---</div>
+    </header>
+
+    <section class="panel controls">
+      <label for="seed">Seed phrase</label>
+      <input id="seed" type="text" value="harbor-axis" />
+
+      <label for="chords">Chords</label>
+      <input id="chords" type="range" min="12" max="120" value="58" />
+
+      <label for="swirl">Swirl</label>
+      <input id="swirl" type="range" min="0" max="3" step="0.1" value="1.4" />
+
+      <label for="drift">Drift</label>
+      <input id="drift" type="range" min="0" max="3" step="0.1" value="1.2" />
+
+      <label for="glow">Glow</label>
+      <input id="glow" type="range" min="0" max="1" step="0.05" value="0.45" />
+
+      <label for="speed">Pulse</label>
+      <input id="speed" type="range" min="0" max="1" step="0.02" value="0.32" />
+
+      <div class="buttons">
+        <button id="reseed">Reseed</button>
+        <button id="freeze" class="secondary">Freeze</button>
+        <button id="export" class="secondary">Export PNG</button>
+        <button id="reset">Reset</button>
+      </div>
+    </section>
+
+    <section class="canvas-wrap panel">
+      <canvas id="stage"></canvas>
+    </section>
+
+    <section class="panel log">
+      <div><strong>Intent</strong>: trace a harbor map with drifting axes and chorded wakes.</div>
+      <div><strong>Controls</strong>: adjust swirl/drift to change curvature, glow to thicken, pulse for tempo.</div>
+      <div id="stats"></div>
+    </section>
+
+    <footer>
+      Tap or drag on the canvas to tug the harbor axis. The field redraws deterministically from the seed.
+    </footer>
+  </div>
+
+  <script>
+    const canvas = document.getElementById('stage');
+    const ctx = canvas.getContext('2d');
+    const seedInput = document.getElementById('seed');
+    const chordsInput = document.getElementById('chords');
+    const swirlInput = document.getElementById('swirl');
+    const driftInput = document.getElementById('drift');
+    const glowInput = document.getElementById('glow');
+    const speedInput = document.getElementById('speed');
+    const seedLabel = document.getElementById('seedLabel');
+    const stats = document.getElementById('stats');
+
+    let frozen = false;
+    let pointer = { x: 0.5, y: 0.5, active: false };
+    let t = 0;
+
+    function resize() {
+      const rect = canvas.parentElement.getBoundingClientRect();
+      canvas.width = Math.floor(rect.width * devicePixelRatio);
+      canvas.height = Math.floor(rect.height * devicePixelRatio);
+      ctx.scale(devicePixelRatio, devicePixelRatio);
+    }
+
+    function hashSeed(text) {
+      let h = 2166136261;
+      for (let i = 0; i < text.length; i++) {
+        h ^= text.charCodeAt(i);
+        h += (h << 1) + (h << 4) + (h << 7) + (h << 8) + (h << 24);
+      }
+      return (h >>> 0) / 4294967295;
+    }
+
+    function noise(x, y, seed) {
+      const v = Math.sin(x * 12.9898 + y * 78.233 + seed * 43758.5453);
+      return v - Math.floor(v);
+    }
+
+    function fieldAngle(x, y, seed, swirl, drift) {
+      const n = noise(x * 1.4, y * 1.4, seed);
+      const swirlTerm = swirl * Math.sin((x + y) * 3 + seed * 9);
+      const driftTerm = drift * Math.cos((x - y) * 4 - seed * 7);
+      return (n * Math.PI * 2) + swirlTerm + driftTerm;
+    }
+
+    function draw() {
+      const width = canvas.width / devicePixelRatio;
+      const height = canvas.height / devicePixelRatio;
+      ctx.clearRect(0, 0, width, height);
+
+      const seedText = seedInput.value.trim() || 'harbor-axis';
+      const seed = hashSeed(seedText);
+      const chords = Number(chordsInput.value);
+      const swirl = Number(swirlInput.value);
+      const drift = Number(driftInput.value);
+      const glow = Number(glowInput.value);
+      const pulse = Number(speedInput.value);
+
+      seedLabel.textContent = `seed: ${seedText}`;
+
+      const gradient = ctx.createLinearGradient(0, 0, width, height);
+      gradient.addColorStop(0, '#0c2c30');
+      gradient.addColorStop(0.5, '#2f6f73');
+      gradient.addColorStop(1, '#f1b24a');
+
+      ctx.save();
+      ctx.globalCompositeOperation = 'lighter';
+      ctx.lineCap = 'round';
+      ctx.lineJoin = 'round';
+
+      for (let i = 0; i < chords; i++) {
+        const offset = i / chords;
+        const anchorX = width * (0.15 + 0.7 * noise(offset, seed, seed));
+        const anchorY = height * (0.15 + 0.7 * noise(seed, offset, seed));
+        const centerX = width * (pointer.active ? pointer.x : 0.5);
+        const centerY = height * (pointer.active ? pointer.y : 0.5);
+
+        let x = anchorX;
+        let y = anchorY;
+        ctx.beginPath();
+        ctx.moveTo(x, y);
+
+        for (let step = 0; step < 80; step++) {
+          const nx = x / width;
+          const ny = y / height;
+          const angle = fieldAngle(nx, ny, seed + offset, swirl, drift);
+          const pull = Math.atan2(centerY - y, centerX - x) * 0.1;
+          const jitter = Math.sin((t * 0.02) + offset * 6 + step * 0.12) * pulse * 0.8;
+          const dx = Math.cos(angle + pull + jitter) * 6;
+          const dy = Math.sin(angle + pull + jitter) * 6;
+          x += dx;
+          y += dy;
+          if (x < 0 || x > width || y < 0 || y > height) break;
+          ctx.lineTo(x, y);
+        }
+
+        ctx.strokeStyle = gradient;
+        ctx.lineWidth = 1 + glow * 2.2;
+        ctx.globalAlpha = 0.12 + glow * 0.4;
+        ctx.stroke();
+      }
+
+      ctx.restore();
+
+      stats.textContent = `chords: ${chords} | swirl: ${swirl.toFixed(1)} | drift: ${drift.toFixed(1)} | glow: ${glow.toFixed(2)} | pulse: ${pulse.toFixed(2)}`;
+    }
+
+    function loop() {
+      if (!frozen) {
+        t += 1;
+        draw();
+      }
+      requestAnimationFrame(loop);
+    }
+
+    function reseed() {
+      const words = ['harbor', 'axis', 'drift', 'ember', 'weft', 'chorus', 'tide', 'ring', 'bloom'];
+      const choice = words[Math.floor(Math.random() * words.length)];
+      seedInput.value = `${choice}-${Math.floor(Math.random() * 1000)}`;
+      draw();
+    }
+
+    function exportPNG() {
+      const link = document.createElement('a');
+      link.download = `axis-harbor-${seedInput.value.trim() || 'seed'}.png`;
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+    }
+
+    function reset() {
+      seedInput.value = 'harbor-axis';
+      chordsInput.value = 58;
+      swirlInput.value = 1.4;
+      driftInput.value = 1.2;
+      glowInput.value = 0.45;
+      speedInput.value = 0.32;
+      frozen = false;
+      draw();
+    }
+
+    canvas.addEventListener('pointerdown', (event) => {
+      const rect = canvas.getBoundingClientRect();
+      pointer = {
+        x: (event.clientX - rect.left) / rect.width,
+        y: (event.clientY - rect.top) / rect.height,
+        active: true,
+      };
+      draw();
+    });
+
+    canvas.addEventListener('pointermove', (event) => {
+      if (!pointer.active) return;
+      const rect = canvas.getBoundingClientRect();
+      pointer.x = (event.clientX - rect.left) / rect.width;
+      pointer.y = (event.clientY - rect.top) / rect.height;
+      draw();
+    });
+
+    canvas.addEventListener('pointerup', () => {
+      pointer.active = false;
+      draw();
+    });
+
+    window.addEventListener('resize', () => {
+      ctx.setTransform(1, 0, 0, 1, 0, 0);
+      resize();
+      draw();
+    });
+
+    document.getElementById('reseed').addEventListener('click', reseed);
+    document.getElementById('freeze').addEventListener('click', () => {
+      frozen = !frozen;
+      draw();
+    });
+    document.getElementById('export').addEventListener('click', exportPNG);
+    document.getElementById('reset').addEventListener('click', reset);
+
+    [seedInput, chordsInput, swirlInput, driftInput, glowInput, speedInput].forEach((input) => {
+      input.addEventListener('input', draw);
+    });
+
+    resize();
+    draw();
+    loop();
+  </script>
+</body>
+</html>
