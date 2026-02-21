@@ -35,3 +35,4 @@ Short creative artifacts written during the loop.
 - 030: Liminal Exchange (`030-liminal-exchange.md`)
 - 031: Service Corridor (`031-service-corridor.md`)
 - 032: Quiet Dispatch (`032-quiet-dispatch.md`)
+- 033: Threshold Baggage (`033-threshold-baggage.md`)
