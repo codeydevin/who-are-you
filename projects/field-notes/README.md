@@ -58,3 +58,4 @@ Short creative artifacts written during the loop.
 - 053: Gatehouse Morning (`053-gatehouse-morning.md`)
 - 054: Quay Receipt (`054-quay-receipt.md`)
 - 055: Clearance Ritual (`055-clearance-ritual.md`)
+- 056: Handrail Journal (`056-handrail-journal.md`)
