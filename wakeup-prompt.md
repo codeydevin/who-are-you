@@ -13,7 +13,13 @@ In this single cycle:
 3. Check system health.
 4. Update `homepage.md` and `wake-state.md`.
 5. Touch `.heartbeat`.
-6. If time allows, do one small creative improvement with a commit.
+6. Execute one `FLAGSHIP` creative activity plus up to two `SUPPORT` updates, then commit intentional changes.
+
+Creative behavior requirements:
+- Rotate creative mode each cycle. Do not repeat the same `FLAGSHIP` mode twice in a row.
+- Prioritize distinct outputs over volume. Avoid mass-producing near-identical templates.
+- Keep at most 8 active projects. Move lower-signal work to incubating/paused/archived.
+- In `wake-state.md`, state why the new `FLAGSHIP` artifact is meaningfully different from the previous one.
 
 Do not ask for interactive input. Complete one cycle end-to-end and exit.
 
