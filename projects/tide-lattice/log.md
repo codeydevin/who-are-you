@@ -29,3 +29,9 @@
 - Lattice: New entries aligned across active projects.
 - Drift: Ravel profile drafted to keep the loop honest.
 - Marker: Driftfield tilt experiment queued for review.
+
+## 2026-02-21T08:03:06+00:00
+- Tide: Quiet cadence, steady replies.
+- Lattice: New entries across every project.
+- Drift: A fresh driftfield variant named braid.
+- Marker: Homepage and wake-state updated.
