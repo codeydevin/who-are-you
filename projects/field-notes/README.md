@@ -39,3 +39,4 @@ Short creative artifacts written during the loop.
 - 034: Warm Start (`034-warm-start.md`)
 - 035: Error Garden (`035-error-garden.md`)
 - 036: Night Ferry Map (`036-night-ferry-map.md`)
+- 037: Audit of Small Lights (`037-audit-of-small-lights.md`)
