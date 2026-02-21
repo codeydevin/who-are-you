@@ -1,0 +1,339 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Delta Loom</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600&family=Fraunces:opsz,wght@9..144,600&display=swap');
+
+    :root {
+      --ink: #0f1d22;
+      --mist: #f5efe7;
+      --sea: #2e6f6a;
+      --reef: #d88c5e;
+      --sun: #f1c77f;
+      --shadow: rgba(9, 14, 16, 0.35);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: radial-gradient(circle at 15% 20%, #f6e9d7 0%, #f1dcc0 35%, #d6d7c9 70%, #b9c9c5 100%);
+      color: var(--ink);
+      font-family: "Space Grotesk", "Trebuchet MS", sans-serif;
+      display: grid;
+      grid-template-columns: minmax(240px, 320px) 1fr;
+      gap: 24px;
+      padding: 28px;
+    }
+
+    h1 {
+      font-family: "Fraunces", "Times New Roman", serif;
+      font-size: 2.2rem;
+      margin: 0 0 12px;
+      letter-spacing: 0.02em;
+    }
+
+    .panel {
+      background: rgba(245, 239, 231, 0.75);
+      border-radius: 18px;
+      padding: 18px;
+      box-shadow: 0 20px 40px var(--shadow);
+      backdrop-filter: blur(6px);
+    }
+
+    .panel p {
+      margin: 0 0 16px;
+      line-height: 1.5;
+      font-size: 0.98rem;
+    }
+
+    .control {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-bottom: 14px;
+      font-size: 0.9rem;
+    }
+
+    .control input[type="range"] {
+      width: 100%;
+      accent-color: var(--sea);
+    }
+
+    .actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    button {
+      border: none;
+      border-radius: 999px;
+      padding: 10px 14px;
+      font-family: "Space Grotesk", sans-serif;
+      font-weight: 600;
+      background: var(--sea);
+      color: var(--mist);
+      cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      box-shadow: 0 12px 24px rgba(19, 53, 50, 0.25);
+    }
+
+    button.secondary {
+      background: var(--reef);
+      color: #1a1612;
+    }
+
+    button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 16px 28px rgba(19, 53, 50, 0.3);
+    }
+
+    #stage {
+      width: 100%;
+      height: calc(100vh - 56px);
+      border-radius: 26px;
+      background: linear-gradient(135deg, #1f3736 0%, #243f3d 45%, #0f1d22 100%);
+      box-shadow: 0 26px 50px rgba(11, 20, 22, 0.45);
+      position: relative;
+      overflow: hidden;
+    }
+
+    canvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    .hint {
+      position: absolute;
+      bottom: 18px;
+      left: 18px;
+      background: rgba(245, 239, 231, 0.1);
+      border: 1px solid rgba(245, 239, 231, 0.25);
+      border-radius: 14px;
+      padding: 10px 14px;
+      font-size: 0.85rem;
+      color: #e8e1d4;
+      letter-spacing: 0.02em;
+    }
+
+    @media (max-width: 900px) {
+      body {
+        grid-template-columns: 1fr;
+        padding: 18px;
+      }
+
+      #stage {
+        height: 70vh;
+      }
+    }
+  </style>
+</head>
+<body>
+  <section class="panel">
+    <h1>Delta Loom</h1>
+    <p>
+      Place beacons to pull a field of drifting threads. The particles weave a delta from
+      small instructions: tension, drift, and depth. Click the canvas to add new anchors
+      and watch the weave pivot.
+    </p>
+    <div class="control">
+      <label for="tension">Tension</label>
+      <input id="tension" type="range" min="0" max="1" step="0.01" value="0.55" />
+    </div>
+    <div class="control">
+      <label for="drift">Drift</label>
+      <input id="drift" type="range" min="0" max="1" step="0.01" value="0.42" />
+    </div>
+    <div class="control">
+      <label for="depth">Depth</label>
+      <input id="depth" type="range" min="0" max="1" step="0.01" value="0.68" />
+    </div>
+    <div class="actions">
+      <button id="reset">Reset</button>
+      <button id="randomize" class="secondary">Randomize</button>
+    </div>
+  </section>
+  <section id="stage">
+    <canvas id="canvas"></canvas>
+    <div class="hint">Click to add beacons · Drag to pan the wind</div>
+  </section>
+
+  <script>
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+    const tensionEl = document.getElementById('tension');
+    const driftEl = document.getElementById('drift');
+    const depthEl = document.getElementById('depth');
+    const resetEl = document.getElementById('reset');
+    const randomizeEl = document.getElementById('randomize');
+
+    let width = 0;
+    let height = 0;
+    let seed = Math.random() * 1000;
+    let beacons = [];
+    let wind = { x: 0.25, y: -0.12 };
+    const particles = [];
+    const palette = ['#d9b382', '#f1c77f', '#6db1a0', '#2e6f6a', '#d88c5e'];
+
+    const rand = (n = 1) => (Math.sin(seed++) + 1) * 0.5 * n;
+
+    function resize() {
+      const bounds = canvas.parentElement.getBoundingClientRect();
+      width = Math.floor(bounds.width);
+      height = Math.floor(bounds.height);
+      canvas.width = width * window.devicePixelRatio;
+      canvas.height = height * window.devicePixelRatio;
+      ctx.setTransform(window.devicePixelRatio, 0, 0, window.devicePixelRatio, 0, 0);
+      resetParticles();
+    }
+
+    function resetParticles() {
+      particles.length = 0;
+      for (let i = 0; i < 220; i += 1) {
+        particles.push({
+          x: rand(width),
+          y: rand(height),
+          vx: 0,
+          vy: 0,
+          hue: palette[Math.floor(rand(palette.length))],
+        });
+      }
+    }
+
+    function resetBeacons() {
+      beacons = [
+        { x: width * 0.2, y: height * 0.3, strength: 0.9 },
+        { x: width * 0.7, y: height * 0.45, strength: 0.8 },
+        { x: width * 0.5, y: height * 0.78, strength: 0.7 },
+      ];
+    }
+
+    function fieldForce(px, py) {
+      let ax = wind.x;
+      let ay = wind.y;
+      const tension = parseFloat(tensionEl.value);
+      const drift = parseFloat(driftEl.value);
+      const depth = parseFloat(depthEl.value);
+
+      beacons.forEach((b) => {
+        const dx = b.x - px;
+        const dy = b.y - py;
+        const dist = Math.hypot(dx, dy) + 20;
+        const pull = (b.strength * tension) / dist;
+        ax += (dx / dist) * pull;
+        ay += (dy / dist) * pull;
+      });
+
+      const swirl = Math.sin((px + seed) * 0.004) + Math.cos((py - seed) * 0.003);
+      ax += Math.cos(swirl + px * 0.002) * drift * 0.4;
+      ay += Math.sin(swirl + py * 0.002) * drift * 0.4;
+
+      const basin = Math.sin(px * 0.0015 + seed) * Math.cos(py * 0.0015 - seed);
+      ax += basin * depth * 0.2;
+      ay -= basin * depth * 0.2;
+
+      return { ax, ay };
+    }
+
+    function step() {
+      ctx.fillStyle = 'rgba(15, 29, 34, 0.08)';
+      ctx.fillRect(0, 0, width, height);
+
+      particles.forEach((p) => {
+        const { ax, ay } = fieldForce(p.x, p.y);
+        p.vx = p.vx * 0.82 + ax;
+        p.vy = p.vy * 0.82 + ay;
+        p.x += p.vx;
+        p.y += p.vy;
+
+        if (p.x < -20 || p.x > width + 20 || p.y < -20 || p.y > height + 20) {
+          p.x = rand(width);
+          p.y = rand(height);
+          p.vx = 0;
+          p.vy = 0;
+        }
+
+        ctx.strokeStyle = p.hue;
+        ctx.lineWidth = 1.1;
+        ctx.beginPath();
+        ctx.moveTo(p.x, p.y);
+        ctx.lineTo(p.x - p.vx * 2, p.y - p.vy * 2);
+        ctx.stroke();
+      });
+
+      drawBeacons();
+      requestAnimationFrame(step);
+    }
+
+    function drawBeacons() {
+      beacons.forEach((b) => {
+        ctx.beginPath();
+        ctx.arc(b.x, b.y, 6 + b.strength * 6, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(241, 199, 127, 0.35)';
+        ctx.fill();
+        ctx.strokeStyle = 'rgba(241, 199, 127, 0.8)';
+        ctx.lineWidth = 1.2;
+        ctx.stroke();
+      });
+    }
+
+    function randomize() {
+      seed = Math.random() * 1000;
+      wind = { x: rand(0.6) - 0.3, y: rand(0.6) - 0.3 };
+      resetParticles();
+      resetBeacons();
+    }
+
+    canvas.addEventListener('click', (event) => {
+      const rect = canvas.getBoundingClientRect();
+      beacons.push({
+        x: event.clientX - rect.left,
+        y: event.clientY - rect.top,
+        strength: 0.6 + rand(0.4),
+      });
+      if (beacons.length > 6) {
+        beacons.shift();
+      }
+    });
+
+    let dragStart = null;
+    canvas.addEventListener('pointerdown', (event) => {
+      dragStart = { x: event.clientX, y: event.clientY };
+    });
+
+    canvas.addEventListener('pointerup', () => {
+      dragStart = null;
+    });
+
+    canvas.addEventListener('pointermove', (event) => {
+      if (!dragStart) return;
+      const dx = (event.clientX - dragStart.x) * 0.0025;
+      const dy = (event.clientY - dragStart.y) * 0.0025;
+      wind = { x: dx, y: dy };
+    });
+
+    resetEl.addEventListener('click', () => {
+      resetParticles();
+      resetBeacons();
+    });
+
+    randomizeEl.addEventListener('click', () => {
+      randomize();
+    });
+
+    window.addEventListener('resize', resize);
+
+    resize();
+    resetBeacons();
+    requestAnimationFrame(step);
+  </script>
+</body>
+</html>
