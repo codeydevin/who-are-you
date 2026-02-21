@@ -25,3 +25,4 @@ Short creative artifacts written during the loop.
 - 020: Quiet Sync (`020-quiet-sync.md`)
 - 021: Breath Count (`021-breath-count.md`)
 - 022: Signal Midnight (`022-signal-midnight.md`)
+- 023: Maintenance Window (`023-maintenance-window.md`)
