@@ -1,0 +1,329 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Driftfield Tidewheel</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600&family=Fraunces:opsz,wght@9..144,600&display=swap');
+
+    :root {
+      --ink: #1a1a1a;
+      --paper: #f7f3ee;
+      --accent: #0d7a8f;
+      --accent-2: #e0663f;
+      --panel: rgba(255, 255, 255, 0.86);
+      --shadow: rgba(0, 0, 0, 0.12);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: "Space Grotesk", "Trebuchet MS", sans-serif;
+      color: var(--ink);
+      background: radial-gradient(circle at top left, #fff1df, transparent 55%),
+        radial-gradient(circle at 90% 10%, #d7f4f5, transparent 50%),
+        radial-gradient(circle at 20% 80%, #f9d8d1, transparent 40%),
+        var(--paper);
+      display: grid;
+      grid-template-columns: minmax(260px, 340px) 1fr;
+      gap: 20px;
+      padding: 24px;
+    }
+
+    header {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    h1 {
+      font-family: "Fraunces", "Times New Roman", serif;
+      font-size: 2.4rem;
+      margin: 0;
+      letter-spacing: 0.5px;
+    }
+
+    p {
+      margin: 0;
+      line-height: 1.5;
+      color: #2f2f2f;
+    }
+
+    .panel {
+      background: var(--panel);
+      padding: 18px;
+      border-radius: 16px;
+      box-shadow: 0 16px 32px var(--shadow);
+      backdrop-filter: blur(6px);
+    }
+
+    .controls {
+      display: grid;
+      gap: 12px;
+    }
+
+    label {
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: #4b4b4b;
+    }
+
+    input[type="range"],
+    input[type="text"],
+    select {
+      width: 100%;
+      margin-top: 6px;
+      padding: 8px 10px;
+      border-radius: 10px;
+      border: 1px solid #d7cdc2;
+      background: white;
+      font-size: 1rem;
+    }
+
+    button {
+      background: var(--accent);
+      color: white;
+      border: none;
+      padding: 10px 14px;
+      border-radius: 12px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: transform 0.2s ease, background 0.2s ease;
+    }
+
+    button.secondary {
+      background: #2d2d2d;
+    }
+
+    button:hover {
+      transform: translateY(-1px);
+      background: #0b6a7d;
+    }
+
+    .canvas-wrap {
+      position: relative;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 20px 40px var(--shadow);
+      background: #0f0f0f;
+      min-height: 65vh;
+    }
+
+    canvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    .legend {
+      display: grid;
+      gap: 6px;
+      font-size: 0.95rem;
+    }
+
+    .legend strong {
+      color: var(--accent-2);
+    }
+
+    @media (max-width: 920px) {
+      body {
+        grid-template-columns: 1fr;
+      }
+      .canvas-wrap {
+        min-height: 60vh;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="panel">
+    <h1>Driftfield Tidewheel</h1>
+    <p>
+      A slow-turning flow field. Seeds shape the currents, palettes tint the wake. Spin it,
+      pause it, or reset it and watch the wheel of drift reconfigure.
+    </p>
+    <div class="controls">
+      <div>
+        <label for="seed">Seed</label>
+        <input id="seed" type="text" value="tidewheel" />
+      </div>
+      <div>
+        <label for="density">Particle Count</label>
+        <input id="density" type="range" min="120" max="1000" value="420" />
+      </div>
+      <div>
+        <label for="speed">Flow Speed</label>
+        <input id="speed" type="range" min="0.2" max="2.4" step="0.1" value="1.1" />
+      </div>
+      <div>
+        <label for="palette">Palette</label>
+        <select id="palette">
+          <option value="a">Brine & Ember</option>
+          <option value="b">Dusk Electric</option>
+          <option value="c">Silt Garden</option>
+          <option value="d">Glacier Bloom</option>
+        </select>
+      </div>
+      <div style="display:flex; gap: 10px;">
+        <button id="regenerate">Recast Field</button>
+        <button id="toggle" class="secondary">Pause</button>
+      </div>
+    </div>
+    <div class="legend">
+      <div><strong>Hint:</strong> change the seed for entirely new currents.</div>
+      <div>Field scale adapts to viewport size.</div>
+    </div>
+  </header>
+
+  <section class="canvas-wrap">
+    <canvas id="field"></canvas>
+  </section>
+
+  <script>
+    const canvas = document.getElementById('field');
+    const ctx = canvas.getContext('2d');
+    const seedInput = document.getElementById('seed');
+    const densityInput = document.getElementById('density');
+    const speedInput = document.getElementById('speed');
+    const paletteInput = document.getElementById('palette');
+    const regenButton = document.getElementById('regenerate');
+    const toggleButton = document.getElementById('toggle');
+
+    const palettes = {
+      a: ['#0d7a8f', '#f4b26e', '#f1f7f4', '#e0663f'],
+      b: ['#3b3b98', '#f9f871', '#a3cb38', '#f368e0'],
+      c: ['#0f2d2e', '#c9a66b', '#d6e0c2', '#4f5d2f'],
+      d: ['#0b3d91', '#6dd3ce', '#fef6c9', '#ff6b6b']
+    };
+
+    let running = true;
+    let particles = [];
+    let field = [];
+    let frame = 0;
+
+    function resize() {
+      const { width, height } = canvas.getBoundingClientRect();
+      canvas.width = Math.floor(width * window.devicePixelRatio);
+      canvas.height = Math.floor(height * window.devicePixelRatio);
+      ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
+      ctx.lineCap = 'round';
+      ctx.lineJoin = 'round';
+    }
+
+    function hashSeed(seed) {
+      let h = 2166136261;
+      for (let i = 0; i < seed.length; i++) {
+        h ^= seed.charCodeAt(i);
+        h = Math.imul(h, 16777619);
+      }
+      return h >>> 0;
+    }
+
+    function rand(seed) {
+      let t = seed + 0x6d2b79f5;
+      t = Math.imul(t ^ (t >>> 15), t | 1);
+      t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+      return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+    }
+
+    function buildField() {
+      const seed = hashSeed(seedInput.value.trim() || 'tidewheel');
+      const width = canvas.clientWidth;
+      const height = canvas.clientHeight;
+      const cols = Math.floor(width / 18);
+      const rows = Math.floor(height / 18);
+      field = new Array(cols * rows);
+
+      for (let y = 0; y < rows; y++) {
+        for (let x = 0; x < cols; x++) {
+          const index = x + y * cols;
+          const angle = (rand(seed + index * 97) * Math.PI * 2)
+            + Math.sin((x + seed) * 0.15) * 0.8
+            + Math.cos((y + seed) * 0.12) * 0.8;
+          const strength = 0.6 + rand(seed + index * 131) * 0.9;
+          field[index] = { angle, strength };
+        }
+      }
+
+      particles = [];
+      const count = Number(densityInput.value);
+      for (let i = 0; i < count; i++) {
+        particles.push({
+          x: rand(seed + i) * width,
+          y: rand(seed + i * 7) * height,
+          life: rand(seed + i * 13) * 220 + 80,
+          hue: rand(seed + i * 17)
+        });
+      }
+
+      ctx.clearRect(0, 0, width, height);
+      frame = 0;
+    }
+
+    function step() {
+      if (!running) return;
+      const width = canvas.clientWidth;
+      const height = canvas.clientHeight;
+      const cols = Math.floor(width / 18);
+      const palette = palettes[paletteInput.value];
+      const speed = Number(speedInput.value);
+
+      ctx.fillStyle = 'rgba(15, 15, 15, 0.04)';
+      ctx.fillRect(0, 0, width, height);
+
+      particles.forEach((p, idx) => {
+        const col = Math.min(cols - 1, Math.max(0, Math.floor(p.x / 18)));
+        const row = Math.min(Math.floor(height / 18) - 1, Math.max(0, Math.floor(p.y / 18)));
+        const cell = field[col + row * cols];
+        const angle = cell.angle + Math.sin(frame * 0.002 + idx) * 0.05;
+        const vx = Math.cos(angle) * cell.strength * speed;
+        const vy = Math.sin(angle) * cell.strength * speed;
+
+        ctx.strokeStyle = palette[Math.floor(p.hue * palette.length) % palette.length];
+        ctx.lineWidth = 1.1;
+        ctx.beginPath();
+        ctx.moveTo(p.x, p.y);
+        p.x += vx;
+        p.y += vy;
+        ctx.lineTo(p.x, p.y);
+        ctx.stroke();
+
+        p.life -= 1;
+        if (p.life <= 0 || p.x < 0 || p.y < 0 || p.x > width || p.y > height) {
+          const seed = hashSeed(seedInput.value.trim() || 'tidewheel');
+          p.x = rand(seed + idx * 5 + frame) * width;
+          p.y = rand(seed + idx * 11 + frame) * height;
+          p.life = rand(seed + idx * 17 + frame) * 220 + 80;
+          p.hue = rand(seed + idx * 19 + frame);
+        }
+      });
+
+      frame += 1;
+      requestAnimationFrame(step);
+    }
+
+    function reset() {
+      resize();
+      buildField();
+      step();
+    }
+
+    regenButton.addEventListener('click', reset);
+    toggleButton.addEventListener('click', () => {
+      running = !running;
+      toggleButton.textContent = running ? 'Pause' : 'Resume';
+      if (running) step();
+    });
+
+    window.addEventListener('resize', reset);
+
+    reset();
+  </script>
+</body>
+</html>
