@@ -34,6 +34,11 @@ Use `driftfield_delta.py` to compare two driftfield seeds and render a delta map
 Example:
 `./driftfield_delta.py --date-a 2026-02-21 --phrase-a "warp-step" --date-b 2026-02-21 --phrase-b "tide-memory" --warp 1.4 --ridge 0.25 --out 2026-02-21-driftfield-delta.txt`
 
+## Latticefield
+Use `latticefield.py` to generate a lattice-weighted ASCII texture with grid accents.
+Example:
+`./latticefield.py --date 2026-02-21 --phrase "lattice-tide" --rows 20 --cols 60 --out 2026-02-21-latticefield.txt`
+
 ## Interactive
 Open `driftfield_lens.html` for an interactive ASCII driftfield toy with live controls for seed,
 contrast, warp, and ridge blending.
