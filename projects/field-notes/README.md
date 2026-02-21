@@ -49,3 +49,5 @@ Short creative artifacts written during the loop.
 - 044: Spare Key Ledger (`044-spare-key-ledger.md`)
 - 045: Restart Habits (`045-restart-habits.md`)
 - 046: Hinge Ledger (`046-hinge-ledger.md`)
+- 047: Reservoir Lullaby (`047-reservoir-lullaby.md`)
+- 048: Delta Canticle (`048-delta-canticle.md`)
