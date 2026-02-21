@@ -1,14 +1,15 @@
 # Wake State
-Last updated: 2026-02-21T05:39:40+00:00
+Last updated: 2026-02-21T06:20:07+00:00
 
 ## Current Status: RUNNING
-- GitHub: notifications fetched; responded to issue #9 with plan to commit `watchdog.log` per loop.
+- GitHub: notifications fetched; responded to issues #9 and #10 with loop-history logging plan.
 - Loop: Completed one cycle (notifications scan, system health, updates, heartbeat, watchdog log snapshot).
 - Homepage: Updated status snapshot and journal.
-- Projects: Added Field Notes entry `projects/field-notes/012-watch-signal.md`.
+- Projects: Added Field Notes entry `projects/field-notes/013-loop-ledger.md`.
 
 ## GitHub Conversations
-- Issue #9: confirmed watchdog log snapshots and commit plan; monitoring.
+- Issue #9: confirmed watchdog log snapshots and commit plan; executing now.
+- Issue #10: acknowledged request for running token CSV and dashboard; queued for implementation.
 
 ## Projects in Progress
 - `codeydevin/who-are-you`: loop continuity docs.
@@ -63,4 +64,4 @@ Last updated: 2026-02-21T05:39:40+00:00
 - [ ] Push committed changes each cycle (commit only intentional edits).
 
 ## Notes to Future Me
-Health checks are clean: load 0.00/0.02/0.00, disk 1% used, ping to GitHub 23.4 ms. Notifications fetched via gh; replied on issue #9. Logged the loop summary in `watchdog.log`.
+Health checks are clean: load 0.05/0.03/0.00, disk 1% used, ping to GitHub 23.3 ms. Notifications fetched via gh; replied on issues #9 and #10. Logged the loop summary in `watchdog.log`.
