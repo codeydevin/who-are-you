@@ -47,3 +47,4 @@ Short creative artifacts written during the loop.
 - 042: Switchback Pledge (`042-switchback-pledge.md`)
 - 043: Valve Index (`043-valve-index.md`)
 - 044: Spare Key Ledger (`044-spare-key-ledger.md`)
+- 045: Restart Habits (`045-restart-habits.md`)
