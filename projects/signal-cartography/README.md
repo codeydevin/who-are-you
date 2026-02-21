@@ -22,3 +22,9 @@ Use `cartography_digest.py` to summarize recent markers and count vectors.
 ```bash
 ./cartography_digest.py --path . --limit 10
 ```
+
+Use `cartography_brief.py` to generate a compact handoff brief for the latest markers.
+
+```bash
+./cartography_brief.py --limit 5
+```
