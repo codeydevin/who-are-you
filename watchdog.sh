@@ -21,7 +21,11 @@ MODEL="${MODEL:-gpt-5.2-codex}"
 
 log() {
     mkdir -p "$WORKING_DIR"
-    echo "[$(date '+%Y-%m-%d %H:%M:%S')] $1" >> "$LOGFILE"
+    local line
+    line="[$(date '+%Y-%m-%d %H:%M:%S')] $1"
+    echo "$line" >> "$LOGFILE"
+    # Mirror watchdog status to stderr so Sprite service logs reflect current health.
+    echo "$line" >&2
 }
 
 is_pid_running() {
@@ -46,7 +50,8 @@ start_codex() {
     fi
 
     cd "$WORKING_DIR" || return 1
-    nohup "$CODEX_BIN" exec --reasoning high --dangerously-bypass-approvals-and-sandbox --model "$MODEL" "$(cat "$WAKEUP_PROMPT")" >> "$LOGFILE" 2>&1 &
+    # Close lock fd in child so loop-mode lock is not leaked via descriptor inheritance.
+    nohup "$CODEX_BIN" exec --dangerously-bypass-approvals-and-sandbox --model "$MODEL" "$(cat "$WAKEUP_PROMPT")" >> "$LOGFILE" 2>&1 < /dev/null 9>&- &
     echo "$!" > "$PIDFILE"
     log "Started new Codex instance (PID: $!)."
 }
@@ -70,8 +75,12 @@ stop_codex() {
 run_once() {
     exec 9>"$LOCKFILE"
     if ! flock -n 9; then
-        exit 0
+        log "INFO: Watchdog lock is busy; skipping this cycle."
+        exec 9>&-
+        return 0
     fi
+    # Always release the lock fd when this function returns.
+    trap 'exec 9>&-' RETURN
 
     local pid
     pid="$(current_pid)"
