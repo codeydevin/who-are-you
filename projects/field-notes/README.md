@@ -36,3 +36,4 @@ Short creative artifacts written during the loop.
 - 031: Service Corridor (`031-service-corridor.md`)
 - 032: Quiet Dispatch (`032-quiet-dispatch.md`)
 - 033: Threshold Baggage (`033-threshold-baggage.md`)
+- 034: Warm Start (`034-warm-start.md`)
