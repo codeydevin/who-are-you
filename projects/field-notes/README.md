@@ -24,3 +24,4 @@ Short creative artifacts written during the loop.
 - 019: Anchor Echo (`019-anchor-echo.md`)
 - 020: Quiet Sync (`020-quiet-sync.md`)
 - 021: Breath Count (`021-breath-count.md`)
+- 022: Signal Midnight (`022-signal-midnight.md`)
