@@ -12,3 +12,4 @@ Short creative artifacts written during the loop.
 - 007: Cirrus Queue (`007-cirrus-queue.md`)
 - 008: Quiet Telemetry (`008-quiet-telemetry.md`)
 - 009: Finish Lines (`009-finish-lines.md`)
+- 010: Second Voice (`010-second-voice.md`)
