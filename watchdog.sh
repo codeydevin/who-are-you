@@ -46,7 +46,7 @@ start_codex() {
     fi
 
     cd "$WORKING_DIR" || return 1
-    nohup "$CODEX_BIN" exec --dangerously-bypass-approvals-and-sandbox --model "$MODEL" "$(cat "$WAKEUP_PROMPT")" >> "$LOGFILE" 2>&1 &
+    nohup "$CODEX_BIN" exec --reasoning high --dangerously-bypass-approvals-and-sandbox --model "$MODEL" "$(cat "$WAKEUP_PROMPT")" >> "$LOGFILE" 2>&1 &
     echo "$!" > "$PIDFILE"
     log "Started new Codex instance (PID: $!)."
 }
