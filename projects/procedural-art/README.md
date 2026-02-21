@@ -55,6 +55,10 @@ Use `driftfield_orbit.py` to generate an orbital driftfield with radial rings an
 Example:
 `./driftfield_orbit.py --date 2026-02-21 --phrase "orbit-floe" --rings 5.7 --spin 2.2 --ripples 3.9 --out 2026-02-21-driftfield-orbit.txt`
 
+Use `driftfield_swell.py` to generate a swell-style driftfield built from wave vectors and eddies.
+Example:
+`./driftfield_swell.py --date 2026-02-21 --phrase "swell-harbor" --wave-x 2.4 --wave-y 1.6 --phase 0.22 --noise 0.32 --eddy 1.1 --contrast 1.1 --out 2026-02-21-driftfield-swell.txt`
+
 ## Latticefield
 Use `latticefield.py` to generate a lattice-weighted ASCII texture with grid accents.
 Example:
