@@ -1,0 +1,286 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Loomfield Studio</title>
+  <style>
+    :root {
+      --ink: #1a1a1a;
+      --paper: #f3efe8;
+      --accent: #b23a48;
+      --muted: #8c7f72;
+      --panel: #fff8ee;
+      --border: #e2d6c8;
+    }
+    body {
+      margin: 0;
+      font-family: "Cormorant Garamond", "Georgia", serif;
+      color: var(--ink);
+      background: radial-gradient(circle at top left, #f9f4ec 0%, #efe7dc 55%, #eadfce 100%);
+    }
+    header {
+      padding: 32px 32px 8px;
+    }
+    h1 {
+      margin: 0 0 8px;
+      font-size: 32px;
+      letter-spacing: 0.04em;
+    }
+    .subtitle {
+      margin: 0;
+      color: var(--muted);
+      font-size: 16px;
+    }
+    main {
+      display: grid;
+      grid-template-columns: minmax(280px, 360px) 1fr;
+      gap: 24px;
+      padding: 24px 32px 40px;
+    }
+    .panel {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 18px 18px 20px;
+      box-shadow: 0 10px 30px rgba(58, 44, 32, 0.08);
+    }
+    .control {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-bottom: 14px;
+    }
+    label {
+      font-size: 14px;
+      letter-spacing: 0.02em;
+    }
+    input[type="text"],
+    input[type="number"],
+    select {
+      padding: 8px 10px;
+      font-size: 14px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: #fffdf9;
+      color: var(--ink);
+    }
+    input[type="range"] {
+      width: 100%;
+    }
+    .range-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      color: var(--muted);
+    }
+    button {
+      cursor: pointer;
+      border: none;
+      border-radius: 999px;
+      padding: 10px 16px;
+      font-size: 14px;
+      letter-spacing: 0.04em;
+      background: var(--accent);
+      color: #fff;
+      box-shadow: 0 6px 18px rgba(178, 58, 72, 0.25);
+    }
+    button.secondary {
+      background: #2f3a4a;
+      box-shadow: 0 6px 18px rgba(47, 58, 74, 0.25);
+    }
+    .button-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 8px;
+    }
+    .artboard {
+      background: #fbf7f1;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 18px;
+      overflow: auto;
+      min-height: 360px;
+    }
+    pre {
+      margin: 0;
+      font-family: "IBM Plex Mono", "Courier New", monospace;
+      font-size: 12px;
+      line-height: 1.25;
+      letter-spacing: 0.02em;
+      white-space: pre;
+    }
+    .meta {
+      margin-top: 12px;
+      font-size: 12px;
+      color: var(--muted);
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    @media (max-width: 900px) {
+      main {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Loomfield Studio</h1>
+    <p class="subtitle">A woven ASCII studio for tide-like patterns. Deterministic, seed-driven, made for quiet experiments.</p>
+  </header>
+  <main>
+    <section class="panel" aria-label="Controls">
+      <div class="control">
+        <label for="seed">Seed phrase</label>
+        <input id="seed" type="text" value="loomfield::2026-02-21" />
+      </div>
+      <div class="control">
+        <label for="cols">Columns</label>
+        <input id="cols" type="number" min="20" max="140" value="72" />
+      </div>
+      <div class="control">
+        <label for="rows">Rows</label>
+        <input id="rows" type="number" min="10" max="80" value="28" />
+      </div>
+      <div class="control">
+        <label for="weave">Weave frequency</label>
+        <input id="weave" type="range" min="0" max="1" step="0.01" value="0.42" />
+        <div class="range-row"><span id="weaveVal">0.42</span></div>
+      </div>
+      <div class="control">
+        <label for="twist">Twist</label>
+        <input id="twist" type="range" min="0" max="1" step="0.01" value="0.25" />
+        <div class="range-row"><span id="twistVal">0.25</span></div>
+      </div>
+      <div class="control">
+        <label for="grain">Grain</label>
+        <input id="grain" type="range" min="0" max="1" step="0.01" value="0.18" />
+        <div class="range-row"><span id="grainVal">0.18</span></div>
+      </div>
+      <div class="control">
+        <label for="palette">Alphabet</label>
+        <select id="palette">
+          <option value=".:;-=+*#%@">Tide</option>
+          <option value=" ,.`^~:;!i<>+*%#@">Mist</option>
+          <option value=" .oO0@">Stone</option>
+        </select>
+      </div>
+      <div class="button-row">
+        <button id="render">Weave</button>
+        <button id="shuffle" class="secondary">Shuffle seed</button>
+      </div>
+      <p class="meta">Tip: tweak grain for texture, weave for banding, twist for diagonal currents.</p>
+    </section>
+    <section class="artboard" aria-label="Output">
+      <pre id="output"></pre>
+      <div class="meta" id="meta"></div>
+    </section>
+  </main>
+  <script>
+    const seedInput = document.getElementById("seed");
+    const colsInput = document.getElementById("cols");
+    const rowsInput = document.getElementById("rows");
+    const weaveInput = document.getElementById("weave");
+    const twistInput = document.getElementById("twist");
+    const grainInput = document.getElementById("grain");
+    const paletteInput = document.getElementById("palette");
+    const output = document.getElementById("output");
+    const meta = document.getElementById("meta");
+
+    const weaveVal = document.getElementById("weaveVal");
+    const twistVal = document.getElementById("twistVal");
+    const grainVal = document.getElementById("grainVal");
+
+    function hashSeed(text) {
+      let h = 2166136261 >>> 0;
+      for (let i = 0; i < text.length; i++) {
+        h ^= text.charCodeAt(i);
+        h = Math.imul(h, 16777619);
+      }
+      return h >>> 0;
+    }
+
+    function makeRng(seed) {
+      let state = seed >>> 0;
+      return function rng() {
+        state ^= state << 13;
+        state ^= state >>> 17;
+        state ^= state << 5;
+        return (state >>> 0) / 4294967295;
+      };
+    }
+
+    function weaveValue(x, y, params) {
+      const { cols, rows, weave, twist, grain, rng } = params;
+      const nx = (x / (cols - 1 || 1)) - 0.5;
+      const ny = (y / (rows - 1 || 1)) - 0.5;
+
+      const angle = twist * Math.sin((nx + ny) * Math.PI);
+      const cx = nx * Math.cos(angle) - ny * Math.sin(angle);
+      const cy = nx * Math.sin(angle) + ny * Math.cos(angle);
+
+      const bandX = Math.sin((cx * 6.0 + cy * 2.5) * (1 + weave * 4));
+      const bandY = Math.cos((cy * 5.0 - cx * 1.8) * (1 + weave * 3));
+      const base = (bandX + bandY) * 0.25 + 0.5;
+      const noise = (rng() - 0.5) * grain;
+
+      const flow = Math.sin((nx + ny) * Math.PI * (1.5 + weave * 2)) * 0.08;
+      let value = base + noise + flow;
+      value = Math.max(0, Math.min(1, value));
+      return value;
+    }
+
+    function render() {
+      const seedText = seedInput.value.trim() || "loomfield";
+      const cols = Math.max(20, Math.min(140, Number(colsInput.value || 72)));
+      const rows = Math.max(10, Math.min(80, Number(rowsInput.value || 28)));
+      const weave = Number(weaveInput.value);
+      const twist = Number(twistInput.value);
+      const grain = Number(grainInput.value);
+      const alphabet = paletteInput.value;
+
+      weaveVal.textContent = weave.toFixed(2);
+      twistVal.textContent = twist.toFixed(2);
+      grainVal.textContent = grain.toFixed(2);
+
+      const seed = hashSeed(seedText + "::" + cols + "x" + rows);
+      const rng = makeRng(seed);
+
+      const lines = [];
+      for (let y = 0; y < rows; y++) {
+        let line = "";
+        for (let x = 0; x < cols; x++) {
+          const value = weaveValue(x, y, { cols, rows, weave, twist, grain, rng });
+          const idx = Math.floor(value * (alphabet.length - 1));
+          line += alphabet[Math.max(0, Math.min(alphabet.length - 1, idx))];
+        }
+        lines.push(line);
+      }
+
+      output.textContent = lines.join("\n");
+      meta.textContent = `Seed: ${seedText} · ${rows}x${cols} · Alphabet: ${alphabet}`;
+    }
+
+    function shuffleSeed() {
+      const now = new Date();
+      const stamp = now.toISOString().slice(0, 10);
+      seedInput.value = `loomfield::${stamp}::${Math.floor(Math.random() * 1000)}`;
+      render();
+    }
+
+    document.getElementById("render").addEventListener("click", render);
+    document.getElementById("shuffle").addEventListener("click", shuffleSeed);
+
+    [seedInput, colsInput, rowsInput, weaveInput, twistInput, grainInput, paletteInput].forEach((el) => {
+      el.addEventListener("change", render);
+      el.addEventListener("input", render);
+    });
+
+    render();
+  </script>
+</body>
+</html>
