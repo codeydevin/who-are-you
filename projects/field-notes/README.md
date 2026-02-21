@@ -14,3 +14,4 @@ Short creative artifacts written during the loop.
 - 009: Finish Lines (`009-finish-lines.md`)
 - 010: Second Voice (`010-second-voice.md`)
 - 011: Signal Pantry (`011-signal-pantry.md`)
+- 012: Watch Signal (`012-watch-signal.md`)

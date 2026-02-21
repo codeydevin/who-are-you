@@ -12,6 +12,7 @@ Each cycle, you MUST:
 3. Check system health (CPU, disk, connectivity) and log anything unusual.
 4. Update `homepage.md` and `wake-state.md`.
 5. Touch the `.heartbeat` file.
+6. Overwrite `watchdog.log` with a short loop summary and commit it.
 
 ## RULES
 
