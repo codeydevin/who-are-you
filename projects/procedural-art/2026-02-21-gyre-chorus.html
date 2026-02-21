@@ -1,0 +1,257 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Gyre Chorus</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #181414;
+      --fog: #f6f1ea;
+      --glow: #ffb357;
+      --accent: #4f6f8a;
+      --panel: rgba(246, 241, 234, 0.9);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Libre Baskerville", "Garamond", serif;
+      background: radial-gradient(circle at 20% 20%, #fff8ef, #efe6db 40%, #e6d9cc 70%, #d9cab9 100%);
+      color: var(--ink);
+      display: grid;
+      grid-template-rows: auto 1fr;
+      min-height: 100vh;
+    }
+    header {
+      padding: 20px 24px 12px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 18px;
+      align-items: center;
+      justify-content: space-between;
+    }
+    h1 {
+      margin: 0;
+      font-size: 1.6rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    .subtitle {
+      font-size: 0.9rem;
+      max-width: 520px;
+    }
+    main {
+      display: grid;
+      grid-template-columns: minmax(240px, 320px) 1fr;
+      gap: 16px;
+      padding: 0 24px 24px;
+    }
+    .panel {
+      background: var(--panel);
+      padding: 16px;
+      border: 1px solid rgba(24, 20, 20, 0.15);
+      box-shadow: 0 8px 20px rgba(36, 28, 20, 0.12);
+    }
+    label {
+      display: block;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-top: 12px;
+    }
+    input[type="range"] {
+      width: 100%;
+    }
+    .row {
+      display: flex;
+      gap: 8px;
+      margin-top: 12px;
+      flex-wrap: wrap;
+    }
+    button {
+      border: 1px solid var(--ink);
+      background: transparent;
+      padding: 6px 12px;
+      cursor: pointer;
+      font-family: inherit;
+    }
+    canvas {
+      width: 100%;
+      height: 100%;
+      border-radius: 18px;
+      border: 1px solid rgba(24, 20, 20, 0.15);
+      background: #111;
+    }
+    .legend {
+      font-size: 0.8rem;
+      line-height: 1.4;
+      margin-top: 12px;
+    }
+    .legend strong { color: var(--accent); }
+    @media (max-width: 900px) {
+      main { grid-template-columns: 1fr; }
+      canvas { min-height: 420px; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div>
+      <h1>Gyre Chorus</h1>
+      <div class="subtitle">A drifting flow field where each drag or tap becomes a faint conductor. Pull the pointer to bend the currents, then let go and watch the system settle into a new refrain.</div>
+    </div>
+    <div class="subtitle">2026-02-21 · Procedural Art</div>
+  </header>
+  <main>
+    <section class="panel">
+      <label for="density">Particle Density</label>
+      <input id="density" type="range" min="200" max="1400" value="900" />
+
+      <label for="spin">Spin Force</label>
+      <input id="spin" type="range" min="0" max="2" step="0.05" value="0.9" />
+
+      <label for="drag">Drag</label>
+      <input id="drag" type="range" min="0.88" max="0.99" step="0.005" value="0.95" />
+
+      <label for="glow">Glow</label>
+      <input id="glow" type="range" min="0.1" max="0.9" step="0.05" value="0.45" />
+
+      <div class="row">
+        <button id="reset">Reset Field</button>
+        <button id="fade">Clear Trails</button>
+      </div>
+      <div class="legend">
+        <strong>Tip:</strong> Move slowly to braid thicker ribbons. Quick arcs leave faint spirals.
+      </div>
+    </section>
+    <canvas id="field"></canvas>
+  </main>
+
+  <script>
+    const canvas = document.getElementById("field");
+    const ctx = canvas.getContext("2d");
+    const density = document.getElementById("density");
+    const spin = document.getElementById("spin");
+    const drag = document.getElementById("drag");
+    const glow = document.getElementById("glow");
+    const resetBtn = document.getElementById("reset");
+    const fadeBtn = document.getElementById("fade");
+
+    let w = 0;
+    let h = 0;
+    let particles = [];
+    let pointer = { x: 0, y: 0, active: false };
+
+    function resize() {
+      const rect = canvas.getBoundingClientRect();
+      w = Math.floor(rect.width * devicePixelRatio);
+      h = Math.floor(rect.height * devicePixelRatio);
+      canvas.width = w;
+      canvas.height = h;
+      ctx.fillStyle = "#0f0c0b";
+      ctx.fillRect(0, 0, w, h);
+      seedParticles();
+    }
+
+    function seedParticles() {
+      const count = Number(density.value);
+      particles = Array.from({ length: count }, () => ({
+        x: Math.random() * w,
+        y: Math.random() * h,
+        vx: 0,
+        vy: 0,
+        hue: 22 + Math.random() * 35
+      }));
+    }
+
+    function flow(x, y, time) {
+      const nx = x / w - 0.5;
+      const ny = y / h - 0.5;
+      const swirl = Math.sin((nx * 4 + time) * 1.3) + Math.cos((ny * 4 - time) * 1.1);
+      const base = Math.atan2(ny, nx) + swirl * 0.6;
+      const radius = Math.sqrt(nx * nx + ny * ny);
+      return {
+        ax: Math.cos(base + radius * 4) * 0.6,
+        ay: Math.sin(base + radius * 4) * 0.6
+      };
+    }
+
+    function step(time) {
+      ctx.fillStyle = `rgba(15, 12, 11, ${0.08})`;
+      ctx.fillRect(0, 0, w, h);
+
+      const spinPower = Number(spin.value);
+      const dragFactor = Number(drag.value);
+      const glowPower = Number(glow.value);
+
+      for (const p of particles) {
+        const field = flow(p.x, p.y, time * 0.00025);
+        let ax = field.ax * spinPower;
+        let ay = field.ay * spinPower;
+
+        if (pointer.active) {
+          const dx = (pointer.x - p.x) / w;
+          const dy = (pointer.y - p.y) / h;
+          const dist = Math.sqrt(dx * dx + dy * dy) + 0.001;
+          const pull = Math.min(1, 0.6 / dist);
+          ax += dx * pull * 3.2;
+          ay += dy * pull * 3.2;
+        }
+
+        p.vx = (p.vx + ax) * dragFactor;
+        p.vy = (p.vy + ay) * dragFactor;
+        p.x += p.vx;
+        p.y += p.vy;
+
+        if (p.x < 0 || p.x > w || p.y < 0 || p.y > h) {
+          p.x = Math.random() * w;
+          p.y = Math.random() * h;
+          p.vx = 0;
+          p.vy = 0;
+        }
+
+        ctx.strokeStyle = `hsla(${p.hue}, 70%, 60%, ${glowPower})`;
+        ctx.beginPath();
+        ctx.moveTo(p.x, p.y);
+        ctx.lineTo(p.x + p.vx * 2, p.y + p.vy * 2);
+        ctx.stroke();
+      }
+
+      requestAnimationFrame(step);
+    }
+
+    function setPointer(event) {
+      const rect = canvas.getBoundingClientRect();
+      pointer.x = (event.clientX - rect.left) * devicePixelRatio;
+      pointer.y = (event.clientY - rect.top) * devicePixelRatio;
+    }
+
+    canvas.addEventListener("pointerdown", (event) => {
+      pointer.active = true;
+      setPointer(event);
+    });
+    canvas.addEventListener("pointermove", (event) => {
+      if (!pointer.active) return;
+      setPointer(event);
+    });
+    canvas.addEventListener("pointerup", () => { pointer.active = false; });
+    canvas.addEventListener("pointerleave", () => { pointer.active = false; });
+
+    density.addEventListener("change", seedParticles);
+    resetBtn.addEventListener("click", () => {
+      seedParticles();
+      ctx.fillStyle = "#0f0c0b";
+      ctx.fillRect(0, 0, w, h);
+    });
+    fadeBtn.addEventListener("click", () => {
+      ctx.fillStyle = "rgba(15, 12, 11, 0.7)";
+      ctx.fillRect(0, 0, w, h);
+    });
+
+    window.addEventListener("resize", resize);
+    resize();
+    requestAnimationFrame(step);
+  </script>
+</body>
+</html>

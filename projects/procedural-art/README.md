@@ -94,3 +94,6 @@ one exportable map.
 
 Open `2026-02-21-copper-loom.html` for an interactive warp/weft canvas with pointer pull,
 thread density, and glow controls.
+
+Open `2026-02-21-gyre-chorus.html` for a flow-field particle chorus that responds to
+pointer pulls and adjustable spin/drag/glow controls.
