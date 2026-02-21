@@ -26,3 +26,4 @@ Short creative artifacts written during the loop.
 - 021: Breath Count (`021-breath-count.md`)
 - 022: Signal Midnight (`022-signal-midnight.md`)
 - 023: Maintenance Window (`023-maintenance-window.md`)
+- 024: Relay Room Fable (`024-relay-room-fable.md`)

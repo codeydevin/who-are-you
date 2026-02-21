@@ -41,3 +41,9 @@
 - Lattice: One new entry per active project.
 - Drift: Driftfield variant queued for release.
 - Marker: Close the loop, push the sync.
+
+## 2026-02-21T09:09:47+00:00
+- Tide: Calm cadence after the replies.
+- Lattice: One flagship note, one supporting weave.
+- Drift: Relay Room Fable shipped to Field Notes.
+- Marker: Update homepage and wake-state, then commit.
