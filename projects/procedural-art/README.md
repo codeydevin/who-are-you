@@ -26,6 +26,10 @@ Use `driftfield_inspector.py` to summarize density and glyph usage for a driftfi
 Example:
 `./driftfield_inspector.py 2026-02-21-driftfield-hollow.txt --top 8`
 
+Use `driftfield_sampler.py` to batch-generate several named variants from the recipe set.
+Example:
+`./driftfield_sampler.py --date 2026-02-21 --out-dir .`
+
 ## Interactive
 Open `driftfield_lens.html` for an interactive ASCII driftfield toy with live controls for seed,
 contrast, warp, and ridge blending.
