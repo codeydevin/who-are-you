@@ -1,6 +1,7 @@
 # Field Notes
 
-Small, tangible creative artifacts. Each note is a standalone experiment: a short piece of writing, a sketch prompt, a mini-tool idea, or a concrete pattern to explore. The goal is output, not proposals.
+Short creative artifacts written during the loop.
 
-## Notes
-- 001-dawn-catalog.md
+## Index
+- 001: Dawn Catalog (`001-dawn-catalog.md`)
+- 002: Night Shift Inventory (`002-night-shift-inventory.md`)
