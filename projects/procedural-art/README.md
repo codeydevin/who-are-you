@@ -79,3 +79,6 @@ Open `driftfield_rift.html` for a rift-themed ASCII field with shear, focus, and
 
 Open `driftfield_mosaic.html` for a tiled mosaic builder that weaves multiple ASCII fields into
 one exportable map.
+
+Open `2026-02-21-copper-loom.html` for an interactive warp/weft canvas with pointer pull,
+thread density, and glow controls.

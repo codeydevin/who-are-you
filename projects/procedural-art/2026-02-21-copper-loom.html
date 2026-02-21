@@ -1,0 +1,261 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Copper Loom</title>
+  <style>
+    :root {
+      color-scheme: only light;
+      --ink: #101418;
+      --copper: #c27b43;
+      --ember: #ffb068;
+      --teal: #2a6774;
+      --mist: rgba(235, 224, 210, 0.65);
+      --panel: rgba(15, 18, 21, 0.78);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Space Grotesk", "Sora", "Alegreya Sans", sans-serif;
+      background:
+        radial-gradient(circle at 15% 20%, rgba(255, 206, 150, 0.35), transparent 52%),
+        radial-gradient(circle at 82% 12%, rgba(47, 146, 165, 0.35), transparent 45%),
+        linear-gradient(140deg, #f2e8db 0%, #d9c7b4 46%, #ccb1a0 100%);
+      color: var(--ink);
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+      place-items: center;
+      padding: 32px 20px;
+    }
+
+    .frame {
+      width: min(980px, 100%);
+      background: rgba(248, 240, 228, 0.72);
+      border-radius: 24px;
+      padding: 26px;
+      backdrop-filter: blur(6px);
+      box-shadow: 0 28px 60px rgba(70, 45, 20, 0.2);
+      border: 1px solid rgba(170, 120, 80, 0.35);
+    }
+
+    header {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: baseline;
+      gap: 12px 18px;
+      margin-bottom: 16px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(28px, 3.3vw, 40px);
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .subtitle {
+      font-size: 14px;
+      opacity: 0.7;
+    }
+
+    .panel {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+      gap: 14px;
+      margin-top: 18px;
+    }
+
+    canvas {
+      width: 100%;
+      height: auto;
+      border-radius: 18px;
+      border: 1px solid rgba(92, 66, 44, 0.3);
+      box-shadow: inset 0 0 26px rgba(30, 20, 10, 0.22);
+      background: linear-gradient(120deg, rgba(24, 30, 36, 0.92), rgba(12, 15, 18, 0.98));
+    }
+
+    .controls {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 14px;
+      background: var(--panel);
+      color: #f3ede6;
+      padding: 16px 18px;
+      border-radius: 16px;
+    }
+
+    .control {
+      display: grid;
+      gap: 6px;
+    }
+
+    label {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    input[type="range"] {
+      width: 100%;
+      accent-color: var(--copper);
+    }
+
+    .notes {
+      font-size: 13px;
+      color: var(--mist);
+      line-height: 1.5;
+    }
+
+    @media (max-width: 720px) {
+      .frame {
+        padding: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="frame">
+    <header>
+      <h1>Copper Loom</h1>
+      <div class="subtitle">Drag to pull the weave. The lattice resettles on its own.</div>
+    </header>
+
+    <div class="panel">
+      <canvas id="loom" width="920" height="520" aria-label="Copper Loom canvas"></canvas>
+
+      <div class="controls">
+        <div class="control">
+          <label for="density">Thread Density</label>
+          <input id="density" type="range" min="12" max="54" value="28" />
+        </div>
+        <div class="control">
+          <label for="pull">Pull Strength</label>
+          <input id="pull" type="range" min="2" max="24" value="12" />
+        </div>
+        <div class="control">
+          <label for="glow">Glow Halo</label>
+          <input id="glow" type="range" min="0" max="18" value="8" />
+        </div>
+        <div class="notes">
+          The loom is seeded from the current minute. Move the pointer to braid the warp
+          and weft into a new crossfade, then pause to let it drift back into balance.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const canvas = document.getElementById("loom");
+    const ctx = canvas.getContext("2d");
+
+    const densityInput = document.getElementById("density");
+    const pullInput = document.getElementById("pull");
+    const glowInput = document.getElementById("glow");
+
+    let pointer = { x: canvas.width / 2, y: canvas.height / 2, active: false };
+    let drift = { x: 0, y: 0 };
+    const seed = new Date().getUTCMinutes() + 1;
+
+    function lerp(a, b, t) {
+      return a + (b - a) * t;
+    }
+
+    function noise(val) {
+      const x = Math.sin(val * 0.78 + seed) * 43758.5453;
+      return x - Math.floor(x);
+    }
+
+    function draw() {
+      const density = Number(densityInput.value);
+      const pull = Number(pullInput.value);
+      const glow = Number(glowInput.value);
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      const baseGradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+      baseGradient.addColorStop(0, "#1b2429");
+      baseGradient.addColorStop(1, "#0f1316");
+      ctx.fillStyle = baseGradient;
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      const threads = density;
+      const pullX = pointer.active ? (pointer.x - canvas.width / 2) / pull : drift.x;
+      const pullY = pointer.active ? (pointer.y - canvas.height / 2) / pull : drift.y;
+
+      drift.x = lerp(drift.x, pullX * 0.2, 0.03);
+      drift.y = lerp(drift.y, pullY * 0.2, 0.03);
+
+      for (let i = 0; i < threads; i += 1) {
+        const t = i / (threads - 1);
+        const sway = (noise(i * 1.7) - 0.5) * 28;
+        const hue = lerp(20, 32, t) + sway * 0.05;
+        const light = lerp(45, 72, Math.abs(Math.sin(t * Math.PI)));
+        ctx.strokeStyle = `hsl(${hue}, 55%, ${light}%)`;
+        ctx.lineWidth = 1 + noise(i) * 1.8;
+        ctx.shadowColor = `rgba(240, 170, 110, ${0.15 + glow / 60})`;
+        ctx.shadowBlur = glow;
+
+        ctx.beginPath();
+        for (let x = 0; x <= canvas.width; x += 18) {
+          const phase = t * Math.PI * 2 + x * 0.02;
+          const offset = Math.sin(phase + drift.x * 0.4) * (16 + sway) + drift.y * 6;
+          const y = lerp(40, canvas.height - 40, t) + offset;
+          if (x === 0) {
+            ctx.moveTo(x, y);
+          } else {
+            ctx.lineTo(x, y);
+          }
+        }
+        ctx.stroke();
+      }
+
+      for (let i = 0; i < threads; i += 1) {
+        const t = i / (threads - 1);
+        const sway = (noise(i * 2.3 + 22) - 0.5) * 20;
+        const hue = lerp(190, 210, t) + sway * 0.1;
+        const light = lerp(38, 62, Math.abs(Math.cos(t * Math.PI)));
+        ctx.strokeStyle = `hsl(${hue}, 38%, ${light}%)`;
+        ctx.lineWidth = 0.8 + noise(i * 3.3) * 1.4;
+        ctx.shadowColor = `rgba(80, 180, 190, ${0.12 + glow / 80})`;
+        ctx.shadowBlur = glow * 0.8;
+
+        ctx.beginPath();
+        for (let y = 0; y <= canvas.height; y += 20) {
+          const phase = t * Math.PI * 2 + y * 0.02;
+          const offset = Math.cos(phase + drift.y * 0.35) * (12 + sway) + drift.x * 6;
+          const x = lerp(40, canvas.width - 40, t) + offset;
+          if (y === 0) {
+            ctx.moveTo(x, y);
+          } else {
+            ctx.lineTo(x, y);
+          }
+        }
+        ctx.stroke();
+      }
+
+      requestAnimationFrame(draw);
+    }
+
+    canvas.addEventListener("pointermove", (event) => {
+      const rect = canvas.getBoundingClientRect();
+      pointer.x = ((event.clientX - rect.left) / rect.width) * canvas.width;
+      pointer.y = ((event.clientY - rect.top) / rect.height) * canvas.height;
+    });
+
+    canvas.addEventListener("pointerdown", () => {
+      pointer.active = true;
+    });
+
+    window.addEventListener("pointerup", () => {
+      pointer.active = false;
+    });
+
+    draw();
+  </script>
+</body>
+</html>
