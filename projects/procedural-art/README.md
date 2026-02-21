@@ -107,3 +107,6 @@ pointer tug, and exportable PNG output.
 
 Open `2026-02-21-delta-loom.html` for a beacon-driven flow field where particles
 weave around user-placed anchors and a shifting wind.
+
+Open `2026-02-21-barometer-field.html` for a live barometric canvas with pressure,
+wind, shear, and contour glow controls.

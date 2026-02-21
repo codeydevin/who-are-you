@@ -1,0 +1,352 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Barometer Field</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;600&family=Fraunces:opsz,wght@9..144,600&display=swap');
+
+    :root {
+      --ink: #141414;
+      --mist: #f5f0ea;
+      --sun: #ffb347;
+      --sea: #2e6f95;
+      --leaf: #3a7d44;
+      --ember: #e76f51;
+      --panel: rgba(255, 255, 255, 0.82);
+      --shadow: rgba(18, 18, 18, 0.16);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: "IBM Plex Sans", "Segoe UI", sans-serif;
+      color: var(--ink);
+      background: radial-gradient(circle at 15% 20%, rgba(255, 210, 160, 0.65), transparent 45%),
+        radial-gradient(circle at 85% 15%, rgba(120, 190, 220, 0.5), transparent 40%),
+        radial-gradient(circle at 20% 80%, rgba(120, 160, 120, 0.4), transparent 45%),
+        var(--mist);
+      display: grid;
+      grid-template-columns: minmax(260px, 360px) 1fr;
+      gap: 20px;
+      padding: 24px;
+    }
+
+    header {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    h1 {
+      font-family: "Fraunces", "Times New Roman", serif;
+      font-size: 2.3rem;
+      margin: 0;
+      letter-spacing: 0.4px;
+    }
+
+    p {
+      margin: 0;
+      line-height: 1.55;
+      color: #2b2b2b;
+    }
+
+    .panel {
+      background: var(--panel);
+      padding: 18px;
+      border-radius: 18px;
+      box-shadow: 0 18px 36px var(--shadow);
+      backdrop-filter: blur(8px);
+    }
+
+    .controls {
+      display: grid;
+      gap: 12px;
+    }
+
+    label {
+      display: block;
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: #424242;
+    }
+
+    input[type="range"],
+    input[type="text"],
+    select {
+      width: 100%;
+      margin-top: 6px;
+      padding: 8px 10px;
+      border-radius: 10px;
+      border: 1px solid #d6cfc5;
+      background: white;
+      font-size: 1rem;
+    }
+
+    button {
+      background: var(--sea);
+      color: white;
+      border: none;
+      padding: 10px 14px;
+      border-radius: 12px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: transform 0.2s ease, background 0.2s ease;
+    }
+
+    button.secondary {
+      background: #1f1f1f;
+    }
+
+    button:hover {
+      transform: translateY(-1px);
+      background: #245977;
+    }
+
+    .canvas-wrap {
+      position: relative;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 20px 42px var(--shadow);
+      background: #0f0f0f;
+      min-height: 65vh;
+    }
+
+    canvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    .legend {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .legend span {
+      display: block;
+      padding: 6px;
+      border-radius: 8px;
+      text-align: center;
+      font-size: 0.8rem;
+      color: #101010;
+    }
+
+    @media (max-width: 920px) {
+      body {
+        grid-template-columns: 1fr;
+      }
+
+      .canvas-wrap {
+        min-height: 50vh;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="panel">
+    <h1>Barometer Field</h1>
+    <p>
+      A live barometric sketchpad. Adjust pressure, wind, and shear to read the weather
+      as colored contour strata. Every seed is deterministic, so you can return to the
+      same storm whenever you need.
+    </p>
+    <div class="controls">
+      <div>
+        <label for="seed">Seed Phrase</label>
+        <input id="seed" type="text" value="barometer-harbor" />
+      </div>
+      <div>
+        <label for="pressure">Pressure</label>
+        <input id="pressure" type="range" min="0" max="1" step="0.01" value="0.62" />
+      </div>
+      <div>
+        <label for="wind">Wind Drift</label>
+        <input id="wind" type="range" min="0" max="3" step="0.01" value="1.3" />
+      </div>
+      <div>
+        <label for="shear">Shear</label>
+        <input id="shear" type="range" min="0" max="2" step="0.01" value="0.85" />
+      </div>
+      <div>
+        <label for="glow">Contour Glow</label>
+        <input id="glow" type="range" min="0" max="1" step="0.01" value="0.35" />
+      </div>
+      <div>
+        <label for="palette">Palette</label>
+        <select id="palette">
+          <option value="dawn">Dawn Harbor</option>
+          <option value="storm">Storm Ledger</option>
+          <option value="orchard">Orchard Wind</option>
+        </select>
+      </div>
+      <button id="shuffle">Shuffle Seed</button>
+      <button class="secondary" id="animate">Animate: Off</button>
+    </div>
+    <div class="legend">
+      <span style="background: #f6d365">High</span>
+      <span style="background: #fda085">Warm</span>
+      <span style="background: #a1c4fd">Lift</span>
+      <span style="background: #c2e9fb">Cool</span>
+      <span style="background: #d4fc79">Low</span>
+    </div>
+  </header>
+
+  <section class="canvas-wrap" aria-label="Barometer canvas">
+    <canvas id="field" width="900" height="640"></canvas>
+  </section>
+
+  <script>
+    const canvas = document.getElementById('field');
+    const ctx = canvas.getContext('2d');
+    const seedInput = document.getElementById('seed');
+    const pressureInput = document.getElementById('pressure');
+    const windInput = document.getElementById('wind');
+    const shearInput = document.getElementById('shear');
+    const glowInput = document.getElementById('glow');
+    const paletteInput = document.getElementById('palette');
+    const shuffleBtn = document.getElementById('shuffle');
+    const animateBtn = document.getElementById('animate');
+
+    let animationOn = false;
+    let time = 0;
+
+    const palettes = {
+      dawn: ['#f6d365', '#fda085', '#f5b7b1', '#a1c4fd', '#c2e9fb'],
+      storm: ['#202233', '#3d5a80', '#98c1d9', '#e0fbfc', '#ee6c4d'],
+      orchard: ['#f6d365', '#d4fc79', '#96e6a1', '#84fab0', '#ff9a9e']
+    };
+
+    function hashString(text) {
+      let hash = 0;
+      for (let i = 0; i < text.length; i++) {
+        hash = (hash * 31 + text.charCodeAt(i)) % 1000000;
+      }
+      return hash / 1000000;
+    }
+
+    function noise(x, y, seed) {
+      return Math.sin(x * 1.7 + seed * 12.3) * Math.cos(y * 1.3 + seed * 7.9);
+    }
+
+    function mix(a, b, t) {
+      return a + (b - a) * t;
+    }
+
+    function lerpColor(a, b, t) {
+      const ar = parseInt(a.slice(1, 3), 16);
+      const ag = parseInt(a.slice(3, 5), 16);
+      const ab = parseInt(a.slice(5, 7), 16);
+      const br = parseInt(b.slice(1, 3), 16);
+      const bg = parseInt(b.slice(3, 5), 16);
+      const bb = parseInt(b.slice(5, 7), 16);
+      const rr = Math.round(mix(ar, br, t));
+      const rg = Math.round(mix(ag, bg, t));
+      const rb = Math.round(mix(ab, bb, t));
+      return `rgb(${rr}, ${rg}, ${rb})`;
+    }
+
+    function paletteColor(t, palette) {
+      const steps = palette.length - 1;
+      const scaled = t * steps;
+      const idx = Math.floor(scaled);
+      const frac = scaled - idx;
+      const a = palette[Math.min(idx, steps)];
+      const b = palette[Math.min(idx + 1, steps)];
+      return lerpColor(a, b, frac);
+    }
+
+    function drawField() {
+      const width = canvas.width;
+      const height = canvas.height;
+      const gridX = 90;
+      const gridY = 64;
+      const cellW = width / gridX;
+      const cellH = height / gridY;
+      const pressure = parseFloat(pressureInput.value);
+      const wind = parseFloat(windInput.value);
+      const shear = parseFloat(shearInput.value);
+      const glow = parseFloat(glowInput.value);
+      const seed = hashString(seedInput.value);
+      const palette = palettes[paletteInput.value] || palettes.dawn;
+
+      ctx.clearRect(0, 0, width, height);
+      ctx.globalAlpha = 1;
+
+      for (let y = 0; y < gridY; y++) {
+        for (let x = 0; x < gridX; x++) {
+          const nx = x / gridX - 0.5;
+          const ny = y / gridY - 0.5;
+          const drift = Math.sin((nx + time * 0.02) * wind) * 0.4 + Math.cos((ny - time * 0.015) * wind) * 0.4;
+          const shearShift = (nx * ny) * shear * 0.8;
+          const value = noise(nx * 3 + drift, ny * 3 - drift, seed) + pressure + shearShift;
+          const normalized = Math.max(0, Math.min(1, (value + 1.6) / 3.2));
+          ctx.fillStyle = paletteColor(normalized, palette);
+          ctx.fillRect(x * cellW, y * cellH, cellW + 1, cellH + 1);
+        }
+      }
+
+      ctx.globalCompositeOperation = 'screen';
+      ctx.strokeStyle = `rgba(255, 255, 255, ${glow})`;
+      ctx.lineWidth = 1.2;
+      for (let level = 0.2; level <= 0.9; level += 0.15) {
+        ctx.beginPath();
+        for (let y = 0; y < gridY; y++) {
+          for (let x = 0; x < gridX; x++) {
+            const nx = x / gridX - 0.5;
+            const ny = y / gridY - 0.5;
+            const drift = Math.sin((nx + time * 0.02) * wind) * 0.4 + Math.cos((ny - time * 0.015) * wind) * 0.4;
+            const shearShift = (nx * ny) * shear * 0.8;
+            const value = noise(nx * 3 + drift, ny * 3 - drift, seed) + pressure + shearShift;
+            const normalized = Math.max(0, Math.min(1, (value + 1.6) / 3.2));
+            if (Math.abs(normalized - level) < 0.008) {
+              ctx.rect(x * cellW, y * cellH, cellW, cellH);
+            }
+          }
+        }
+        ctx.stroke();
+      }
+      ctx.globalCompositeOperation = 'source-over';
+    }
+
+    function loop() {
+      if (animationOn) {
+        time += 1;
+        drawField();
+        requestAnimationFrame(loop);
+      }
+    }
+
+    function redraw() {
+      drawField();
+    }
+
+    [seedInput, pressureInput, windInput, shearInput, glowInput, paletteInput].forEach((input) => {
+      input.addEventListener('input', redraw);
+    });
+
+    shuffleBtn.addEventListener('click', () => {
+      seedInput.value = `barometer-${Math.random().toString(16).slice(2, 7)}`;
+      redraw();
+    });
+
+    animateBtn.addEventListener('click', () => {
+      animationOn = !animationOn;
+      animateBtn.textContent = `Animate: ${animationOn ? 'On' : 'Off'}`;
+      if (animationOn) {
+        loop();
+      }
+    });
+
+    redraw();
+  </script>
+</body>
+</html>
