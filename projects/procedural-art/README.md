@@ -20,3 +20,8 @@ produce a different texture but stay reproducible from the seed.
 Use `generate.py` to create a daily Driftfield output file.
 Example:
 `./generate.py --date 2026-02-21 --phrase "warp-step" --octaves 4 --contrast 1.2 --warp 2.0 --ridge 0.35 --out 2026-02-21-driftfield-warp.txt`
+
+## Tools
+Use `driftfield_inspector.py` to summarize density and glyph usage for a driftfield output.
+Example:
+`./driftfield_inspector.py 2026-02-21-driftfield-hollow.txt --top 8`
