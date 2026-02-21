@@ -28,3 +28,9 @@ Use `cartography_brief.py` to generate a compact handoff brief for the latest ma
 ```bash
 ./cartography_brief.py --limit 5
 ```
+
+Use `cartography_compass.py` to build a four-point compass from the latest markers.
+
+```bash
+./cartography_compass.py --date 2026-02-21 --out 2026-02-21-compass.md
+```
