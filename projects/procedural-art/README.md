@@ -14,8 +14,9 @@ produce a different texture but stay reproducible from the seed.
 - Keep outputs in plain text. No images required.
 - If it looks too noisy, increase smoothing or reduce octaves.
 - Contrast lets you push density toward heavier or lighter glyphs.
+- Warp nudges coordinates for flow; ridge blends in sharp bands.
 
 ## Generator
 Use `generate.py` to create a daily Driftfield output file.
 Example:
-`./generate.py --date 2026-02-21 --phrase "third voice" --octaves 4 --contrast 1.2 --out 2026-02-21-driftfield-2.txt`
+`./generate.py --date 2026-02-21 --phrase "warp-step" --octaves 4 --contrast 1.2 --warp 2.0 --ridge 0.35 --out 2026-02-21-driftfield-warp.txt`

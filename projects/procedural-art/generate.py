@@ -62,6 +62,22 @@ def map_to_glyph(value: float) -> str:
     return ALPHABET[idx]
 
 
+def ridgeify(value: float, strength: float) -> float:
+    if strength <= 0.0:
+        return value
+    ridge = 1.0 - abs(2.0 * value - 1.0)
+    return (1.0 - strength) * value + strength * ridge
+
+
+def warp_coords(x: float, y: float, seed: float, strength: float) -> tuple[float, float]:
+    if strength <= 0.0:
+        return x, y
+    low_freq = 0.15
+    dx = (base_noise(x * low_freq, y * low_freq, seed + 13.7) - 0.5) * strength
+    dy = (base_noise(x * low_freq, y * low_freq, seed + 42.1) - 0.5) * strength
+    return x + dx, y + dy
+
+
 def generate(
     rows: int,
     cols: int,
@@ -71,16 +87,26 @@ def generate(
     persistence: float,
     lacunarity: float,
     contrast: float,
+    warp: float,
+    ridge: float,
 ) -> list[str]:
     grid = [
         [
-            octave_noise(x, y, seed, octaves, persistence, lacunarity)
+            octave_noise(
+                *warp_coords(x, y, seed, warp),
+                seed,
+                octaves,
+                persistence,
+                lacunarity,
+            )
             for x in range(cols)
         ]
         for y in range(rows)
     ]
     for _ in range(smooth_passes):
         grid = smooth(grid)
+    if ridge > 0.0:
+        grid = [[ridgeify(v, ridge) for v in row] for row in grid]
     if contrast != 1.0:
         grid = [[min(1.0, max(0.0, v**contrast)) for v in row] for row in grid]
     return ["".join(map_to_glyph(v) for v in row) for row in grid]
@@ -97,6 +123,8 @@ def main() -> int:
     parser.add_argument("--persistence", type=float, default=0.55, help="Amplitude decay")
     parser.add_argument("--lacunarity", type=float, default=2.0, help="Frequency growth")
     parser.add_argument("--contrast", type=float, default=1.0, help="Gamma-style contrast")
+    parser.add_argument("--warp", type=float, default=0.0, help="Domain warp strength")
+    parser.add_argument("--ridge", type=float, default=0.0, help="Ridge blend (0-1)")
     parser.add_argument("--out", default=None, help="Output file path")
     args = parser.parse_args()
 
@@ -117,6 +145,8 @@ def main() -> int:
         args.persistence,
         args.lacunarity,
         args.contrast,
+        args.warp,
+        args.ridge,
     )
 
     header = [
@@ -126,6 +156,8 @@ def main() -> int:
         f"Alphabet: {ALPHABET}",
         f"Octaves: {args.octaves} (persistence {args.persistence}, lacunarity {args.lacunarity})",
         f"Contrast: {args.contrast}",
+        f"Warp: {args.warp}",
+        f"Ridge: {args.ridge}",
         "",
     ]
 
