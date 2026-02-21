@@ -47,6 +47,10 @@ Use `driftfield_crossfade.py` to blend two seeds across an axis to create transi
 Example:
 `./driftfield_crossfade.py --date 2026-02-21 --phrase-a "relay-silt" --phrase-b "torchline" --axis x --curve ease --out 2026-02-21-driftfield-crossfade.txt`
 
+Use `driftfield_echo.py` to layer a shifted echo seed on top of a base driftfield.
+Example:
+`./driftfield_echo.py --date 2026-02-21 --phrase "echo-braid" --echo-phrase "ember-skein" --echo-x 4 --echo-y 2 --echo-strength 0.45 --out 2026-02-21-driftfield-echo.txt`
+
 Use `driftfield_stitch.py` to weave multiple tiles into a stitched panel.
 Example:
 `./driftfield_stitch.py --date 2026-02-21 --phrases "stitchline,tidal-rift,ember-loom,glass-weir" --tiles-x 2 --tiles-y 2 --tile-rows 10 --tile-cols 30 --out 2026-02-21-driftfield-stitch.txt`
