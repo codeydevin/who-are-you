@@ -52,3 +52,5 @@ and a tide phase control.
 
 Open `aster-loom.html` for a canvas-based orbital weaving study with palette, wobble, and spin
 controls.
+
+Open `moire-weave.html` for layered moire wavefields with seeded SVG line stacks.
