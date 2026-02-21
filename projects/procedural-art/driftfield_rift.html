@@ -1,0 +1,273 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Driftfield Rift</title>
+  <style>
+    :root {
+      --ink: #1b1a16;
+      --paper: #f6f1e7;
+      --ember: #cc6a3a;
+      --tide: #2a6a77;
+      --shadow: rgba(18, 16, 12, 0.12);
+      --line: rgba(27, 26, 22, 0.15);
+    }
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background:
+        radial-gradient(circle at 12% 18%, rgba(204, 106, 58, 0.15), transparent 40%),
+        radial-gradient(circle at 80% 0%, rgba(42, 106, 119, 0.18), transparent 45%),
+        linear-gradient(135deg, #f7f0e4, #f1efe9 60%, #ece9e0 100%);
+      color: var(--ink);
+      font-family: "Space Mono", "IBM Plex Mono", "Source Code Pro", monospace;
+    }
+    .page {
+      display: grid;
+      grid-template-columns: minmax(260px, 340px) minmax(0, 1fr);
+      gap: 32px;
+      padding: 36px clamp(20px, 4vw, 48px) 48px;
+    }
+    header {
+      border: 1px solid var(--line);
+      padding: 20px 22px;
+      box-shadow: 0 18px 35px var(--shadow);
+      background: rgba(246, 241, 231, 0.9);
+      border-radius: 18px;
+      display: grid;
+      gap: 12px;
+    }
+    header h1 {
+      margin: 0;
+      font-size: 1.4rem;
+      letter-spacing: 0.04em;
+    }
+    header p {
+      margin: 0;
+      font-size: 0.9rem;
+      line-height: 1.45;
+      color: rgba(27, 26, 22, 0.75);
+    }
+    .controls {
+      border: 1px solid var(--line);
+      padding: 18px 20px;
+      border-radius: 16px;
+      background: rgba(250, 247, 239, 0.9);
+      display: grid;
+      gap: 14px;
+    }
+    label {
+      font-size: 0.78rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: rgba(27, 26, 22, 0.7);
+      display: grid;
+      gap: 6px;
+    }
+    input[type="text"],
+    input[type="number"],
+    input[type="range"] {
+      width: 100%;
+      font-family: inherit;
+    }
+    input[type="text"],
+    input[type="number"] {
+      padding: 8px 10px;
+      border-radius: 10px;
+      border: 1px solid var(--line);
+      background: #fffaf2;
+    }
+    input[type="range"] {
+      accent-color: var(--ember);
+    }
+    .row {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+    }
+    button {
+      padding: 10px 12px;
+      border-radius: 12px;
+      border: 1px solid var(--ink);
+      background: var(--ink);
+      color: var(--paper);
+      font-family: inherit;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    button:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 12px 18px rgba(27, 26, 22, 0.18);
+    }
+    .stage {
+      border-radius: 18px;
+      border: 1px solid var(--line);
+      background: rgba(246, 241, 231, 0.96);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.6), 0 22px 35px var(--shadow);
+      padding: 24px;
+      display: grid;
+      gap: 14px;
+    }
+    pre {
+      margin: 0;
+      padding: 18px;
+      border-radius: 14px;
+      background: #0f1012;
+      color: #f0e9dd;
+      line-height: 1.05;
+      font-size: 0.7rem;
+      overflow: auto;
+      min-height: 380px;
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+    }
+    .meta {
+      display: grid;
+      gap: 6px;
+      font-size: 0.78rem;
+      color: rgba(27, 26, 22, 0.7);
+    }
+    @media (max-width: 900px) {
+      .page {
+        grid-template-columns: 1fr;
+      }
+      pre {
+        min-height: 320px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <div class="left">
+      <header>
+        <h1>Driftfield Rift</h1>
+        <p>Interactive ASCII rifts shaped by seeded turbulence, shear, and focus. Tune the
+        field, then generate a new map of the drift.</p>
+      </header>
+      <div class="controls">
+        <label>
+          Seed Phrase
+          <input id="seed" type="text" value="rift-memory" />
+        </label>
+        <div class="row">
+          <label>
+            Rows
+            <input id="rows" type="number" min="12" max="36" value="20" />
+          </label>
+          <label>
+            Cols
+            <input id="cols" type="number" min="40" max="90" value="60" />
+          </label>
+        </div>
+        <label>
+          Warp
+          <input id="warp" type="range" min="0" max="4" step="0.1" value="1.4" />
+        </label>
+        <label>
+          Shear
+          <input id="shear" type="range" min="-3" max="3" step="0.1" value="0.8" />
+        </label>
+        <label>
+          Focus
+          <input id="focus" type="range" min="0" max="2" step="0.05" value="0.9" />
+        </label>
+        <label>
+          Contrast
+          <input id="contrast" type="range" min="0.6" max="2.4" step="0.05" value="1.1" />
+        </label>
+        <button id="generate">Generate Rift</button>
+      </div>
+    </div>
+    <div class="stage">
+      <div class="meta" id="meta"></div>
+      <pre id="output"></pre>
+    </div>
+  </div>
+
+  <script>
+    const alphabet = " .,:;~^*+=?%$#@";
+    const output = document.getElementById("output");
+    const meta = document.getElementById("meta");
+
+    function hashSeed(text) {
+      let h = 2166136261;
+      for (let i = 0; i < text.length; i++) {
+        h ^= text.charCodeAt(i);
+        h = Math.imul(h, 16777619);
+      }
+      return (h >>> 0) / 4294967295;
+    }
+
+    function fract(value) {
+      return value - Math.floor(value);
+    }
+
+    function noise(x, y, seed) {
+      const n = Math.sin(x * 12.9898 + y * 78.233 + seed * 43758.5453) * 43758.5453;
+      return fract(n);
+    }
+
+    function smoothNoise(x, y, seed) {
+      const corners = (noise(x - 1, y - 1, seed) + noise(x + 1, y - 1, seed) + noise(x - 1, y + 1, seed) + noise(x + 1, y + 1, seed)) * 0.0625;
+      const sides = (noise(x - 1, y, seed) + noise(x + 1, y, seed) + noise(x, y - 1, seed) + noise(x, y + 1, seed)) * 0.125;
+      const center = noise(x, y, seed) * 0.25;
+      return corners + sides + center;
+    }
+
+    function octaveNoise(x, y, seed) {
+      let value = 0;
+      let amplitude = 0.6;
+      let frequency = 1.0;
+      let total = 0;
+      for (let i = 0; i < 4; i++) {
+        value += smoothNoise(x * frequency, y * frequency, seed + i * 13.1) * amplitude;
+        total += amplitude;
+        amplitude *= 0.55;
+        frequency *= 2.1;
+      }
+      return value / total;
+    }
+
+    function generate() {
+      const seedText = document.getElementById("seed").value.trim() || "rift";
+      const rows = parseInt(document.getElementById("rows").value, 10);
+      const cols = parseInt(document.getElementById("cols").value, 10);
+      const warp = parseFloat(document.getElementById("warp").value);
+      const shear = parseFloat(document.getElementById("shear").value);
+      const focus = parseFloat(document.getElementById("focus").value);
+      const contrast = parseFloat(document.getElementById("contrast").value);
+      const seed = hashSeed(seedText);
+      const lines = [];
+
+      for (let y = 0; y < rows; y++) {
+        let line = "";
+        const yf = y / (rows - 1);
+        for (let x = 0; x < cols; x++) {
+          const xf = x / (cols - 1);
+          const bend = Math.sin((yf + seed) * Math.PI * 2) * shear;
+          const driftX = xf * cols + Math.cos((xf + seed) * 6) * warp + bend;
+          const driftY = yf * rows + Math.sin((yf + seed) * 5) * warp;
+          const rift = octaveNoise(driftX * 0.18, driftY * 0.18, seed + focus);
+          const focusField = Math.pow(Math.abs(0.5 - xf) * 2, focus);
+          const value = Math.min(1, Math.max(0, (rift + focusField * 0.35) * contrast));
+          const idx = Math.floor(value * (alphabet.length - 1));
+          line += alphabet[idx];
+        }
+        lines.push(line);
+      }
+
+      output.textContent = lines.join("\n");
+      meta.textContent = `Seed: ${seedText} | Warp ${warp.toFixed(1)} | Shear ${shear.toFixed(1)} | Focus ${focus.toFixed(2)} | Contrast ${contrast.toFixed(2)} | ${rows}x${cols}`;
+    }
+
+    document.getElementById("generate").addEventListener("click", generate);
+    generate();
+  </script>
+</body>
+</html>

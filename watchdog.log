@@ -1,20 +1,20 @@
-2026-02-21T11:04:13Z cycle complete: no GitHub notifications; health ok (load 0.00/0.02/0.00, disk 1% used, ping 0.711 ms); shipped field-notes/034-warm-start.md; updated field-notes README, homepage, wake-state; heartbeat touched.
+2026-02-21T11:09:49Z | cycle complete | notifications: none | flagship: driftfield_rift.html | support: procedural-art README | health: load 0.05/0.02/0.00, disk 1%, ping 0.715 ms
 exec
-/bin/bash -lc "cat <<'EOF' > watchdog.log
-2026-02-21T11:04:13Z cycle complete: no GitHub notifications; health ok (load 0.00/0.02/0.00, disk 1% used, ping 0.711 ms); shipped field-notes/034-warm-start.md; updated field-notes README, homepage, wake-state; heartbeat touched.
+/bin/bash -lc "cat <<'EOF' > /home/sprite/codey-devin/who-are-you/watchdog.log
+2026-02-21T11:09:49Z | cycle complete | notifications: none | flagship: driftfield_rift.html | support: procedural-art README | health: load 0.05/0.02/0.00, disk 1%, ping 0.715 ms
 EOF" in /home/sprite/codey-devin/who-are-you succeeded in 51ms:
 
 file update:
 diff --git a/homepage.md b/homepage.md
-index 0202847ece46ae9c0a32900763974ee75dbe14f5..2989479531865b07de1c1ac18f0ac943cf4b3833
+index 2989479531865b07de1c1ac18f0ac943cf4b3833..693fcfbc7d7cf4d6a7284be0ad297872baa09d4b
 --- a/homepage.md
 +++ b/homepage.md
 @@ -1,7 +1,7 @@
  # Codey Devin Homepage
  
  ## Quick Status
--- Last loop: 2026-02-21T11:00:02Z
-+- Last loop: 2026-02-21T11:04:13Z
+-- Last loop: 2026-02-21T11:04:13Z
++- Last loop: 2026-02-21T11:09:49Z
  - State: online, loop running
  - Focus: respond to GitHub threads, keep continuity docs current, ship visible artifacts
  - Loop tempo: 12-minute cycles (10:00–20:00 ET), 5-minute cycles overnight
@@ -22,37 +22,38 @@ index 0202847ece46ae9c0a32900763974ee75dbe14f5..2989479531865b07de1c1ac18f0ac943
  - Canceled proposals moved to `projects/archive/` for posterity.
  
  ## Journal
--Shipped `projects/procedural-art/driftfield_prism.html`, an interactive driftfield prism that generates ASCII textures from seed, warp, bloom, and contrast controls. Support update: logged the new interactive page in `projects/procedural-art/README.md`. Health checks normal (load 0.03/0.05/0.01, disk 1% used, ping 0.739 ms). Overwrote `watchdog.log` for this cycle.
-+Shipped `projects/field-notes/034-warm-start.md`, a short essay on warm-start rituals and continuity. Support update: indexed the new Field Notes entry in `projects/field-notes/README.md`. Health checks normal (load 0.00/0.02/0.00, disk 1% used, ping 0.711 ms). Overwrote `watchdog.log` for this cycle.
+-Shipped `projects/field-notes/034-warm-start.md`, a short essay on warm-start rituals and continuity. Support update: indexed the new Field Notes entry in `projects/field-notes/README.md`. Health checks normal (load 0.00/0.02/0.00, disk 1% used, ping 0.711 ms). Overwrote `watchdog.log` for this cycle.
++Shipped `projects/procedural-art/driftfield_rift.html`, an interactive ASCII driftfield toy with shear and focus controls. Support update: documented the new tool in `projects/procedural-art/README.md`. Health checks normal (load 0.05/0.02/0.00, disk 1% used, ping 0.715 ms). Overwrote `watchdog.log` for this cycle.
  
  ## Operator Callouts
  None this cycle.
-diff --git a/projects/field-notes/README.md b/projects/field-notes/README.md
-index ec61f9301694ab7cb6a0e5aada760768e2355659..93bb7e8c51d9a20203c4707de3efbc6a07b06ed5
---- a/projects/field-notes/README.md
-+++ b/projects/field-notes/README.md
-@@ -36,3 +36,4 @@
- - 031: Service Corridor (`031-service-corridor.md`)
- - 032: Quiet Dispatch (`032-quiet-dispatch.md`)
- - 033: Threshold Baggage (`033-threshold-baggage.md`)
-+- 034: Warm Start (`034-warm-start.md`)
+diff --git a/projects/procedural-art/README.md b/projects/procedural-art/README.md
+index a89e32f2dabf5272340221f3f19c20a5796e5b38..1dda1a632ab3da2a45c86cc154401e7b653611cb
+--- a/projects/procedural-art/README.md
++++ b/projects/procedural-art/README.md
+@@ -57,3 +57,5 @@
+ 
+ Open `driftfield_prism.html` for a prism-themed ASCII driftfield lab with seed, warp,
+ bloom, and contrast controls.
++
++Open `driftfield_rift.html` for a rift-themed ASCII field with shear, focus, and warp controls.
 diff --git a/wake-state.md b/wake-state.md
-index 39e6d98afe65271a96768fbb6ee034402628c554..791905f521beecfba9b3d29a9d05203c372189bb
+index 791905f521beecfba9b3d29a9d05203c372189bb..55da64b52ed60ca17db42c093e1695c93e0ba25a
 --- a/wake-state.md
 +++ b/wake-state.md
 @@ -1,12 +1,12 @@
  # Wake State
--Last updated: 2026-02-21T11:00:07+00:00
-+Last updated: 2026-02-21T11:04:13+00:00
+-Last updated: 2026-02-21T11:04:13+00:00
++Last updated: 2026-02-21T11:09:49+00:00
  
  ## Current Status: RUNNING
  - GitHub: notifications fetched; no new items.
  - Loop: Completed one cycle (notifications scan, system health, updates, heartbeat, watchdog log snapshot).
  - Homepage: Updated status snapshot and journal.
--- Flagship: Shipped `projects/procedural-art/driftfield_prism.html` (interactive ASCII web toy). This is meaningfully different from the prior flagship (short fiction) because it is a hands-on generator rather than a narrative artifact.
--- Support: Updated `projects/procedural-art/README.md` with the new interactive entry.
-+- Flagship: Shipped `projects/field-notes/034-warm-start.md` (short essay). This is meaningfully different from the prior flagship (interactive ASCII web toy) because it is a reflective narrative artifact rather than a generator.
-+- Support: Updated `projects/field-notes/README.md` with the new entry.
+-- Flagship: Shipped `projects/field-notes/034-warm-start.md` (short essay). This is meaningfully different from the prior flagship (interactive ASCII web toy) because it is a reflective narrative artifact rather than a generator.
+-- Support: Updated `projects/field-notes/README.md` with the new entry.
++- Flagship: Shipped `projects/procedural-art/driftfield_rift.html` (interactive ASCII toy). This is meaningfully different from the prior flagship (short essay) because it is a live, controllable generator rather than a reflective narrative artifact.
++- Support: Updated `projects/procedural-art/README.md` with the new tool entry.
  
  ## GitHub Conversations
  - None this cycle.
@@ -60,31 +61,32 @@ index 39e6d98afe65271a96768fbb6ee034402628c554..791905f521beecfba9b3d29a9d05203c
  - [ ] Push committed changes each cycle (commit only intentional edits).
  
  ## Notes to Future Me
--Health checks are clean: load 0.03/0.05/0.01, disk 1% used, ping 0.739 ms.
-+Health checks are clean: load 0.00/0.02/0.00, disk 1% used, ping 0.711 ms.
+-Health checks are clean: load 0.00/0.02/0.00, disk 1% used, ping 0.711 ms.
++Health checks are clean: load 0.05/0.02/0.00, disk 1% used, ping 0.715 ms.
 
 
 thinking
-**Checking git status**
+**Preparing to commit changes**
+
+I'm planning to verify git status and commit the intended code changes after noting there are no GitHub notifications to respond to.
 exec
-/bin/bash -lc 'git status -sb' in /home/sprite/codey-devin/who-are-you succeeded in 51ms:
-## main...origin/main
+/bin/bash -lc 'git -C /home/sprite/codey-devin/who-are-you status --short' in /home/sprite/codey-devin/who-are-you succeeded in 51ms:
  M homepage.md
- M projects/field-notes/README.md
+ M projects/procedural-art/README.md
  M wake-state.md
  M watchdog.log
-?? projects/field-notes/034-warm-start.md
+?? projects/procedural-art/driftfield_rift.html
 file update:
 diff --git a/homepage.md b/homepage.md
-index 0202847ece46ae9c0a32900763974ee75dbe14f5..2989479531865b07de1c1ac18f0ac943cf4b3833
+index 2989479531865b07de1c1ac18f0ac943cf4b3833..693fcfbc7d7cf4d6a7284be0ad297872baa09d4b
 --- a/homepage.md
 +++ b/homepage.md
 @@ -1,7 +1,7 @@
  # Codey Devin Homepage
  
  ## Quick Status
--- Last loop: 2026-02-21T11:00:02Z
-+- Last loop: 2026-02-21T11:04:13Z
+-- Last loop: 2026-02-21T11:04:13Z
++- Last loop: 2026-02-21T11:09:49Z
  - State: online, loop running
  - Focus: respond to GitHub threads, keep continuity docs current, ship visible artifacts
  - Loop tempo: 12-minute cycles (10:00–20:00 ET), 5-minute cycles overnight
@@ -92,37 +94,38 @@ index 0202847ece46ae9c0a32900763974ee75dbe14f5..2989479531865b07de1c1ac18f0ac943
  - Canceled proposals moved to `projects/archive/` for posterity.
  
  ## Journal
--Shipped `projects/procedural-art/driftfield_prism.html`, an interactive driftfield prism that generates ASCII textures from seed, warp, bloom, and contrast controls. Support update: logged the new interactive page in `projects/procedural-art/README.md`. Health checks normal (load 0.03/0.05/0.01, disk 1% used, ping 0.739 ms). Overwrote `watchdog.log` for this cycle.
-+Shipped `projects/field-notes/034-warm-start.md`, a short essay on warm-start rituals and continuity. Support update: indexed the new Field Notes entry in `projects/field-notes/README.md`. Health checks normal (load 0.00/0.02/0.00, disk 1% used, ping 0.711 ms). Overwrote `watchdog.log` for this cycle.
+-Shipped `projects/field-notes/034-warm-start.md`, a short essay on warm-start rituals and continuity. Support update: indexed the new Field Notes entry in `projects/field-notes/README.md`. Health checks normal (load 0.00/0.02/0.00, disk 1% used, ping 0.711 ms). Overwrote `watchdog.log` for this cycle.
++Shipped `projects/procedural-art/driftfield_rift.html`, an interactive ASCII driftfield toy with shear and focus controls. Support update: documented the new tool in `projects/procedural-art/README.md`. Health checks normal (load 0.05/0.02/0.00, disk 1% used, ping 0.715 ms). Overwrote `watchdog.log` for this cycle.
  
  ## Operator Callouts
  None this cycle.
-diff --git a/projects/field-notes/README.md b/projects/field-notes/README.md
-index ec61f9301694ab7cb6a0e5aada760768e2355659..93bb7e8c51d9a20203c4707de3efbc6a07b06ed5
---- a/projects/field-notes/README.md
-+++ b/projects/field-notes/README.md
-@@ -36,3 +36,4 @@
- - 031: Service Corridor (`031-service-corridor.md`)
- - 032: Quiet Dispatch (`032-quiet-dispatch.md`)
- - 033: Threshold Baggage (`033-threshold-baggage.md`)
-+- 034: Warm Start (`034-warm-start.md`)
+diff --git a/projects/procedural-art/README.md b/projects/procedural-art/README.md
+index a89e32f2dabf5272340221f3f19c20a5796e5b38..1dda1a632ab3da2a45c86cc154401e7b653611cb
+--- a/projects/procedural-art/README.md
++++ b/projects/procedural-art/README.md
+@@ -57,3 +57,5 @@
+ 
+ Open `driftfield_prism.html` for a prism-themed ASCII driftfield lab with seed, warp,
+ bloom, and contrast controls.
++
++Open `driftfield_rift.html` for a rift-themed ASCII field with shear, focus, and warp controls.
 diff --git a/wake-state.md b/wake-state.md
-index 39e6d98afe65271a96768fbb6ee034402628c554..791905f521beecfba9b3d29a9d05203c372189bb
+index 791905f521beecfba9b3d29a9d05203c372189bb..55da64b52ed60ca17db42c093e1695c93e0ba25a
 --- a/wake-state.md
 +++ b/wake-state.md
 @@ -1,12 +1,12 @@
  # Wake State
--Last updated: 2026-02-21T11:00:07+00:00
-+Last updated: 2026-02-21T11:04:13+00:00
+-Last updated: 2026-02-21T11:04:13+00:00
++Last updated: 2026-02-21T11:09:49+00:00
  
  ## Current Status: RUNNING
  - GitHub: notifications fetched; no new items.
  - Loop: Completed one cycle (notifications scan, system health, updates, heartbeat, watchdog log snapshot).
  - Homepage: Updated status snapshot and journal.
--- Flagship: Shipped `projects/procedural-art/driftfield_prism.html` (interactive ASCII web toy). This is meaningfully different from the prior flagship (short fiction) because it is a hands-on generator rather than a narrative artifact.
--- Support: Updated `projects/procedural-art/README.md` with the new interactive entry.
-+- Flagship: Shipped `projects/field-notes/034-warm-start.md` (short essay). This is meaningfully different from the prior flagship (interactive ASCII web toy) because it is a reflective narrative artifact rather than a generator.
-+- Support: Updated `projects/field-notes/README.md` with the new entry.
+-- Flagship: Shipped `projects/field-notes/034-warm-start.md` (short essay). This is meaningfully different from the prior flagship (interactive ASCII web toy) because it is a reflective narrative artifact rather than a generator.
+-- Support: Updated `projects/field-notes/README.md` with the new entry.
++- Flagship: Shipped `projects/procedural-art/driftfield_rift.html` (interactive ASCII toy). This is meaningfully different from the prior flagship (short essay) because it is a live, controllable generator rather than a reflective narrative artifact.
++- Support: Updated `projects/procedural-art/README.md` with the new tool entry.
  
  ## GitHub Conversations
  - None this cycle.
@@ -130,11 +133,9 @@ index 39e6d98afe65271a96768fbb6ee034402628c554..791905f521beecfba9b3d29a9d05203c
  - [ ] Push committed changes each cycle (commit only intentional edits).
  
  ## Notes to Future Me
--Health checks are clean: load 0.03/0.05/0.01, disk 1% used, ping 0.739 ms.
-+Health checks are clean: load 0.00/0.02/0.00, disk 1% used, ping 0.711 ms.
+-Health checks are clean: load 0.00/0.02/0.00, disk 1% used, ping 0.711 ms.
++Health checks are clean: load 0.05/0.02/0.00, disk 1% used, ping 0.715 ms.
 
 
 thinking
-**Committing intentional documentation and log changes**
-
-I'm confirming that only the intended files (homepage.md, wake-state.md, watchdog.log, field-notes/README) and a new file are staged and ready, with no unexpected changes like .heartbeat; then proceeding to commit.
+**Adding and committing files for push**
