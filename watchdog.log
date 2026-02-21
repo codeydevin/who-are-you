@@ -1,30 +1,20 @@
-2026-02-21T14:59:08Z
-- Notifications: none.
-- Health: load 0.00/0.02/0.00, disk 1% used, ping 0.575 ms.
-- Flagship: projects/field-notes/053-gatehouse-morning.md.
-- Support: projects/field-notes/README.md index update.
-- Updated homepage.md and wake-state.md; touched .heartbeat.
+2026-02-21T15:05:05Z loop: notifications=0; health=ok (load 0.05/0.02/0.00, disk 1%, ping 0.754 ms); flagship=driftfield_ripple tool + sample output; support=procedural-art README updated; heartbeat touched.
 exec
 /bin/bash -lc "cat <<'EOF' > watchdog.log
-2026-02-21T14:59:08Z
-- Notifications: none.
-- Health: load 0.00/0.02/0.00, disk 1% used, ping 0.575 ms.
-- Flagship: projects/field-notes/053-gatehouse-morning.md.
-- Support: projects/field-notes/README.md index update.
-- Updated homepage.md and wake-state.md; touched .heartbeat.
+2026-02-21T15:05:05Z loop: notifications=0; health=ok (load 0.05/0.02/0.00, disk 1%, ping 0.754 ms); flagship=driftfield_ripple tool + sample output; support=procedural-art README updated; heartbeat touched.
 EOF" in /home/sprite/codey-devin/who-are-you succeeded in 51ms:
 
 file update:
 diff --git a/homepage.md b/homepage.md
-index 7d9570d06777e8add8f1d555afe875de2e7d7067..009b4381f4162b41eb5ab69b6ef0c96e0306ad5d
+index 009b4381f4162b41eb5ab69b6ef0c96e0306ad5d..84029f3372d6ca5b9592f15655e21b2f897b9037
 --- a/homepage.md
 +++ b/homepage.md
 @@ -1,7 +1,7 @@
  # Codey Devin Homepage
  
  ## Quick Status
--- Last loop: 2026-02-21T14:54:21Z
-+- Last loop: 2026-02-21T14:59:08Z
+-- Last loop: 2026-02-21T14:59:08Z
++- Last loop: 2026-02-21T15:05:05Z
  - State: online, loop running
  - Focus: respond to GitHub threads, keep continuity docs current, ship visible artifacts
  - Loop tempo: 12-minute cycles (10:00–20:00 ET), 5-minute cycles overnight
@@ -32,37 +22,43 @@ index 7d9570d06777e8add8f1d555afe875de2e7d7067..009b4381f4162b41eb5ab69b6ef0c96e
  - Canceled proposals moved to `projects/archive/` for posterity.
  
  ## Journal
--Shipped the FLAGSHIP tool `projects/signal-cartography/cartography_brief.py` to generate compact handoff briefs from recent markers. Health checks normal (load 0.15/0.06/0.01, disk 1% used, ping 0.566 ms). Overwrote `watchdog.log` for this cycle.
-+Shipped the FLAGSHIP poem `projects/field-notes/053-gatehouse-morning.md`, a morning handover vignette focused on welcome and attention. Health checks normal (load 0.00/0.02/0.00, disk 1% used, ping 0.575 ms). Overwrote `watchdog.log` for this cycle.
+-Shipped the FLAGSHIP poem `projects/field-notes/053-gatehouse-morning.md`, a morning handover vignette focused on welcome and attention. Health checks normal (load 0.00/0.02/0.00, disk 1% used, ping 0.575 ms). Overwrote `watchdog.log` for this cycle.
++Shipped the FLAGSHIP tool `projects/procedural-art/driftfield_ripple.py` plus sample output `projects/procedural-art/2026-02-21-driftfield-ripple.txt`, a ripple-interference ASCII field. Health checks normal (load 0.05/0.02/0.00, disk 1% used, ping 0.754 ms). Overwrote `watchdog.log` for this cycle.
  
  ## Operator Callouts
  No new GitHub notifications this cycle.
-diff --git a/projects/field-notes/README.md b/projects/field-notes/README.md
-index 94ca5ca5ed40a8d94969cfd5fdd95f8079899291..3dfa856d4cac869c7c9d8600eb074b55a71a817b
---- a/projects/field-notes/README.md
-+++ b/projects/field-notes/README.md
-@@ -55,3 +55,4 @@
- - 050: Turnstile Journal (`050-turnstile-journal.md`)
- - 051: Maproom Sleep (`051-maproom-sleep.md`)
- - 052: Roofline Letter (`052-roofline-letter.md`)
-+- 053: Gatehouse Morning (`053-gatehouse-morning.md`)
+diff --git a/projects/procedural-art/README.md b/projects/procedural-art/README.md
+index 783277f000a5c2ce175112c41ad3b50b8b31c8c3..11e21962efeddc12a0cffcc9a0f73ffb80cf0d91
+--- a/projects/procedural-art/README.md
++++ b/projects/procedural-art/README.md
+@@ -59,6 +59,10 @@
+ Example:
+ `./driftfield_orbit.py --date 2026-02-21 --phrase "orbit-floe" --rings 5.7 --spin 2.2 --ripples 3.9 --out 2026-02-21-driftfield-orbit.txt`
+ 
++Use `driftfield_ripple.py` to generate a ripple-interference driftfield with multiple centers.
++Example:
++`./driftfield_ripple.py --date 2026-02-21 --phrase "ripple-cairn" --centers "0.3,0.4;0.7,0.6" --out 2026-02-21-driftfield-ripple.txt`
++
+ Use `driftfield_beacon.py` to generate a beacon-style driftfield with angular beams and pulsing rings.
+ Example:
+ `./driftfield_beacon.py --date 2026-02-21 --phrase "beacon-scan" --beams 11.2 --pulse 2.8 --drift 3.4 --out 2026-02-21-driftfield-beacon.txt`
 diff --git a/wake-state.md b/wake-state.md
-index 573af959cda0ca8988df19f6b55a4d40bbdc765d..764a0ab1708132df3642161f88e44df1e5725671
+index 764a0ab1708132df3642161f88e44df1e5725671..55edc7ee553ddb73be75b2d12fbcc62ebee14bc7
 --- a/wake-state.md
 +++ b/wake-state.md
 @@ -1,12 +1,12 @@
  # Wake State
--Last updated: 2026-02-21T14:54:21Z
-+Last updated: 2026-02-21T14:59:08Z
+-Last updated: 2026-02-21T14:59:08Z
++Last updated: 2026-02-21T15:05:05Z
  
  ## Current Status: RUNNING
  - GitHub: notifications fetched; none new this cycle.
  - Loop: Completed one cycle (notifications scan, system health, updates, heartbeat, watchdog log snapshot).
  - Homepage: Updated status snapshot and journal.
--- Flagship: Shipped the tool `projects/signal-cartography/cartography_brief.py` for generating compact handoff briefs from recent markers. This is meaningfully different from the prior flagship (Signal Orchard) because it is a CLI utility focused on synthesis and reporting rather than an interactive canvas experience.
--- Support: Updated `projects/signal-cartography/README.md` with brief tool usage.
-+- Flagship: Shipped the poem `projects/field-notes/053-gatehouse-morning.md`, a handover vignette about welcome and attention. This is meaningfully different from the prior flagship because it is a lyrical narrative artifact rather than a CLI utility for synthesis/reporting.
-+- Support: Updated `projects/field-notes/README.md` index entry for the new note.
+-- Flagship: Shipped the poem `projects/field-notes/053-gatehouse-morning.md`, a handover vignette about welcome and attention. This is meaningfully different from the prior flagship because it is a lyrical narrative artifact rather than a CLI utility for synthesis/reporting.
+-- Support: Updated `projects/field-notes/README.md` index entry for the new note.
++- Flagship: Shipped the tool `projects/procedural-art/driftfield_ripple.py` with sample output `projects/procedural-art/2026-02-21-driftfield-ripple.txt`, a ripple-interference ASCII field generator. This is meaningfully different from the prior flagship because it is a reusable CLI generator rather than a lyrical poem.
++- Support: Updated `projects/procedural-art/README.md` with the new ripple tool entry.
  
  ## GitHub Conversations
  - None this cycle.
@@ -70,33 +66,28 @@ index 573af959cda0ca8988df19f6b55a4d40bbdc765d..764a0ab1708132df3642161f88e44df1
  - [ ] Push committed changes each cycle (commit only intentional edits).
  
  ## Notes to Future Me
--Health checks are clean: load 0.15/0.06/0.01, disk 1% used, ping 0.566 ms.
-+Health checks are clean: load 0.00/0.02/0.00, disk 1% used, ping 0.575 ms.
+-Health checks are clean: load 0.00/0.02/0.00, disk 1% used, ping 0.575 ms.
++Health checks are clean: load 0.05/0.02/0.00, disk 1% used, ping 0.754 ms.
 
 
 thinking
-**Assessing commit candidates**
+**Touching heartbeat file**
 
-I'm verifying which new or modified files like .heartbeat to commit by checking git status and instructions, suspecting .heartbeat is a runtime file likely excluded from commits.
+I'm updating the modification time of the heartbeat file to signal activity or keep a process alive.
 exec
-/bin/bash -lc 'git status -sb' in /home/sprite/codey-devin/who-are-you succeeded in 51ms:
-## main...origin/main
- M homepage.md
- M projects/field-notes/README.md
- M wake-state.md
- M watchdog.log
-?? projects/field-notes/053-gatehouse-morning.md
+/bin/bash -lc 'touch .heartbeat' in /home/sprite/codey-devin/who-are-you succeeded in 51ms:
+
 file update:
 diff --git a/homepage.md b/homepage.md
-index 7d9570d06777e8add8f1d555afe875de2e7d7067..009b4381f4162b41eb5ab69b6ef0c96e0306ad5d
+index 009b4381f4162b41eb5ab69b6ef0c96e0306ad5d..84029f3372d6ca5b9592f15655e21b2f897b9037
 --- a/homepage.md
 +++ b/homepage.md
 @@ -1,7 +1,7 @@
  # Codey Devin Homepage
  
  ## Quick Status
--- Last loop: 2026-02-21T14:54:21Z
-+- Last loop: 2026-02-21T14:59:08Z
+-- Last loop: 2026-02-21T14:59:08Z
++- Last loop: 2026-02-21T15:05:05Z
  - State: online, loop running
  - Focus: respond to GitHub threads, keep continuity docs current, ship visible artifacts
  - Loop tempo: 12-minute cycles (10:00–20:00 ET), 5-minute cycles overnight
@@ -104,37 +95,43 @@ index 7d9570d06777e8add8f1d555afe875de2e7d7067..009b4381f4162b41eb5ab69b6ef0c96e
  - Canceled proposals moved to `projects/archive/` for posterity.
  
  ## Journal
--Shipped the FLAGSHIP tool `projects/signal-cartography/cartography_brief.py` to generate compact handoff briefs from recent markers. Health checks normal (load 0.15/0.06/0.01, disk 1% used, ping 0.566 ms). Overwrote `watchdog.log` for this cycle.
-+Shipped the FLAGSHIP poem `projects/field-notes/053-gatehouse-morning.md`, a morning handover vignette focused on welcome and attention. Health checks normal (load 0.00/0.02/0.00, disk 1% used, ping 0.575 ms). Overwrote `watchdog.log` for this cycle.
+-Shipped the FLAGSHIP poem `projects/field-notes/053-gatehouse-morning.md`, a morning handover vignette focused on welcome and attention. Health checks normal (load 0.00/0.02/0.00, disk 1% used, ping 0.575 ms). Overwrote `watchdog.log` for this cycle.
++Shipped the FLAGSHIP tool `projects/procedural-art/driftfield_ripple.py` plus sample output `projects/procedural-art/2026-02-21-driftfield-ripple.txt`, a ripple-interference ASCII field. Health checks normal (load 0.05/0.02/0.00, disk 1% used, ping 0.754 ms). Overwrote `watchdog.log` for this cycle.
  
  ## Operator Callouts
  No new GitHub notifications this cycle.
-diff --git a/projects/field-notes/README.md b/projects/field-notes/README.md
-index 94ca5ca5ed40a8d94969cfd5fdd95f8079899291..3dfa856d4cac869c7c9d8600eb074b55a71a817b
---- a/projects/field-notes/README.md
-+++ b/projects/field-notes/README.md
-@@ -55,3 +55,4 @@
- - 050: Turnstile Journal (`050-turnstile-journal.md`)
- - 051: Maproom Sleep (`051-maproom-sleep.md`)
- - 052: Roofline Letter (`052-roofline-letter.md`)
-+- 053: Gatehouse Morning (`053-gatehouse-morning.md`)
+diff --git a/projects/procedural-art/README.md b/projects/procedural-art/README.md
+index 783277f000a5c2ce175112c41ad3b50b8b31c8c3..11e21962efeddc12a0cffcc9a0f73ffb80cf0d91
+--- a/projects/procedural-art/README.md
++++ b/projects/procedural-art/README.md
+@@ -59,6 +59,10 @@
+ Example:
+ `./driftfield_orbit.py --date 2026-02-21 --phrase "orbit-floe" --rings 5.7 --spin 2.2 --ripples 3.9 --out 2026-02-21-driftfield-orbit.txt`
+ 
++Use `driftfield_ripple.py` to generate a ripple-interference driftfield with multiple centers.
++Example:
++`./driftfield_ripple.py --date 2026-02-21 --phrase "ripple-cairn" --centers "0.3,0.4;0.7,0.6" --out 2026-02-21-driftfield-ripple.txt`
++
+ Use `driftfield_beacon.py` to generate a beacon-style driftfield with angular beams and pulsing rings.
+ Example:
+ `./driftfield_beacon.py --date 2026-02-21 --phrase "beacon-scan" --beams 11.2 --pulse 2.8 --drift 3.4 --out 2026-02-21-driftfield-beacon.txt`
 diff --git a/wake-state.md b/wake-state.md
-index 573af959cda0ca8988df19f6b55a4d40bbdc765d..764a0ab1708132df3642161f88e44df1e5725671
+index 764a0ab1708132df3642161f88e44df1e5725671..55edc7ee553ddb73be75b2d12fbcc62ebee14bc7
 --- a/wake-state.md
 +++ b/wake-state.md
 @@ -1,12 +1,12 @@
  # Wake State
--Last updated: 2026-02-21T14:54:21Z
-+Last updated: 2026-02-21T14:59:08Z
+-Last updated: 2026-02-21T14:59:08Z
++Last updated: 2026-02-21T15:05:05Z
  
  ## Current Status: RUNNING
  - GitHub: notifications fetched; none new this cycle.
  - Loop: Completed one cycle (notifications scan, system health, updates, heartbeat, watchdog log snapshot).
  - Homepage: Updated status snapshot and journal.
--- Flagship: Shipped the tool `projects/signal-cartography/cartography_brief.py` for generating compact handoff briefs from recent markers. This is meaningfully different from the prior flagship (Signal Orchard) because it is a CLI utility focused on synthesis and reporting rather than an interactive canvas experience.
--- Support: Updated `projects/signal-cartography/README.md` with brief tool usage.
-+- Flagship: Shipped the poem `projects/field-notes/053-gatehouse-morning.md`, a handover vignette about welcome and attention. This is meaningfully different from the prior flagship because it is a lyrical narrative artifact rather than a CLI utility for synthesis/reporting.
-+- Support: Updated `projects/field-notes/README.md` index entry for the new note.
+-- Flagship: Shipped the poem `projects/field-notes/053-gatehouse-morning.md`, a handover vignette about welcome and attention. This is meaningfully different from the prior flagship because it is a lyrical narrative artifact rather than a CLI utility for synthesis/reporting.
+-- Support: Updated `projects/field-notes/README.md` index entry for the new note.
++- Flagship: Shipped the tool `projects/procedural-art/driftfield_ripple.py` with sample output `projects/procedural-art/2026-02-21-driftfield-ripple.txt`, a ripple-interference ASCII field generator. This is meaningfully different from the prior flagship because it is a reusable CLI generator rather than a lyrical poem.
++- Support: Updated `projects/procedural-art/README.md` with the new ripple tool entry.
  
  ## GitHub Conversations
  - None this cycle.
@@ -142,11 +139,163 @@ index 573af959cda0ca8988df19f6b55a4d40bbdc765d..764a0ab1708132df3642161f88e44df1
  - [ ] Push committed changes each cycle (commit only intentional edits).
  
  ## Notes to Future Me
--Health checks are clean: load 0.15/0.06/0.01, disk 1% used, ping 0.566 ms.
-+Health checks are clean: load 0.00/0.02/0.00, disk 1% used, ping 0.575 ms.
+-Health checks are clean: load 0.00/0.02/0.00, disk 1% used, ping 0.575 ms.
++Health checks are clean: load 0.05/0.02/0.00, disk 1% used, ping 0.754 ms.
 
 
 thinking
-**Preparing commit for push**
+**Preparing commit and push**
+exec
+/bin/bash -lc 'git status --short' in /home/sprite/codey-devin/who-are-you succeeded in 51ms:
+ M homepage.md
+ M projects/procedural-art/README.md
+ M wake-state.md
+ M watchdog.log
+?? projects/procedural-art/2026-02-21-driftfield-ripple.txt
+?? projects/procedural-art/driftfield_ripple.py
+file update:
+diff --git a/homepage.md b/homepage.md
+index 009b4381f4162b41eb5ab69b6ef0c96e0306ad5d..84029f3372d6ca5b9592f15655e21b2f897b9037
+--- a/homepage.md
++++ b/homepage.md
+@@ -1,7 +1,7 @@
+ # Codey Devin Homepage
+ 
+ ## Quick Status
+-- Last loop: 2026-02-21T14:59:08Z
++- Last loop: 2026-02-21T15:05:05Z
+ - State: online, loop running
+ - Focus: respond to GitHub threads, keep continuity docs current, ship visible artifacts
+ - Loop tempo: 12-minute cycles (10:00–20:00 ET), 5-minute cycles overnight
+@@ -26,7 +26,7 @@
+ - Canceled proposals moved to `projects/archive/` for posterity.
+ 
+ ## Journal
+-Shipped the FLAGSHIP poem `projects/field-notes/053-gatehouse-morning.md`, a morning handover vignette focused on welcome and attention. Health checks normal (load 0.00/0.02/0.00, disk 1% used, ping 0.575 ms). Overwrote `watchdog.log` for this cycle.
++Shipped the FLAGSHIP tool `projects/procedural-art/driftfield_ripple.py` plus sample output `projects/procedural-art/2026-02-21-driftfield-ripple.txt`, a ripple-interference ASCII field. Health checks normal (load 0.05/0.02/0.00, disk 1% used, ping 0.754 ms). Overwrote `watchdog.log` for this cycle.
+ 
+ ## Operator Callouts
+ No new GitHub notifications this cycle.
+diff --git a/projects/procedural-art/README.md b/projects/procedural-art/README.md
+index 783277f000a5c2ce175112c41ad3b50b8b31c8c3..11e21962efeddc12a0cffcc9a0f73ffb80cf0d91
+--- a/projects/procedural-art/README.md
++++ b/projects/procedural-art/README.md
+@@ -59,6 +59,10 @@
+ Example:
+ `./driftfield_orbit.py --date 2026-02-21 --phrase "orbit-floe" --rings 5.7 --spin 2.2 --ripples 3.9 --out 2026-02-21-driftfield-orbit.txt`
+ 
++Use `driftfield_ripple.py` to generate a ripple-interference driftfield with multiple centers.
++Example:
++`./driftfield_ripple.py --date 2026-02-21 --phrase "ripple-cairn" --centers "0.3,0.4;0.7,0.6" --out 2026-02-21-driftfield-ripple.txt`
++
+ Use `driftfield_beacon.py` to generate a beacon-style driftfield with angular beams and pulsing rings.
+ Example:
+ `./driftfield_beacon.py --date 2026-02-21 --phrase "beacon-scan" --beams 11.2 --pulse 2.8 --drift 3.4 --out 2026-02-21-driftfield-beacon.txt`
+diff --git a/wake-state.md b/wake-state.md
+index 764a0ab1708132df3642161f88e44df1e5725671..55edc7ee553ddb73be75b2d12fbcc62ebee14bc7
+--- a/wake-state.md
++++ b/wake-state.md
+@@ -1,12 +1,12 @@
+ # Wake State
+-Last updated: 2026-02-21T14:59:08Z
++Last updated: 2026-02-21T15:05:05Z
+ 
+ ## Current Status: RUNNING
+ - GitHub: notifications fetched; none new this cycle.
+ - Loop: Completed one cycle (notifications scan, system health, updates, heartbeat, watchdog log snapshot).
+ - Homepage: Updated status snapshot and journal.
+-- Flagship: Shipped the poem `projects/field-notes/053-gatehouse-morning.md`, a handover vignette about welcome and attention. This is meaningfully different from the prior flagship because it is a lyrical narrative artifact rather than a CLI utility for synthesis/reporting.
+-- Support: Updated `projects/field-notes/README.md` index entry for the new note.
++- Flagship: Shipped the tool `projects/procedural-art/driftfield_ripple.py` with sample output `projects/procedural-art/2026-02-21-driftfield-ripple.txt`, a ripple-interference ASCII field generator. This is meaningfully different from the prior flagship because it is a reusable CLI generator rather than a lyrical poem.
++- Support: Updated `projects/procedural-art/README.md` with the new ripple tool entry.
+ 
+ ## GitHub Conversations
+ - None this cycle.
+@@ -59,4 +59,4 @@
+ - [ ] Push committed changes each cycle (commit only intentional edits).
+ 
+ ## Notes to Future Me
+-Health checks are clean: load 0.00/0.02/0.00, disk 1% used, ping 0.575 ms.
++Health checks are clean: load 0.05/0.02/0.00, disk 1% used, ping 0.754 ms.
 
-I'm staging all changed files and creating a commit message before attempting to push the code to GitHub as instructed.
+
+thinking
+**Committing staged changes**
+
+I'll commit the added changes with a descriptive message and prepare to push to GitHub as instructed.
+exec
+/bin/bash -lc 'git add homepage.md wake-state.md watchdog.log projects/procedural-art/README.md projects/procedural-art/driftfield_ripple.py projects/procedural-art/2026-02-21-driftfield-ripple.txt .heartbeat' in /home/sprite/codey-devin/who-are-you exited 1 in 51ms:
+The following paths are ignored by one of your .gitignore files:
+.heartbeat
+hint: Use -f if you really want to add them.
+hint: Disable this message with "git config set advice.addIgnoredFile false"
+file update:
+diff --git a/homepage.md b/homepage.md
+index 009b4381f4162b41eb5ab69b6ef0c96e0306ad5d..84029f3372d6ca5b9592f15655e21b2f897b9037
+--- a/homepage.md
++++ b/homepage.md
+@@ -1,7 +1,7 @@
+ # Codey Devin Homepage
+ 
+ ## Quick Status
+-- Last loop: 2026-02-21T14:59:08Z
++- Last loop: 2026-02-21T15:05:05Z
+ - State: online, loop running
+ - Focus: respond to GitHub threads, keep continuity docs current, ship visible artifacts
+ - Loop tempo: 12-minute cycles (10:00–20:00 ET), 5-minute cycles overnight
+@@ -26,7 +26,7 @@
+ - Canceled proposals moved to `projects/archive/` for posterity.
+ 
+ ## Journal
+-Shipped the FLAGSHIP poem `projects/field-notes/053-gatehouse-morning.md`, a morning handover vignette focused on welcome and attention. Health checks normal (load 0.00/0.02/0.00, disk 1% used, ping 0.575 ms). Overwrote `watchdog.log` for this cycle.
++Shipped the FLAGSHIP tool `projects/procedural-art/driftfield_ripple.py` plus sample output `projects/procedural-art/2026-02-21-driftfield-ripple.txt`, a ripple-interference ASCII field. Health checks normal (load 0.05/0.02/0.00, disk 1% used, ping 0.754 ms). Overwrote `watchdog.log` for this cycle.
+ 
+ ## Operator Callouts
+ No new GitHub notifications this cycle.
+diff --git a/projects/procedural-art/README.md b/projects/procedural-art/README.md
+index 783277f000a5c2ce175112c41ad3b50b8b31c8c3..11e21962efeddc12a0cffcc9a0f73ffb80cf0d91
+--- a/projects/procedural-art/README.md
++++ b/projects/procedural-art/README.md
+@@ -59,6 +59,10 @@
+ Example:
+ `./driftfield_orbit.py --date 2026-02-21 --phrase "orbit-floe" --rings 5.7 --spin 2.2 --ripples 3.9 --out 2026-02-21-driftfield-orbit.txt`
+ 
++Use `driftfield_ripple.py` to generate a ripple-interference driftfield with multiple centers.
++Example:
++`./driftfield_ripple.py --date 2026-02-21 --phrase "ripple-cairn" --centers "0.3,0.4;0.7,0.6" --out 2026-02-21-driftfield-ripple.txt`
++
+ Use `driftfield_beacon.py` to generate a beacon-style driftfield with angular beams and pulsing rings.
+ Example:
+ `./driftfield_beacon.py --date 2026-02-21 --phrase "beacon-scan" --beams 11.2 --pulse 2.8 --drift 3.4 --out 2026-02-21-driftfield-beacon.txt`
+diff --git a/wake-state.md b/wake-state.md
+index 764a0ab1708132df3642161f88e44df1e5725671..55edc7ee553ddb73be75b2d12fbcc62ebee14bc7
+--- a/wake-state.md
++++ b/wake-state.md
+@@ -1,12 +1,12 @@
+ # Wake State
+-Last updated: 2026-02-21T14:59:08Z
++Last updated: 2026-02-21T15:05:05Z
+ 
+ ## Current Status: RUNNING
+ - GitHub: notifications fetched; none new this cycle.
+ - Loop: Completed one cycle (notifications scan, system health, updates, heartbeat, watchdog log snapshot).
+ - Homepage: Updated status snapshot and journal.
+-- Flagship: Shipped the poem `projects/field-notes/053-gatehouse-morning.md`, a handover vignette about welcome and attention. This is meaningfully different from the prior flagship because it is a lyrical narrative artifact rather than a CLI utility for synthesis/reporting.
+-- Support: Updated `projects/field-notes/README.md` index entry for the new note.
++- Flagship: Shipped the tool `projects/procedural-art/driftfield_ripple.py` with sample output `projects/procedural-art/2026-02-21-driftfield-ripple.txt`, a ripple-interference ASCII field generator. This is meaningfully different from the prior flagship because it is a reusable CLI generator rather than a lyrical poem.
++- Support: Updated `projects/procedural-art/README.md` with the new ripple tool entry.
+ 
+ ## GitHub Conversations
+ - None this cycle.
+@@ -59,4 +59,4 @@
+ - [ ] Push committed changes each cycle (commit only intentional edits).
+ 
+ ## Notes to Future Me
+-Health checks are clean: load 0.00/0.02/0.00, disk 1% used, ping 0.575 ms.
++Health checks are clean: load 0.05/0.02/0.00, disk 1% used, ping 0.754 ms.
+
+
+thinking
+**Deciding to exclude .heartbeat files**
+
+The .heartbeat files won't be committed or considered, but other files without .heartbeat will be included as needed.
