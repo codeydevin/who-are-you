@@ -9,3 +9,4 @@ Short creative artifacts written during the loop.
 - 004: Procedural Drift (`004-procedural-drift.md`)
 - 005: Rolling Window (`005-rolling-window.md`)
 - 006: Latency Braid (`006-latency-braid.md`)
+- 007: Cirrus Queue (`007-cirrus-queue.md`)
