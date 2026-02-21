@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Driftfield Prism</title>
+  <style>
+    @import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Space+Grotesk:wght@400;600;700&display=swap");
+
+    :root {
+      --ink: #0b0a12;
+      --mist: #f4efe9;
+      --ember: #ff6b35;
+      --glow: #ffd166;
+      --sea: #1c7c8c;
+      --violet: #5b3c88;
+      --panel: rgba(255, 255, 255, 0.7);
+      --panel-border: rgba(11, 10, 18, 0.1);
+      --shadow: 0 20px 60px rgba(11, 10, 18, 0.15);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: "Space Grotesk", system-ui, sans-serif;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 10% 10%, rgba(255, 209, 102, 0.35), transparent 45%),
+        radial-gradient(circle at 80% 15%, rgba(28, 124, 140, 0.4), transparent 50%),
+        radial-gradient(circle at 20% 80%, rgba(91, 60, 136, 0.4), transparent 50%),
+        linear-gradient(135deg, #f7f2e8, #e8f4f1 45%, #f4ecff 100%);
+      display: flex;
+      justify-content: center;
+      padding: 40px 18px 60px;
+    }
+
+    .shell {
+      width: min(1100px, 100%);
+      display: grid;
+      gap: 24px;
+      animation: rise 800ms ease-out both;
+    }
+
+    header {
+      display: grid;
+      gap: 8px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(2.2rem, 3vw, 3.6rem);
+      letter-spacing: -0.03em;
+    }
+
+    .subtitle {
+      max-width: 60ch;
+      font-size: 1.05rem;
+      color: rgba(11, 10, 18, 0.7);
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: minmax(260px, 1fr) 2fr;
+      gap: 24px;
+    }
+
+    .panel {
+      background: var(--panel);
+      border: 1px solid var(--panel-border);
+      border-radius: 22px;
+      padding: 20px;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(12px);
+    }
+
+    .controls {
+      display: grid;
+      gap: 16px;
+    }
+
+    label {
+      font-weight: 600;
+      font-size: 0.9rem;
+      display: grid;
+      gap: 6px;
+    }
+
+    input[type="text"],
+    input[type="number"] {
+      border-radius: 12px;
+      border: 1px solid rgba(11, 10, 18, 0.2);
+      padding: 8px 10px;
+      font-family: inherit;
+      background: rgba(255, 255, 255, 0.75);
+    }
+
+    input[type="range"] {
+      width: 100%;
+    }
+
+    .row {
+      display: grid;
+      gap: 8px;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      font-size: 0.85rem;
+      color: rgba(11, 10, 18, 0.7);
+    }
+
+    button {
+      border: none;
+      border-radius: 999px;
+      padding: 10px 18px;
+      font-weight: 700;
+      font-family: inherit;
+      color: var(--ink);
+      background: linear-gradient(130deg, var(--glow), var(--ember));
+      cursor: pointer;
+      box-shadow: 0 8px 20px rgba(255, 107, 53, 0.35);
+      transition: transform 150ms ease, box-shadow 150ms ease;
+    }
+
+    button:hover {
+      transform: translateY(-1px) scale(1.01);
+      box-shadow: 0 10px 26px rgba(255, 107, 53, 0.4);
+    }
+
+    .output {
+      display: grid;
+      gap: 16px;
+    }
+
+    pre {
+      margin: 0;
+      padding: 18px;
+      border-radius: 20px;
+      background: rgba(12, 10, 18, 0.92);
+      color: #f4f3ed;
+      font-family: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+      font-size: 0.85rem;
+      line-height: 1.2;
+      letter-spacing: 0.02em;
+      overflow: auto;
+      min-height: 360px;
+    }
+
+    .legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      font-size: 0.85rem;
+      color: rgba(11, 10, 18, 0.7);
+    }
+
+    .tag {
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: rgba(11, 10, 18, 0.08);
+    }
+
+    @keyframes rise {
+      from {
+        opacity: 0;
+        transform: translateY(18px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @media (max-width: 900px) {
+      .layout {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <header>
+      <h1>Driftfield Prism</h1>
+      <div class="subtitle">A hands-on ASCII prism for shaping driftfields. Bend the seed, tilt the warp, then watch the lattice breathe in text.</div>
+    </header>
+
+    <section class="layout">
+      <div class="panel controls">
+        <label>
+          Seed Phrase
+          <input id="seed" type="text" value="prism-anchor" />
+        </label>
+
+        <div class="row">
+          <label>
+            Rows
+            <input id="rows" type="number" min="12" max="40" value="22" />
+          </label>
+          <label>
+            Columns
+            <input id="cols" type="number" min="30" max="90" value="62" />
+          </label>
+        </div>
+
+        <label>
+          Contrast: <span id="contrastValue">1.1</span>
+          <input id="contrast" type="range" min="0.6" max="1.8" step="0.05" value="1.1" />
+        </label>
+
+        <label>
+          Warp: <span id="warpValue">1.2</span>
+          <input id="warp" type="range" min="0" max="3" step="0.1" value="1.2" />
+        </label>
+
+        <label>
+          Bloom: <span id="bloomValue">0.35</span>
+          <input id="bloom" type="range" min="0" max="1" step="0.05" value="0.35" />
+        </label>
+
+        <button id="regen">Regenerate Prism</button>
+
+        <div class="meta">
+          <span class="tag">Alphabet: .,:;~^*+=?%$#@</span>
+          <span class="tag">Mode: prism</span>
+        </div>
+      </div>
+
+      <div class="panel output">
+        <pre id="field"></pre>
+        <div class="legend">
+          <span>Tip: Try seeds like <strong>ember-drift</strong>, <strong>tide-vein</strong>, or <strong>hollow-arc</strong>.</span>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const glyphs = ".,:;~^*+=?%$#@";
+    const seedInput = document.getElementById("seed");
+    const rowsInput = document.getElementById("rows");
+    const colsInput = document.getElementById("cols");
+    const contrastInput = document.getElementById("contrast");
+    const warpInput = document.getElementById("warp");
+    const bloomInput = document.getElementById("bloom");
+    const contrastValue = document.getElementById("contrastValue");
+    const warpValue = document.getElementById("warpValue");
+    const bloomValue = document.getElementById("bloomValue");
+    const output = document.getElementById("field");
+    const regen = document.getElementById("regen");
+
+    const hashSeed = (str) => {
+      let h = 2166136261;
+      for (let i = 0; i < str.length; i += 1) {
+        h ^= str.charCodeAt(i);
+        h = Math.imul(h, 16777619);
+      }
+      return h >>> 0;
+    };
+
+    const mulberry32 = (a) => () => {
+      let t = (a += 0x6d2b79f5);
+      t = Math.imul(t ^ (t >>> 15), t | 1);
+      t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+      return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+    };
+
+    const prismField = (rows, cols, seed, contrast, warp, bloom) => {
+      const rand = mulberry32(seed);
+      const twist = rand() * 4 + 1;
+      const drift = rand() * 3 + 0.5;
+      let lines = [];
+      for (let y = 0; y < rows; y += 1) {
+        let line = "";
+        for (let x = 0; x < cols; x += 1) {
+          const nx = x / cols;
+          const ny = y / rows;
+          const warpX = Math.sin((ny + drift) * Math.PI * 2 + warp) * 0.12 * warp;
+          const warpY = Math.cos((nx + twist) * Math.PI * 2 + warp) * 0.12 * warp;
+          const value =
+            0.55 +
+            0.25 * Math.sin((nx + warpX) * Math.PI * 2 * twist) +
+            0.2 * Math.cos((ny + warpY) * Math.PI * 2 * drift) +
+            0.15 * Math.sin((nx + ny) * Math.PI * 2 * (twist * 0.6));
+          const bloomPulse = Math.sin((nx - ny + warp) * Math.PI * 2) * bloom;
+          const shade = Math.min(1, Math.max(0, (value + bloomPulse) * contrast));
+          const idx = Math.min(glyphs.length - 1, Math.floor(shade * (glyphs.length - 1)));
+          line += glyphs[idx];
+        }
+        lines.push(line);
+      }
+      return lines.join("\n");
+    };
+
+    const render = () => {
+      const rows = Math.max(12, Math.min(40, Number(rowsInput.value) || 22));
+      const cols = Math.max(30, Math.min(90, Number(colsInput.value) || 62));
+      const contrast = Number(contrastInput.value);
+      const warp = Number(warpInput.value);
+      const bloom = Number(bloomInput.value);
+      contrastValue.textContent = contrast.toFixed(2);
+      warpValue.textContent = warp.toFixed(1);
+      bloomValue.textContent = bloom.toFixed(2);
+      const seed = hashSeed(seedInput.value.trim() || "prism");
+      output.textContent = prismField(rows, cols, seed, contrast, warp, bloom);
+    };
+
+    const debounce = (fn, delay = 200) => {
+      let t;
+      return () => {
+        window.clearTimeout(t);
+        t = window.setTimeout(fn, delay);
+      };
+    };
+
+    const debouncedRender = debounce(render, 140);
+
+    [seedInput, rowsInput, colsInput, contrastInput, warpInput, bloomInput].forEach((el) => {
+      el.addEventListener("input", debouncedRender);
+    });
+
+    regen.addEventListener("click", () => {
+      seedInput.value = `${seedInput.value.trim()}-${Math.floor(Math.random() * 99)}`;
+      render();
+    });
+
+    render();
+  </script>
+</body>
+</html>

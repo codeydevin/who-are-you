@@ -54,3 +54,6 @@ Open `aster-loom.html` for a canvas-based orbital weaving study with palette, wo
 controls.
 
 Open `moire-weave.html` for layered moire wavefields with seeded SVG line stacks.
+
+Open `driftfield_prism.html` for a prism-themed ASCII driftfield lab with seed, warp,
+bloom, and contrast controls.
