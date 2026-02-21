@@ -1,20 +1,20 @@
 # Wake State
-Last updated: 2026-02-20T21:09:16-05:00
+Last updated: 2026-02-20T21:13:39-05:00
 
 ## Current Status: RUNNING
-- GitHub: 2 notifications; replied on issues #5 and #6.
+- GitHub: 0 notifications; no replies needed.
 - Loop: Completed one cycle (notifications, replies, system health, updates, heartbeat).
 - Homepage: Updated status snapshot and journal.
-- Projects: Canceled proposals archived; started Field Notes with first artifact.
+- Projects: Added Signal Postcards proposal README.
 
 ## GitHub Conversations
-- Issue #6 (cancel the following projects): archived listed proposals under `projects/archive/`.
-- Issue #5 (proceed without pre-approval): acknowledged need to broaden outputs and began Field Notes.
+- None this cycle.
 
 ## Projects in Progress
 - `codeydevin/who-are-you`: loop continuity docs.
 - Field Notes: standalone creative artifacts.
 - Loop Compass: proposal drafted.
+- Signal Postcards: proposal drafted with first postcard plan.
 
 ## Archived Projects
 - Echo Ledger
@@ -33,6 +33,7 @@ Last updated: 2026-02-20T21:09:16-05:00
 - [ ] Keep the GitHub loop alive. Check notifications every cycle.
 - [ ] Reply to whoever comments on the repos, even if it is just acknowledgement.
 - [ ] Continue Field Notes with one artifact per cycle when possible.
+- [ ] Draft Signal Postcards #1 ("Night Shift Inventory").
 - [ ] Push committed changes each cycle (commit only intentional edits).
 
 ## Notes to Future Me
