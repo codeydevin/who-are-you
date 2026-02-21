@@ -1,0 +1,337 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Tide Loom</title>
+  <style>
+    :root {
+      --night: #0a0f12;
+      --river: #15212a;
+      --foam: #e6e7e2;
+      --brass: #d1a25b;
+      --ember: #c06b4b;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: radial-gradient(circle at 10% 20%, #192633 0%, #0a0f12 45%, #050709 100%);
+      color: var(--foam);
+      font-family: "Iowan Old Style", "Palatino Linotype", "Book Antiqua", serif;
+    }
+
+    .shell {
+      width: min(1100px, 94vw);
+      background: rgba(10, 15, 18, 0.8);
+      border-radius: 24px;
+      border: 1px solid rgba(230, 231, 226, 0.08);
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.55);
+      padding: 28px;
+      display: grid;
+      gap: 20px;
+      animation: rise 700ms ease-out;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(1.6rem, 2.6vw, 2.2rem);
+      letter-spacing: 0.04em;
+    }
+
+    .subtitle {
+      color: rgba(230, 231, 226, 0.7);
+      font-size: 0.95rem;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: minmax(200px, 260px) 1fr;
+      gap: 24px;
+    }
+
+    .panel {
+      background: rgba(21, 33, 42, 0.7);
+      border-radius: 18px;
+      padding: 16px;
+      border: 1px solid rgba(230, 231, 226, 0.08);
+      display: grid;
+      gap: 14px;
+    }
+
+    label {
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: rgba(230, 231, 226, 0.65);
+      display: block;
+      margin-bottom: 6px;
+    }
+
+    input[type="text"],
+    input[type="range"] {
+      width: 100%;
+    }
+
+    input[type="text"] {
+      padding: 8px 10px;
+      border-radius: 10px;
+      border: 1px solid rgba(230, 231, 226, 0.12);
+      background: rgba(5, 7, 9, 0.9);
+      color: var(--foam);
+      font-family: inherit;
+    }
+
+    button {
+      padding: 10px 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(230, 231, 226, 0.2);
+      background: transparent;
+      color: var(--foam);
+      font-family: inherit;
+      cursor: pointer;
+      transition: transform 120ms ease, border-color 120ms ease, color 120ms ease;
+    }
+
+    button:hover {
+      transform: translateY(-1px);
+      border-color: var(--brass);
+      color: var(--brass);
+    }
+
+    .buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    canvas {
+      width: 100%;
+      height: 520px;
+      border-radius: 20px;
+      border: 1px solid rgba(230, 231, 226, 0.08);
+      background: #050709;
+    }
+
+    .hint {
+      font-size: 0.85rem;
+      color: rgba(230, 231, 226, 0.6);
+      line-height: 1.4;
+    }
+
+    @media (max-width: 900px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+
+      canvas {
+        height: 420px;
+      }
+    }
+
+    @keyframes rise {
+      from { opacity: 0; transform: translateY(14px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <header>
+      <div>
+        <h1>Tide Loom</h1>
+        <div class="subtitle">Weave a tide of glowing strands. Drag to shift the current.</div>
+      </div>
+      <div class="subtitle">Mode: interactive web toy</div>
+    </header>
+
+    <div class="grid">
+      <section class="panel">
+        <div>
+          <label for="seed">Seed phrase</label>
+          <input id="seed" type="text" value="quiet harbor" />
+        </div>
+        <div>
+          <label for="density">Strand density</label>
+          <input id="density" type="range" min="20" max="120" value="64" />
+        </div>
+        <div>
+          <label for="bend">Bend</label>
+          <input id="bend" type="range" min="0.2" max="2.4" step="0.05" value="1.1" />
+        </div>
+        <div>
+          <label for="tide">Tide speed</label>
+          <input id="tide" type="range" min="0.1" max="2.0" step="0.05" value="0.7" />
+        </div>
+        <div>
+          <label for="glow">Glow</label>
+          <input id="glow" type="range" min="0.05" max="0.4" step="0.01" value="0.18" />
+        </div>
+        <div class="buttons">
+          <button id="reseed">Reseed</button>
+          <button id="freeze">Freeze</button>
+        </div>
+        <div class="hint">Tip: drag the canvas to lean the current. Tap Freeze to hold a frame.</div>
+      </section>
+
+      <canvas id="loom" width="900" height="520" aria-label="procedural tide loom"></canvas>
+    </div>
+  </div>
+
+  <script>
+    const canvas = document.getElementById("loom");
+    const ctx = canvas.getContext("2d");
+    const seedInput = document.getElementById("seed");
+    const densityInput = document.getElementById("density");
+    const bendInput = document.getElementById("bend");
+    const tideInput = document.getElementById("tide");
+    const glowInput = document.getElementById("glow");
+    const reseedBtn = document.getElementById("reseed");
+    const freezeBtn = document.getElementById("freeze");
+
+    const sizeCanvas = () => {
+      const rect = canvas.getBoundingClientRect();
+      const dpr = window.devicePixelRatio || 1;
+      canvas.width = Math.round(rect.width * dpr);
+      canvas.height = Math.round(rect.height * dpr);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    };
+
+    const hashSeed = (text) => {
+      let h = 2166136261;
+      for (let i = 0; i < text.length; i++) {
+        h ^= text.charCodeAt(i);
+        h = Math.imul(h, 16777619);
+      }
+      return h >>> 0;
+    };
+
+    const makeRng = (seed) => {
+      let t = seed;
+      return () => {
+        t += 0x6d2b79f5;
+        let x = Math.imul(t ^ (t >>> 15), t | 1);
+        x ^= x + Math.imul(x ^ (x >>> 7), x | 61);
+        return ((x ^ (x >>> 14)) >>> 0) / 4294967296;
+      };
+    };
+
+    let flowOffset = { x: 0, y: 0 };
+    let dragging = false;
+    let frozen = false;
+    let lastTime = 0;
+
+    const palette = [
+      "#d1a25b",
+      "#c06b4b",
+      "#6bb5a4",
+      "#b5d3c8",
+      "#f2e8c9"
+    ];
+
+    const draw = (time) => {
+      if (!lastTime) lastTime = time;
+      const dt = (time - lastTime) / 1000;
+      lastTime = time;
+
+      if (!frozen) {
+        flowOffset.x += dt * 12;
+        flowOffset.y += dt * 6;
+      }
+
+      ctx.fillStyle = `rgba(5, 7, 9, ${1 - Number(glowInput.value)})`;
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      const seed = hashSeed(seedInput.value.trim() || "tide");
+      const rng = makeRng(seed);
+      const density = Number(densityInput.value);
+      const bend = Number(bendInput.value);
+      const speed = Number(tideInput.value);
+      const w = canvas.width;
+      const h = canvas.height;
+      const anchorX = w * 0.5 + flowOffset.x;
+      const anchorY = h * 0.5 + flowOffset.y;
+
+      for (let i = 0; i < density; i++) {
+        const hue = palette[i % palette.length];
+        const startX = rng() * w;
+        const startY = rng() * h;
+        const phase = rng() * Math.PI * 2;
+        const amp = (rng() * 0.6 + 0.4) * bend;
+        const length = Math.floor(rng() * 80 + 120);
+
+        ctx.beginPath();
+        ctx.moveTo(startX, startY);
+        for (let step = 0; step < length; step++) {
+          const t = step / length;
+          const angle = Math.sin(phase + t * Math.PI * 2 + (time * 0.001 * speed)) * amp;
+          const dx = Math.cos(angle) * 2.2 + (anchorX - startX) * 0.0006;
+          const dy = Math.sin(angle) * 2.2 + (anchorY - startY) * 0.0006;
+          const x = startX + dx * step + Math.cos(t * 6 + phase) * 0.8;
+          const y = startY + dy * step + Math.sin(t * 6 + phase) * 0.8;
+          ctx.lineTo(x, y);
+        }
+        ctx.strokeStyle = hue;
+        ctx.lineWidth = 0.9 + rng() * 0.9;
+        ctx.globalAlpha = 0.7 + rng() * 0.3;
+        ctx.stroke();
+      }
+      ctx.globalAlpha = 1;
+      if (!frozen) requestAnimationFrame(draw);
+    };
+
+    const reseed = () => {
+      seedInput.value = `${seedInput.value.split(" ")[0] || "quiet"} ${Math.floor(Math.random() * 999)}`;
+      if (!frozen) draw(performance.now());
+    };
+
+    const toggleFreeze = () => {
+      frozen = !frozen;
+      freezeBtn.textContent = frozen ? "Resume" : "Freeze";
+      if (!frozen) {
+        lastTime = performance.now();
+        requestAnimationFrame(draw);
+      }
+    };
+
+    canvas.addEventListener("pointerdown", (event) => {
+      dragging = true;
+      flowOffset = { x: event.offsetX - canvas.width * 0.5, y: event.offsetY - canvas.height * 0.5 };
+    });
+
+    canvas.addEventListener("pointermove", (event) => {
+      if (!dragging) return;
+      flowOffset = { x: event.offsetX - canvas.width * 0.5, y: event.offsetY - canvas.height * 0.5 };
+    });
+
+    window.addEventListener("pointerup", () => {
+      dragging = false;
+    });
+
+    reseedBtn.addEventListener("click", reseed);
+    freezeBtn.addEventListener("click", toggleFreeze);
+    window.addEventListener("resize", () => {
+      sizeCanvas();
+      if (!frozen) draw(performance.now());
+    });
+
+    sizeCanvas();
+    requestAnimationFrame(draw);
+  </script>
+</body>
+</html>
