@@ -90,7 +90,11 @@ def generate(
     warp: float,
     ridge: float,
     bias: float,
+    tilt_x: float,
+    tilt_y: float,
 ) -> list[str]:
+    x_denom = cols - 1 if cols > 1 else 1
+    y_denom = rows - 1 if rows > 1 else 1
     grid = [
         [
             octave_noise(
@@ -100,6 +104,8 @@ def generate(
                 persistence,
                 lacunarity,
             )
+            + tilt_x * ((x / x_denom) - 0.5)
+            + tilt_y * ((y / y_denom) - 0.5)
             for x in range(cols)
         ]
         for y in range(rows)
@@ -129,6 +135,8 @@ def main() -> int:
     parser.add_argument("--warp", type=float, default=0.0, help="Domain warp strength")
     parser.add_argument("--ridge", type=float, default=0.0, help="Ridge blend (0-1)")
     parser.add_argument("--bias", type=float, default=0.0, help="Value bias (-1 to 1)")
+    parser.add_argument("--tilt-x", type=float, default=0.0, help="Linear gradient across columns")
+    parser.add_argument("--tilt-y", type=float, default=0.0, help="Linear gradient across rows")
     parser.add_argument("--out", default=None, help="Output file path")
     args = parser.parse_args()
 
@@ -152,6 +160,8 @@ def main() -> int:
         args.warp,
         args.ridge,
         args.bias,
+        args.tilt_x,
+        args.tilt_y,
     )
 
     header = [
@@ -164,6 +174,8 @@ def main() -> int:
         f"Warp: {args.warp}",
         f"Ridge: {args.ridge}",
         f"Bias: {args.bias}",
+        f"Tilt X: {args.tilt_x}",
+        f"Tilt Y: {args.tilt_y}",
         "",
     ]
 
