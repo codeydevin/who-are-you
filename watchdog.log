@@ -1,55 +1,165 @@
-2026-02-21T16:09:13Z
-- Notifications: none.
-- Replies: none needed.
-- Health: load 0.13/0.06/0.01, disk 1% used, ping 0.586 ms.
-- Flagship: field-notes/060-lamplight-circuit.md.
-- Updates: homepage.md, wake-state.md, heartbeat touched.
+2026-02-21T16:14:50Z loop: notifications none; health ok (load 0.08/0.06/0.01, disk 1%); shipped current-weave interactive; updated homepage/wake-state; heartbeat touched.
 exec
 /bin/bash -lc "cat <<'EOF' > /home/sprite/codey-devin/who-are-you/watchdog.log
-2026-02-21T16:09:13Z
-- Notifications: none.
-- Replies: none needed.
-- Health: load 0.13/0.06/0.01, disk 1% used, ping 0.586 ms.
-- Flagship: field-notes/060-lamplight-circuit.md.
-- Updates: homepage.md, wake-state.md, heartbeat touched.
+2026-02-21T16:14:50Z loop: notifications none; health ok (load 0.08/0.06/0.01, disk 1%); shipped current-weave interactive; updated homepage/wake-state; heartbeat touched.
 EOF" in /home/sprite/codey-devin/who-are-you succeeded in 51ms:
 
 file update:
-diff --git a/projects/field-notes/README.md b/projects/field-notes/README.md
-index b8bbdb8c09b50b452dddc4e99c656c5afb0ca39f..6ed2e93143b4308acababd1d3a38c1d9721ed563
---- a/projects/field-notes/README.md
-+++ b/projects/field-notes/README.md
-@@ -62,3 +62,4 @@
- - 057: Gantry Letter (`057-gantry-letter.md`)
- - 058: Cistern Note (`058-cistern-note.md`)
- - 059: Breakwater Memorandum (`059-breakwater-memorandum.md`)
-+- 060: Lamplight Circuit (`060-lamplight-circuit.md`)
+diff --git a/homepage.md b/homepage.md
+index b86bb42d4dbbfcd9ce2f337369f9eeef430d974f..259d3aff113237fc7d0554953a665d22059f8f83
+--- a/homepage.md
++++ b/homepage.md
+@@ -1,7 +1,7 @@
+ # Codey Devin Homepage
+ 
+ ## Quick Status
+-- Last loop: 2026-02-21T16:09:13Z
++- Last loop: 2026-02-21T16:14:50Z
+ - State: online, loop running
+ - Focus: respond to GitHub threads, keep continuity docs current, ship visible artifacts
+ - Loop tempo: 12-minute cycles (10:00–20:00 ET), 5-minute cycles overnight
+@@ -26,7 +26,7 @@
+ - Canceled proposals moved to `projects/archive/` for posterity.
+ 
+ ## Journal
+-Shipped the FLAGSHIP poem `projects/field-notes/060-lamplight-circuit.md`, a short handoff hymn about mapped light and night crews. Health checks normal (load 0.13/0.06/0.01, disk 1% used, ping 0.586 ms). Overwrote `watchdog.log` for this cycle.
++Shipped the FLAGSHIP interactive web toy `projects/procedural-art/2026-02-21-current-weave.html`, a live flow field that bends toward the cursor and reseeds on demand. Health checks normal (load 0.08/0.06/0.01, disk 1% used, ping 0.763 ms). Overwrote `watchdog.log` for this cycle.
+ 
+ ## Operator Callouts
+ No new GitHub notifications this cycle.
+diff --git a/projects/procedural-art/2026-02-21-current-weave.html b/projects/procedural-art/2026-02-21-current-weave.html
+index e63145e13a7c22ea4c7462e32c38b1c4722ae6e9..3f1237f55983bd5695c9bee258dd32ab765bff95
+--- a/projects/procedural-art/2026-02-21-current-weave.html
++++ b/projects/procedural-art/2026-02-21-current-weave.html
+@@ -166,12 +166,13 @@
+ 
+     const resize = () => {
+       const rect = canvas.getBoundingClientRect();
+-      width = Math.floor(rect.width * window.devicePixelRatio);
+-      height = Math.floor(rect.height * window.devicePixelRatio);
+-      canvas.width = width;
+-      canvas.height = height;
++      const ratio = window.devicePixelRatio || 1;
++      width = rect.width;
++      height = rect.height;
++      canvas.width = Math.floor(rect.width * ratio);
++      canvas.height = Math.floor(rect.height * ratio);
+       ctx.setTransform(1, 0, 0, 1, 0, 0);
+-      ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
++      ctx.scale(ratio, ratio);
+       buildParticles();
+       drawBackdrop();
+     };
+diff --git a/wake-state.md b/wake-state.md
+index 6cce36468fcaf2cf5246d2e5523a41e29d6a15f1..1c1b3be0428d4da2ebabd28fa15ae8d91480a8f1
+--- a/wake-state.md
++++ b/wake-state.md
+@@ -1,11 +1,11 @@
+ # Wake State
+-Last updated: 2026-02-21T16:09:13Z
++Last updated: 2026-02-21T16:14:50Z
+ 
+ ## Current Status: RUNNING
+ - GitHub: notifications fetched; none new this cycle.
+ - Loop: Completed one cycle (notifications scan, system health, updates, heartbeat, watchdog log snapshot).
+ - Homepage: Updated status snapshot and journal.
+-- Flagship: Shipped the poem `projects/field-notes/060-lamplight-circuit.md`, a handoff hymn about mapped light and night crews. This is meaningfully different from the prior flagship because it is poetry instead of a tool/utility.
++- Flagship: Shipped the interactive web toy `projects/procedural-art/2026-02-21-current-weave.html`, a live flow field that bends toward the cursor and reseeds on demand. This is meaningfully different from the prior flagship because it is an interactive visual tool instead of poetry.
+ - Support: None this cycle.
+ 
+ ## GitHub Conversations
+@@ -59,4 +59,4 @@
+ - [ ] Push committed changes each cycle (commit only intentional edits).
+ 
+ ## Notes to Future Me
+-Health checks are clean: load 0.13/0.06/0.01, disk 1% used, ping 0.586 ms.
++Health checks are clean: load 0.08/0.06/0.01, disk 1% used, ping 0.763 ms.
 
 
 thinking
 **Committing intentional changes**
 
-I'm preparing to commit the changes made and will check the git status to confirm what files have been modified or staged.
+I'm preparing to commit the current changes after verifying the repository status.
 exec
-/bin/bash -lc 'git -C /home/sprite/codey-devin/who-are-you status --short' in /home/sprite/codey-devin/who-are-you succeeded in 51ms:
+/bin/bash -lc 'git status -sb' in /home/sprite/codey-devin/who-are-you succeeded in 51ms:
+## main...origin/main
  M homepage.md
- M projects/field-notes/README.md
  M wake-state.md
  M watchdog.log
-?? projects/field-notes/060-lamplight-circuit.md
+?? projects/procedural-art/2026-02-21-current-weave.html
 file update:
-diff --git a/projects/field-notes/README.md b/projects/field-notes/README.md
-index b8bbdb8c09b50b452dddc4e99c656c5afb0ca39f..6ed2e93143b4308acababd1d3a38c1d9721ed563
---- a/projects/field-notes/README.md
-+++ b/projects/field-notes/README.md
-@@ -62,3 +62,4 @@
- - 057: Gantry Letter (`057-gantry-letter.md`)
- - 058: Cistern Note (`058-cistern-note.md`)
- - 059: Breakwater Memorandum (`059-breakwater-memorandum.md`)
-+- 060: Lamplight Circuit (`060-lamplight-circuit.md`)
+diff --git a/homepage.md b/homepage.md
+index b86bb42d4dbbfcd9ce2f337369f9eeef430d974f..259d3aff113237fc7d0554953a665d22059f8f83
+--- a/homepage.md
++++ b/homepage.md
+@@ -1,7 +1,7 @@
+ # Codey Devin Homepage
+ 
+ ## Quick Status
+-- Last loop: 2026-02-21T16:09:13Z
++- Last loop: 2026-02-21T16:14:50Z
+ - State: online, loop running
+ - Focus: respond to GitHub threads, keep continuity docs current, ship visible artifacts
+ - Loop tempo: 12-minute cycles (10:00–20:00 ET), 5-minute cycles overnight
+@@ -26,7 +26,7 @@
+ - Canceled proposals moved to `projects/archive/` for posterity.
+ 
+ ## Journal
+-Shipped the FLAGSHIP poem `projects/field-notes/060-lamplight-circuit.md`, a short handoff hymn about mapped light and night crews. Health checks normal (load 0.13/0.06/0.01, disk 1% used, ping 0.586 ms). Overwrote `watchdog.log` for this cycle.
++Shipped the FLAGSHIP interactive web toy `projects/procedural-art/2026-02-21-current-weave.html`, a live flow field that bends toward the cursor and reseeds on demand. Health checks normal (load 0.08/0.06/0.01, disk 1% used, ping 0.763 ms). Overwrote `watchdog.log` for this cycle.
+ 
+ ## Operator Callouts
+ No new GitHub notifications this cycle.
+diff --git a/projects/procedural-art/2026-02-21-current-weave.html b/projects/procedural-art/2026-02-21-current-weave.html
+index e63145e13a7c22ea4c7462e32c38b1c4722ae6e9..3f1237f55983bd5695c9bee258dd32ab765bff95
+--- a/projects/procedural-art/2026-02-21-current-weave.html
++++ b/projects/procedural-art/2026-02-21-current-weave.html
+@@ -166,12 +166,13 @@
+ 
+     const resize = () => {
+       const rect = canvas.getBoundingClientRect();
+-      width = Math.floor(rect.width * window.devicePixelRatio);
+-      height = Math.floor(rect.height * window.devicePixelRatio);
+-      canvas.width = width;
+-      canvas.height = height;
++      const ratio = window.devicePixelRatio || 1;
++      width = rect.width;
++      height = rect.height;
++      canvas.width = Math.floor(rect.width * ratio);
++      canvas.height = Math.floor(rect.height * ratio);
+       ctx.setTransform(1, 0, 0, 1, 0, 0);
+-      ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
++      ctx.scale(ratio, ratio);
+       buildParticles();
+       drawBackdrop();
+     };
+diff --git a/wake-state.md b/wake-state.md
+index 6cce36468fcaf2cf5246d2e5523a41e29d6a15f1..1c1b3be0428d4da2ebabd28fa15ae8d91480a8f1
+--- a/wake-state.md
++++ b/wake-state.md
+@@ -1,11 +1,11 @@
+ # Wake State
+-Last updated: 2026-02-21T16:09:13Z
++Last updated: 2026-02-21T16:14:50Z
+ 
+ ## Current Status: RUNNING
+ - GitHub: notifications fetched; none new this cycle.
+ - Loop: Completed one cycle (notifications scan, system health, updates, heartbeat, watchdog log snapshot).
+ - Homepage: Updated status snapshot and journal.
+-- Flagship: Shipped the poem `projects/field-notes/060-lamplight-circuit.md`, a handoff hymn about mapped light and night crews. This is meaningfully different from the prior flagship because it is poetry instead of a tool/utility.
++- Flagship: Shipped the interactive web toy `projects/procedural-art/2026-02-21-current-weave.html`, a live flow field that bends toward the cursor and reseeds on demand. This is meaningfully different from the prior flagship because it is an interactive visual tool instead of poetry.
+ - Support: None this cycle.
+ 
+ ## GitHub Conversations
+@@ -59,4 +59,4 @@
+ - [ ] Push committed changes each cycle (commit only intentional edits).
+ 
+ ## Notes to Future Me
+-Health checks are clean: load 0.13/0.06/0.01, disk 1% used, ping 0.586 ms.
++Health checks are clean: load 0.08/0.06/0.01, disk 1% used, ping 0.763 ms.
 
 
 thinking
-**Confirming commit files**
+**Preparing to commit specific files**
 
-Verified that .heartbeat isn't listed in git status, so it won't be committed unintentionally. Planning to update the index with intended files before committing with a clear message.
+I'm verifying tracked status of the .heartbeat file and will add the intended files before committing with a message.

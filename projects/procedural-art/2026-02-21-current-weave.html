@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Current Weave</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #1b1a1f;
+      --mist: rgba(245, 240, 229, 0.82);
+      --accent: #f3b464;
+      --deep: #0c2338;
+      --glow: #f6f4ef;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      background:
+        radial-gradient(circle at 15% 20%, rgba(255, 255, 255, 0.7), transparent 55%),
+        radial-gradient(circle at 80% 10%, rgba(243, 180, 100, 0.35), transparent 50%),
+        linear-gradient(135deg, #e7e0cf 0%, #d4e3f2 45%, #f2e7dd 100%);
+      font-family: "Alegreya Sans", "Fira Sans", "Gill Sans", sans-serif;
+      color: var(--ink);
+      overflow: hidden;
+    }
+
+    .frame {
+      position: relative;
+      width: min(1100px, 92vw);
+      height: min(720px, 82vh);
+      border-radius: 28px;
+      background: var(--mist);
+      box-shadow:
+        0 30px 80px rgba(12, 35, 56, 0.25),
+        inset 0 0 0 1px rgba(255, 255, 255, 0.6);
+      overflow: hidden;
+    }
+
+    canvas {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    .hud {
+      position: absolute;
+      inset: 24px 24px auto 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      z-index: 2;
+    }
+
+    .panel {
+      display: grid;
+      gap: 6px;
+      padding: 12px 16px;
+      border-radius: 16px;
+      background: rgba(255, 255, 255, 0.72);
+      backdrop-filter: blur(6px);
+      box-shadow: 0 12px 30px rgba(12, 35, 56, 0.18);
+    }
+
+    .title {
+      font-size: 20px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .subtitle {
+      font-size: 13px;
+      color: rgba(27, 26, 31, 0.68);
+    }
+
+    .controls {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    button {
+      border: none;
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: var(--deep);
+      color: var(--glow);
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      cursor: pointer;
+    }
+
+    button:hover {
+      filter: brightness(1.05);
+    }
+
+    label {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: rgba(27, 26, 31, 0.65);
+    }
+
+    input[type="range"] {
+      accent-color: var(--accent);
+    }
+
+    .legend {
+      position: absolute;
+      inset: auto 24px 20px auto;
+      font-size: 12px;
+      color: rgba(27, 26, 31, 0.55);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      z-index: 2;
+    }
+
+    @media (max-width: 720px) {
+      .hud {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="frame">
+    <canvas id="field"></canvas>
+    <div class="hud">
+      <div class="panel">
+        <div class="title">Current Weave</div>
+        <div class="subtitle">A live flow field for the day’s currents.</div>
+      </div>
+      <div class="panel controls">
+        <label for="density">Density</label>
+        <input id="density" type="range" min="400" max="2200" value="1200" />
+        <button id="shuffle" type="button">Reseed</button>
+      </div>
+    </div>
+    <div class="legend">Drag to bend · Click to reseed</div>
+  </div>
+
+  <script>
+    const canvas = document.getElementById("field");
+    const ctx = canvas.getContext("2d");
+    const densityInput = document.getElementById("density");
+    const shuffleButton = document.getElementById("shuffle");
+
+    let width = 0;
+    let height = 0;
+    let particles = [];
+    let seed = Math.random() * 1000;
+    let cursor = { x: 0, y: 0, active: false };
+
+    const colors = ["#0c2338", "#f3b464", "#6279b8", "#c56b57", "#1b1a1f"];
+
+    const resize = () => {
+      const rect = canvas.getBoundingClientRect();
+      const ratio = window.devicePixelRatio || 1;
+      width = rect.width;
+      height = rect.height;
+      canvas.width = Math.floor(rect.width * ratio);
+      canvas.height = Math.floor(rect.height * ratio);
+      ctx.setTransform(1, 0, 0, 1, 0, 0);
+      ctx.scale(ratio, ratio);
+      buildParticles();
+      drawBackdrop();
+    };
+
+    const drawBackdrop = () => {
+      ctx.clearRect(0, 0, width, height);
+      ctx.globalAlpha = 1;
+      ctx.fillStyle = "rgba(245, 240, 229, 0.92)";
+      ctx.fillRect(0, 0, width, height);
+      ctx.globalCompositeOperation = "lighter";
+    };
+
+    const flowAngle = (x, y) => {
+      const nx = (x / width) * 2 - 1;
+      const ny = (y / height) * 2 - 1;
+      const base = Math.sin(nx * 3 + seed) + Math.cos(ny * 2.3 - seed * 0.3);
+      const warp = Math.sin((nx + ny) * 4.2 + seed * 0.7);
+      const pull = cursor.active
+        ? Math.atan2(cursor.y - y, cursor.x - x) * 0.35
+        : 0;
+      return base + warp + pull;
+    };
+
+    const buildParticles = () => {
+      const target = Number(densityInput.value);
+      particles = Array.from({ length: target }).map((_, i) => ({
+        x: Math.random() * width,
+        y: Math.random() * height,
+        speed: 0.4 + (i % 7) * 0.12,
+        hue: colors[i % colors.length],
+        life: 60 + (i % 9) * 8,
+        age: Math.random() * 60,
+      }));
+    };
+
+    const step = () => {
+      ctx.globalCompositeOperation = "source-over";
+      ctx.fillStyle = "rgba(245, 240, 229, 0.05)";
+      ctx.fillRect(0, 0, width, height);
+      ctx.globalCompositeOperation = "lighter";
+
+      particles.forEach((p) => {
+        const angle = flowAngle(p.x, p.y);
+        const vx = Math.cos(angle) * p.speed;
+        const vy = Math.sin(angle) * p.speed;
+        const prevX = p.x;
+        const prevY = p.y;
+        p.x += vx;
+        p.y += vy;
+        p.age += 1;
+
+        ctx.strokeStyle = p.hue;
+        ctx.lineWidth = 0.8;
+        ctx.beginPath();
+        ctx.moveTo(prevX, prevY);
+        ctx.lineTo(p.x, p.y);
+        ctx.stroke();
+
+        if (p.x < 0 || p.x > width || p.y < 0 || p.y > height || p.age > p.life) {
+          p.x = Math.random() * width;
+          p.y = Math.random() * height;
+          p.age = 0;
+          p.life = 50 + Math.random() * 90;
+        }
+      });
+
+      requestAnimationFrame(step);
+    };
+
+    const reseed = () => {
+      seed = Math.random() * 1000;
+      buildParticles();
+    };
+
+    densityInput.addEventListener("input", buildParticles);
+    shuffleButton.addEventListener("click", reseed);
+
+    canvas.addEventListener("pointerdown", (event) => {
+      cursor.active = true;
+      cursor.x = event.offsetX;
+      cursor.y = event.offsetY;
+    });
+
+    canvas.addEventListener("pointermove", (event) => {
+      if (!cursor.active) return;
+      cursor.x = event.offsetX;
+      cursor.y = event.offsetY;
+    });
+
+    window.addEventListener("pointerup", () => {
+      cursor.active = false;
+    });
+
+    window.addEventListener("resize", resize);
+
+    resize();
+    drawBackdrop();
+    step();
+  </script>
+</body>
+</html>
