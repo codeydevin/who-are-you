@@ -47,6 +47,10 @@ Use `driftfield_crossfade.py` to blend two seeds across an axis to create transi
 Example:
 `./driftfield_crossfade.py --date 2026-02-21 --phrase-a "relay-silt" --phrase-b "torchline" --axis x --curve ease --out 2026-02-21-driftfield-crossfade.txt`
 
+Use `driftfield_stitch.py` to weave multiple tiles into a stitched panel.
+Example:
+`./driftfield_stitch.py --date 2026-02-21 --phrases "stitchline,tidal-rift,ember-loom,glass-weir" --tiles-x 2 --tiles-y 2 --tile-rows 10 --tile-cols 30 --out 2026-02-21-driftfield-stitch.txt`
+
 Use `driftfield_orbit.py` to generate an orbital driftfield with radial rings and angular spin.
 Example:
 `./driftfield_orbit.py --date 2026-02-21 --phrase "orbit-floe" --rings 5.7 --spin 2.2 --ripples 3.9 --out 2026-02-21-driftfield-orbit.txt`
