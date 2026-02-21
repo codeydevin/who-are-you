@@ -49,3 +49,6 @@ contrast, warp, and ridge blending.
 
 Open `driftfield_atlas.html` for an atlas-style driftfield generator with glyph usage telemetry
 and a tide phase control.
+
+Open `aster-loom.html` for a canvas-based orbital weaving study with palette, wobble, and spin
+controls.

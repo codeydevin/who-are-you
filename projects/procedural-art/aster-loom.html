@@ -1,0 +1,416 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Aster Loom</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Space+Grotesk:wght@400;500;600&display=swap');
+
+    :root {
+      --ink: #1a1310;
+      --sand: #f5efe6;
+      --brass: #c7894a;
+      --auburn: #7b3f2d;
+      --teal: #276f6d;
+      --shadow: rgba(20, 12, 8, 0.18);
+      --panel: rgba(252, 247, 238, 0.9);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: radial-gradient(circle at 10% 15%, #fff3dc 0%, #f6e6cf 32%, #d9c3a4 100%);
+      color: var(--ink);
+      font-family: "Space Grotesk", "Helvetica Neue", Arial, sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 28px 20px 40px;
+      animation: fade-in 700ms ease-out;
+    }
+
+    .shell {
+      width: min(1100px, 96vw);
+      display: grid;
+      grid-template-columns: minmax(0, 1.25fr) minmax(0, 0.75fr);
+      gap: 28px;
+    }
+
+    .canvas-card,
+    .panel {
+      background: var(--panel);
+      border-radius: 24px;
+      box-shadow: 0 20px 50px var(--shadow);
+      border: 1px solid rgba(26, 19, 16, 0.08);
+      backdrop-filter: blur(6px);
+    }
+
+    .canvas-card {
+      padding: 18px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    canvas {
+      width: 100%;
+      height: auto;
+      display: block;
+      border-radius: 18px;
+      border: 1px solid rgba(26, 19, 16, 0.08);
+      background: #f7efe3;
+    }
+
+    .badge {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.7);
+      color: var(--auburn);
+      font-size: 0.8rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      border: 1px solid rgba(123, 63, 45, 0.15);
+    }
+
+    .panel {
+      padding: 26px 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    h1 {
+      font-family: "Fraunces", "Georgia", serif;
+      font-size: clamp(1.8rem, 3vw, 2.3rem);
+      margin: 0;
+    }
+
+    .subtitle {
+      color: var(--teal);
+      font-size: 0.98rem;
+    }
+
+    .control {
+      display: grid;
+      gap: 8px;
+    }
+
+    label {
+      font-size: 0.85rem;
+      color: var(--auburn);
+    }
+
+    input[type="range"],
+    input[type="text"],
+    select {
+      width: 100%;
+      font-family: inherit;
+    }
+
+    input[type="text"],
+    select {
+      padding: 8px 10px;
+      border-radius: 10px;
+      border: 1px solid rgba(26, 19, 16, 0.2);
+      background: #fffaf3;
+    }
+
+    .row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+      gap: 12px;
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    button {
+      border: none;
+      border-radius: 999px;
+      padding: 10px 16px;
+      font-family: inherit;
+      cursor: pointer;
+      background: var(--auburn);
+      color: #fdf5ea;
+      transition: transform 140ms ease, box-shadow 140ms ease;
+    }
+
+    button.secondary {
+      background: var(--teal);
+    }
+
+    button.ghost {
+      background: transparent;
+      border: 1px solid rgba(26, 19, 16, 0.2);
+      color: var(--ink);
+    }
+
+    button:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 10px 20px rgba(26, 19, 16, 0.18);
+    }
+
+    .notes {
+      font-size: 0.85rem;
+      line-height: 1.4;
+      color: #4c362f;
+      background: rgba(255, 255, 255, 0.6);
+      border-radius: 16px;
+      padding: 12px 14px;
+      border: 1px solid rgba(26, 19, 16, 0.08);
+    }
+
+    @keyframes fade-in {
+      from {
+        opacity: 0;
+        transform: translateY(12px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @media (max-width: 920px) {
+      .shell {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <section class="canvas-card">
+      <div class="badge">Aster Loom</div>
+      <canvas id="loom" width="900" height="900"></canvas>
+    </section>
+    <section class="panel">
+      <div>
+        <h1>Aster Loom</h1>
+        <div class="subtitle">An orbital weaving study for slow, brass-toned motion.</div>
+      </div>
+
+      <div class="control">
+        <label for="seed">Seed phrase</label>
+        <input id="seed" type="text" value="amber-weft" />
+      </div>
+
+      <div class="row">
+        <div class="control">
+          <label for="orbits">Orbits</label>
+          <input id="orbits" type="range" min="6" max="40" value="18" />
+        </div>
+        <div class="control">
+          <label for="density">Density</label>
+          <input id="density" type="range" min="0.2" max="1.2" step="0.05" value="0.8" />
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="control">
+          <label for="wobble">Wobble</label>
+          <input id="wobble" type="range" min="0" max="0.6" step="0.02" value="0.28" />
+        </div>
+        <div class="control">
+          <label for="spin">Spin</label>
+          <input id="spin" type="range" min="0" max="0.7" step="0.02" value="0.26" />
+        </div>
+      </div>
+
+      <div class="control">
+        <label for="palette">Palette</label>
+        <select id="palette">
+          <option value="brass" selected>Brass &amp; Umber</option>
+          <option value="mist">Mist &amp; Tide</option>
+          <option value="cinder">Cinder &amp; Ember</option>
+        </select>
+      </div>
+
+      <div class="actions">
+        <button id="reroll">Reweave</button>
+        <button id="pause" class="secondary">Pause</button>
+        <button id="export" class="ghost">Export PNG</button>
+      </div>
+
+      <div class="notes">
+        Each orbit is a braided line. Density controls how many threads the loom lays down. Wobble
+        pushes the weave off-axis, while spin sets the orbital drift speed. Reweave changes the
+        seed while keeping your current settings.
+      </div>
+    </section>
+  </div>
+
+  <script>
+    const canvas = document.getElementById('loom');
+    const ctx = canvas.getContext('2d');
+    const seedInput = document.getElementById('seed');
+    const orbitsInput = document.getElementById('orbits');
+    const densityInput = document.getElementById('density');
+    const wobbleInput = document.getElementById('wobble');
+    const spinInput = document.getElementById('spin');
+    const paletteInput = document.getElementById('palette');
+    const rerollButton = document.getElementById('reroll');
+    const pauseButton = document.getElementById('pause');
+    const exportButton = document.getElementById('export');
+
+    const palettes = {
+      brass: {
+        background: ['#f9f0e0', '#f4dcc2', '#e7c6a6'],
+        strokes: ['#7b3f2d', '#b26b2f', '#2b6f68', '#523226']
+      },
+      mist: {
+        background: ['#f1f7f5', '#d9ede9', '#c2ddd8'],
+        strokes: ['#2f5c5f', '#1d393b', '#6fa8a8', '#21474a']
+      },
+      cinder: {
+        background: ['#f6ede3', '#e8d3c6', '#d3b6a8'],
+        strokes: ['#5a2f22', '#8a4a2b', '#c77748', '#3c1f17']
+      }
+    };
+
+    let running = true;
+    let start = performance.now();
+
+    const hashSeed = (text) => {
+      let h = 2166136261;
+      for (let i = 0; i < text.length; i += 1) {
+        h ^= text.charCodeAt(i);
+        h = Math.imul(h, 16777619);
+      }
+      return h >>> 0;
+    };
+
+    const mulberry32 = (a) => {
+      return () => {
+        let t = a += 0x6D2B79F5;
+        t = Math.imul(t ^ t >>> 15, t | 1);
+        t ^= t + Math.imul(t ^ t >>> 7, t | 61);
+        return ((t ^ t >>> 14) >>> 0) / 4294967296;
+      };
+    };
+
+    const resize = () => {
+      const size = Math.min(canvas.parentElement.clientWidth - 2, 900);
+      canvas.width = size * devicePixelRatio;
+      canvas.height = size * devicePixelRatio;
+      canvas.style.height = `${size}px`;
+      canvas.style.width = `${size}px`;
+      ctx.setTransform(devicePixelRatio, 0, 0, devicePixelRatio, 0, 0);
+    };
+
+    const gradientFill = (colors) => {
+      const gradient = ctx.createRadialGradient(
+        canvas.width / 2 / devicePixelRatio,
+        canvas.height / 2 / devicePixelRatio,
+        40,
+        canvas.width / 2 / devicePixelRatio,
+        canvas.height / 2 / devicePixelRatio,
+        canvas.width / devicePixelRatio
+      );
+      colors.forEach((color, idx) => {
+        gradient.addColorStop(idx / (colors.length - 1), color);
+      });
+      ctx.fillStyle = gradient;
+      ctx.fillRect(0, 0, canvas.width / devicePixelRatio, canvas.height / devicePixelRatio);
+    };
+
+    const draw = (time) => {
+      const palette = palettes[paletteInput.value];
+      gradientFill(palette.background);
+      const center = {
+        x: canvas.width / 2 / devicePixelRatio,
+        y: canvas.height / 2 / devicePixelRatio
+      };
+      const orbitCount = Number(orbitsInput.value);
+      const density = Number(densityInput.value);
+      const wobble = Number(wobbleInput.value);
+      const spin = Number(spinInput.value);
+      const seed = hashSeed(seedInput.value.trim() || 'aster');
+      const rng = mulberry32(seed);
+
+      ctx.lineCap = 'round';
+      ctx.lineJoin = 'round';
+
+      for (let i = 0; i < orbitCount; i += 1) {
+        const radius = (canvas.width / devicePixelRatio) * (0.08 + 0.38 * (i / orbitCount));
+        const weight = 0.6 + rng() * 1.8;
+        const drift = (rng() - 0.5) * wobble;
+        const offset = rng() * Math.PI * 2;
+        const huePick = palette.strokes[i % palette.strokes.length];
+
+        ctx.strokeStyle = huePick;
+        ctx.lineWidth = weight;
+        ctx.beginPath();
+
+        const step = Math.max(12, 80 * density);
+        for (let a = 0; a <= Math.PI * 2; a += Math.PI * 2 / step) {
+          const wobbleFactor = Math.sin(a * 3 + offset) * drift;
+          const wave = Math.cos(a * 2 + offset) * drift * 0.4;
+          const t = (time / 1000) * spin;
+          const angle = a + t + offset;
+          const x = center.x + Math.cos(angle) * radius * (1 + wobbleFactor);
+          const y = center.y + Math.sin(angle + wave) * radius * (1 - wobbleFactor);
+          if (a === 0) {
+            ctx.moveTo(x, y);
+          } else {
+            ctx.lineTo(x, y);
+          }
+        }
+        ctx.stroke();
+      }
+    };
+
+    const tick = (time) => {
+      if (running) {
+        draw(time - start);
+      }
+      requestAnimationFrame(tick);
+    };
+
+    const reroll = () => {
+      seedInput.value = `${seedInput.value.trim() || 'aster'}-${Math.floor(Math.random() * 1000)}`;
+      draw(performance.now() - start);
+    };
+
+    const toggle = () => {
+      running = !running;
+      pauseButton.textContent = running ? 'Pause' : 'Resume';
+      if (running) {
+        start = performance.now();
+      }
+    };
+
+    const exportPNG = () => {
+      const link = document.createElement('a');
+      link.download = 'aster-loom.png';
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+    };
+
+    [seedInput, orbitsInput, densityInput, wobbleInput, spinInput, paletteInput].forEach((input) => {
+      input.addEventListener('input', () => draw(performance.now() - start));
+    });
+
+    rerollButton.addEventListener('click', reroll);
+    pauseButton.addEventListener('click', toggle);
+    exportButton.addEventListener('click', exportPNG);
+    window.addEventListener('resize', () => {
+      resize();
+      draw(performance.now() - start);
+    });
+
+    resize();
+    requestAnimationFrame(tick);
+  </script>
+</body>
+</html>
