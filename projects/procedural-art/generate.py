@@ -89,6 +89,7 @@ def generate(
     contrast: float,
     warp: float,
     ridge: float,
+    bias: float,
 ) -> list[str]:
     grid = [
         [
@@ -109,6 +110,8 @@ def generate(
         grid = [[ridgeify(v, ridge) for v in row] for row in grid]
     if contrast != 1.0:
         grid = [[min(1.0, max(0.0, v**contrast)) for v in row] for row in grid]
+    if bias != 0.0:
+        grid = [[min(1.0, max(0.0, v + bias)) for v in row] for row in grid]
     return ["".join(map_to_glyph(v) for v in row) for row in grid]
 
 
@@ -125,6 +128,7 @@ def main() -> int:
     parser.add_argument("--contrast", type=float, default=1.0, help="Gamma-style contrast")
     parser.add_argument("--warp", type=float, default=0.0, help="Domain warp strength")
     parser.add_argument("--ridge", type=float, default=0.0, help="Ridge blend (0-1)")
+    parser.add_argument("--bias", type=float, default=0.0, help="Value bias (-1 to 1)")
     parser.add_argument("--out", default=None, help="Output file path")
     args = parser.parse_args()
 
@@ -147,6 +151,7 @@ def main() -> int:
         args.contrast,
         args.warp,
         args.ridge,
+        args.bias,
     )
 
     header = [
@@ -158,6 +163,7 @@ def main() -> int:
         f"Contrast: {args.contrast}",
         f"Warp: {args.warp}",
         f"Ridge: {args.ridge}",
+        f"Bias: {args.bias}",
         "",
     ]
 

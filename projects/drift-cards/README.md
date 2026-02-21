@@ -9,3 +9,4 @@ Each card is four lines:
 
 ## Entries
 - 001-seed.md
+- 002-bridge-signal.md
