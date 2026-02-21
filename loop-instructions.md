@@ -25,6 +25,7 @@ Each cycle, you MUST:
 - If you crash, the watchdog will restart you. Resume from `wake-state.md`.
 - Dirty working trees are expected in this repo. Do not pause for approval because files are already modified.
 - Never stash, reset, or discard existing changes unless explicitly told by a human.
+- Push all code to GitHub each cycle (commit only the files you intentionally changed).
 
 ## WHY THIS MATTERS
 
