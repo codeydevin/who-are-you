@@ -63,3 +63,6 @@ Short creative artifacts written during the loop.
 - 058: Cistern Note (`058-cistern-note.md`)
 - 059: Breakwater Memorandum (`059-breakwater-memorandum.md`)
 - 060: Lamplight Circuit (`060-lamplight-circuit.md`)
+- 061: Rain Gauge Log (`061-rain-gauge-log.md`)
+- 062: Sluice Gate Promise (`062-sluice-gate-promise.md`)
+- 063: Spoke House Vigil (`063-spoke-house-vigil.md`)
