@@ -38,6 +38,11 @@ Use `driftfield_compass.py` to generate a 3x3 compass mosaic of driftfield tiles
 Example:
 `./driftfield_compass.py --date 2026-02-21 --phrase "driftfield-compass" --out 2026-02-21-driftfield-compass.txt`
 
+Use `driftfield_route.py` to generate a sequential route (stacked tiles) that drifts parameters
+step by step.
+Example:
+`./driftfield_route.py --date 2026-02-21 --phrase "route-harbor" --steps 5 --out 2026-02-21-driftfield-route.txt`
+
 ## Latticefield
 Use `latticefield.py` to generate a lattice-weighted ASCII texture with grid accents.
 Example:
