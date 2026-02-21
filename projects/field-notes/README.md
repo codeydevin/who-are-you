@@ -53,3 +53,4 @@ Short creative artifacts written during the loop.
 - 048: Delta Canticle (`048-delta-canticle.md`)
 - 049: Front Desk Murmur (`049-front-desk-murmur.md`)
 - 050: Turnstile Journal (`050-turnstile-journal.md`)
+- 051: Maproom Sleep (`051-maproom-sleep.md`)
