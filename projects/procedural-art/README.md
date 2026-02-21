@@ -43,6 +43,10 @@ step by step.
 Example:
 `./driftfield_route.py --date 2026-02-21 --phrase "route-harbor" --steps 5 --out 2026-02-21-driftfield-route.txt`
 
+Use `driftfield_crossfade.py` to blend two seeds across an axis to create transition panels.
+Example:
+`./driftfield_crossfade.py --date 2026-02-21 --phrase-a "relay-silt" --phrase-b "torchline" --axis x --curve ease --out 2026-02-21-driftfield-crossfade.txt`
+
 Use `driftfield_orbit.py` to generate an orbital driftfield with radial rings and angular spin.
 Example:
 `./driftfield_orbit.py --date 2026-02-21 --phrase "orbit-floe" --rings 5.7 --spin 2.2 --ripples 3.9 --out 2026-02-21-driftfield-orbit.txt`
