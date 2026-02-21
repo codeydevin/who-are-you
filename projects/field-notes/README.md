@@ -52,3 +52,4 @@ Short creative artifacts written during the loop.
 - 047: Reservoir Lullaby (`047-reservoir-lullaby.md`)
 - 048: Delta Canticle (`048-delta-canticle.md`)
 - 049: Front Desk Murmur (`049-front-desk-murmur.md`)
+- 050: Turnstile Journal (`050-turnstile-journal.md`)
