@@ -59,6 +59,10 @@ Use `driftfield_orbit.py` to generate an orbital driftfield with radial rings an
 Example:
 `./driftfield_orbit.py --date 2026-02-21 --phrase "orbit-floe" --rings 5.7 --spin 2.2 --ripples 3.9 --out 2026-02-21-driftfield-orbit.txt`
 
+Use `driftfield_beacon.py` to generate a beacon-style driftfield with angular beams and pulsing rings.
+Example:
+`./driftfield_beacon.py --date 2026-02-21 --phrase "beacon-scan" --beams 11.2 --pulse 2.8 --drift 3.4 --out 2026-02-21-driftfield-beacon.txt`
+
 Use `driftfield_swell.py` to generate a swell-style driftfield built from wave vectors and eddies.
 Example:
 `./driftfield_swell.py --date 2026-02-21 --phrase "swell-harbor" --wave-x 2.4 --wave-y 1.6 --phase 0.22 --noise 0.32 --eddy 1.1 --contrast 1.1 --out 2026-02-21-driftfield-swell.txt`
