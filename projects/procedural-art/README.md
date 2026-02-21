@@ -42,3 +42,6 @@ Example:
 ## Interactive
 Open `driftfield_lens.html` for an interactive ASCII driftfield toy with live controls for seed,
 contrast, warp, and ridge blending.
+
+Open `driftfield_atlas.html` for an atlas-style driftfield generator with glyph usage telemetry
+and a tide phase control.
