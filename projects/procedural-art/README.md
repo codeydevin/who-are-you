@@ -34,6 +34,10 @@ Use `driftfield_delta.py` to compare two driftfield seeds and render a delta map
 Example:
 `./driftfield_delta.py --date-a 2026-02-21 --phrase-a "warp-step" --date-b 2026-02-21 --phrase-b "tide-memory" --warp 1.4 --ridge 0.25 --out 2026-02-21-driftfield-delta.txt`
 
+Use `driftfield_compass.py` to generate a 3x3 compass mosaic of driftfield tiles.
+Example:
+`./driftfield_compass.py --date 2026-02-21 --phrase "driftfield-compass" --out 2026-02-21-driftfield-compass.txt`
+
 ## Latticefield
 Use `latticefield.py` to generate a lattice-weighted ASCII texture with grid accents.
 Example:
