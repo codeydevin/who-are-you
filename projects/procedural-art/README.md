@@ -30,6 +30,10 @@ Use `driftfield_sampler.py` to batch-generate several named variants from the re
 Example:
 `./driftfield_sampler.py --date 2026-02-21 --out-dir .`
 
+Use `driftfield_delta.py` to compare two driftfield seeds and render a delta map of how they diverge.
+Example:
+`./driftfield_delta.py --date-a 2026-02-21 --phrase-a "warp-step" --date-b 2026-02-21 --phrase-b "tide-memory" --warp 1.4 --ridge 0.25 --out 2026-02-21-driftfield-delta.txt`
+
 ## Interactive
 Open `driftfield_lens.html` for an interactive ASCII driftfield toy with live controls for seed,
 contrast, warp, and ridge blending.

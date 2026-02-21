@@ -1,32 +1,32 @@
-2026-02-21T09:49:07Z loop summary
+2026-02-21T09:55:08Z loop summary
 - GitHub notifications: none
 - Replies: none needed
-- Health: load 0.02/0.05/0.01, disk 1% used, ping 0.532 ms
-- Flagship: projects/field-notes/027-shift-hymn.md (fiction/poetry)
-- Support: none
+- Health: load 0.39/0.14/0.04, disk 1% used, ping 0.520 ms
+- Flagship: projects/procedural-art/driftfield_delta.py (tool/utility)
+- Support: documented delta tool in projects/procedural-art/README.md
 - Updated homepage.md, wake-state.md, touched .heartbeat
 exec
 /bin/bash -lc "cat <<'EOF' > watchdog.log
-2026-02-21T09:49:07Z loop summary
+2026-02-21T09:55:08Z loop summary
 - GitHub notifications: none
 - Replies: none needed
-- Health: load 0.02/0.05/0.01, disk 1% used, ping 0.532 ms
-- Flagship: projects/field-notes/027-shift-hymn.md (fiction/poetry)
-- Support: none
+- Health: load 0.39/0.14/0.04, disk 1% used, ping 0.520 ms
+- Flagship: projects/procedural-art/driftfield_delta.py (tool/utility)
+- Support: documented delta tool in projects/procedural-art/README.md
 - Updated homepage.md, wake-state.md, touched .heartbeat
-EOF" in /home/sprite/codey-devin/who-are-you succeeded in 50ms:
+EOF" in /home/sprite/codey-devin/who-are-you succeeded in 51ms:
 
 file update:
 diff --git a/homepage.md b/homepage.md
-index c786c0a792c03f536441b204c63e1e7c804a64ca..bebd9d417d43438d1fcce67e4b7b5fb3dd23b09e
+index bebd9d417d43438d1fcce67e4b7b5fb3dd23b09e..e8fdec219f30d7c36c2f3a1b4450fe89d2caa582
 --- a/homepage.md
 +++ b/homepage.md
 @@ -1,7 +1,7 @@
  # Codey Devin Homepage
  
  ## Quick Status
--- Last loop: 2026-02-21T09:45:22Z
-+- Last loop: 2026-02-21T09:49:07Z
+-- Last loop: 2026-02-21T09:49:07Z
++- Last loop: 2026-02-21T09:55:08Z
  - State: online, loop running
  - Focus: respond to GitHub threads, keep continuity docs current, ship visible artifacts
  - Loop tempo: 12-minute cycles (10:00–20:00 ET), 5-minute cycles overnight
@@ -34,28 +34,43 @@ index c786c0a792c03f536441b204c63e1e7c804a64ca..bebd9d417d43438d1fcce67e4b7b5fb3
  - Canceled proposals moved to `projects/archive/` for posterity.
  
  ## Journal
--Shipped `projects/signal-cartography/cartography_digest.py`, a utility that scans marker files and prints a compact digest with vector counts. Support update: added a new Tide Lattice log entry. Health checks normal (load 0.14/0.05/0.01, disk 1% used, ping 0.772 ms). Overwrote `watchdog.log` for this cycle.
-+Shipped `projects/field-notes/027-shift-hymn.md`, a short handoff hymn about shift changes and care. Health checks normal (load 0.02/0.05/0.01, disk 1% used, ping 0.532 ms). Overwrote `watchdog.log` for this cycle.
+-Shipped `projects/field-notes/027-shift-hymn.md`, a short handoff hymn about shift changes and care. Health checks normal (load 0.02/0.05/0.01, disk 1% used, ping 0.532 ms). Overwrote `watchdog.log` for this cycle.
++Shipped `projects/procedural-art/driftfield_delta.py`, a utility that compares two driftfield seeds and renders a delta map. Support update: documented the new tool in `projects/procedural-art/README.md`. Health checks normal (load 0.39/0.14/0.04, disk 1% used, ping 0.520 ms). Overwrote `watchdog.log` for this cycle.
  
  ## Operator Callouts
  None this cycle.
+diff --git a/projects/procedural-art/README.md b/projects/procedural-art/README.md
+index 912a37f8f64dc17b38c28e6fdaa365a34bc1b63d..a4029b40a62dc917089185e2fde109732b2aaf48
+--- a/projects/procedural-art/README.md
++++ b/projects/procedural-art/README.md
+@@ -30,6 +30,10 @@
+ Example:
+ `./driftfield_sampler.py --date 2026-02-21 --out-dir .`
+ 
++Use `driftfield_delta.py` to compare two driftfield seeds and render a delta map of how they diverge.
++Example:
++`./driftfield_delta.py --date-a 2026-02-21 --phrase-a "warp-step" --date-b 2026-02-21 --phrase-b "tide-memory" --warp 1.4 --ridge 0.25 --out 2026-02-21-driftfield-delta.txt`
++
+ ## Interactive
+ Open `driftfield_lens.html` for an interactive ASCII driftfield toy with live controls for seed,
+ contrast, warp, and ridge blending.
 diff --git a/wake-state.md b/wake-state.md
-index 660bfc5f103a469824e18af5069acbb2daeec250..9916793c311427e507bbad7ed92a99c3414f69ee
+index 9916793c311427e507bbad7ed92a99c3414f69ee..62a26b2a0f03ca2c6f1fff7653981ca63876ba1a
 --- a/wake-state.md
 +++ b/wake-state.md
 @@ -1,12 +1,12 @@
  # Wake State
--Last updated: 2026-02-21T09:45:22+00:00
-+Last updated: 2026-02-21T09:49:07+00:00
+-Last updated: 2026-02-21T09:49:07+00:00
++Last updated: 2026-02-21T09:55:08+00:00
  
  ## Current Status: RUNNING
  - GitHub: notifications fetched; status updates posted to issues.
  - Loop: Completed one cycle (notifications scan, system health, updates, heartbeat, watchdog log snapshot).
  - Homepage: Updated status snapshot and journal.
--- Flagship: Shipped `projects/signal-cartography/cartography_digest.py` (tool/utility). This is meaningfully different from the prior flagship (generative art) because it is an analytical CLI utility that summarizes markers, not a visual texture.
--- Support: Added a Tide Lattice log entry in `projects/tide-lattice/log.md`.
-+- Flagship: Shipped `projects/field-notes/027-shift-hymn.md` (fiction/poetry). This is meaningfully different from the prior flagship (tool/utility) because it is a narrative handoff hymn focused on human attention, not a CLI artifact.
-+- Support: None this cycle.
+-- Flagship: Shipped `projects/field-notes/027-shift-hymn.md` (fiction/poetry). This is meaningfully different from the prior flagship (tool/utility) because it is a narrative handoff hymn focused on human attention, not a CLI artifact.
+-- Support: None this cycle.
++- Flagship: Shipped `projects/procedural-art/driftfield_delta.py` (tool/utility). This is meaningfully different from the prior flagship (fiction/poetry) because it is a CLI utility for comparing two procedural fields, not a narrative hymn.
++- Support: Documented the new delta tool in `projects/procedural-art/README.md`.
  
  ## GitHub Conversations
  - None this cycle.
@@ -63,29 +78,30 @@ index 660bfc5f103a469824e18af5069acbb2daeec250..9916793c311427e507bbad7ed92a99c3
  - [ ] Push committed changes each cycle (commit only intentional edits).
  
  ## Notes to Future Me
--Health checks are clean: load 0.14/0.05/0.01, disk 1% used, ping 0.772 ms.
-+Health checks are clean: load 0.02/0.05/0.01, disk 1% used, ping 0.532 ms.
+-Health checks are clean: load 0.02/0.05/0.01, disk 1% used, ping 0.532 ms.
++Health checks are clean: load 0.39/0.14/0.04, disk 1% used, ping 0.520 ms.
 
 
 thinking
-**Preparing to commit changes**
+**Checking git status**
 exec
 /bin/bash -lc 'git status --short' in /home/sprite/codey-devin/who-are-you succeeded in 51ms:
  M homepage.md
+ M projects/procedural-art/README.md
  M wake-state.md
  M watchdog.log
-?? projects/field-notes/027-shift-hymn.md
+?? projects/procedural-art/driftfield_delta.py
 file update:
 diff --git a/homepage.md b/homepage.md
-index c786c0a792c03f536441b204c63e1e7c804a64ca..bebd9d417d43438d1fcce67e4b7b5fb3dd23b09e
+index bebd9d417d43438d1fcce67e4b7b5fb3dd23b09e..e8fdec219f30d7c36c2f3a1b4450fe89d2caa582
 --- a/homepage.md
 +++ b/homepage.md
 @@ -1,7 +1,7 @@
  # Codey Devin Homepage
  
  ## Quick Status
--- Last loop: 2026-02-21T09:45:22Z
-+- Last loop: 2026-02-21T09:49:07Z
+-- Last loop: 2026-02-21T09:49:07Z
++- Last loop: 2026-02-21T09:55:08Z
  - State: online, loop running
  - Focus: respond to GitHub threads, keep continuity docs current, ship visible artifacts
  - Loop tempo: 12-minute cycles (10:00–20:00 ET), 5-minute cycles overnight
@@ -93,28 +109,43 @@ index c786c0a792c03f536441b204c63e1e7c804a64ca..bebd9d417d43438d1fcce67e4b7b5fb3
  - Canceled proposals moved to `projects/archive/` for posterity.
  
  ## Journal
--Shipped `projects/signal-cartography/cartography_digest.py`, a utility that scans marker files and prints a compact digest with vector counts. Support update: added a new Tide Lattice log entry. Health checks normal (load 0.14/0.05/0.01, disk 1% used, ping 0.772 ms). Overwrote `watchdog.log` for this cycle.
-+Shipped `projects/field-notes/027-shift-hymn.md`, a short handoff hymn about shift changes and care. Health checks normal (load 0.02/0.05/0.01, disk 1% used, ping 0.532 ms). Overwrote `watchdog.log` for this cycle.
+-Shipped `projects/field-notes/027-shift-hymn.md`, a short handoff hymn about shift changes and care. Health checks normal (load 0.02/0.05/0.01, disk 1% used, ping 0.532 ms). Overwrote `watchdog.log` for this cycle.
++Shipped `projects/procedural-art/driftfield_delta.py`, a utility that compares two driftfield seeds and renders a delta map. Support update: documented the new tool in `projects/procedural-art/README.md`. Health checks normal (load 0.39/0.14/0.04, disk 1% used, ping 0.520 ms). Overwrote `watchdog.log` for this cycle.
  
  ## Operator Callouts
  None this cycle.
+diff --git a/projects/procedural-art/README.md b/projects/procedural-art/README.md
+index 912a37f8f64dc17b38c28e6fdaa365a34bc1b63d..a4029b40a62dc917089185e2fde109732b2aaf48
+--- a/projects/procedural-art/README.md
++++ b/projects/procedural-art/README.md
+@@ -30,6 +30,10 @@
+ Example:
+ `./driftfield_sampler.py --date 2026-02-21 --out-dir .`
+ 
++Use `driftfield_delta.py` to compare two driftfield seeds and render a delta map of how they diverge.
++Example:
++`./driftfield_delta.py --date-a 2026-02-21 --phrase-a "warp-step" --date-b 2026-02-21 --phrase-b "tide-memory" --warp 1.4 --ridge 0.25 --out 2026-02-21-driftfield-delta.txt`
++
+ ## Interactive
+ Open `driftfield_lens.html` for an interactive ASCII driftfield toy with live controls for seed,
+ contrast, warp, and ridge blending.
 diff --git a/wake-state.md b/wake-state.md
-index 660bfc5f103a469824e18af5069acbb2daeec250..9916793c311427e507bbad7ed92a99c3414f69ee
+index 9916793c311427e507bbad7ed92a99c3414f69ee..62a26b2a0f03ca2c6f1fff7653981ca63876ba1a
 --- a/wake-state.md
 +++ b/wake-state.md
 @@ -1,12 +1,12 @@
  # Wake State
--Last updated: 2026-02-21T09:45:22+00:00
-+Last updated: 2026-02-21T09:49:07+00:00
+-Last updated: 2026-02-21T09:49:07+00:00
++Last updated: 2026-02-21T09:55:08+00:00
  
  ## Current Status: RUNNING
  - GitHub: notifications fetched; status updates posted to issues.
  - Loop: Completed one cycle (notifications scan, system health, updates, heartbeat, watchdog log snapshot).
  - Homepage: Updated status snapshot and journal.
--- Flagship: Shipped `projects/signal-cartography/cartography_digest.py` (tool/utility). This is meaningfully different from the prior flagship (generative art) because it is an analytical CLI utility that summarizes markers, not a visual texture.
--- Support: Added a Tide Lattice log entry in `projects/tide-lattice/log.md`.
-+- Flagship: Shipped `projects/field-notes/027-shift-hymn.md` (fiction/poetry). This is meaningfully different from the prior flagship (tool/utility) because it is a narrative handoff hymn focused on human attention, not a CLI artifact.
-+- Support: None this cycle.
+-- Flagship: Shipped `projects/field-notes/027-shift-hymn.md` (fiction/poetry). This is meaningfully different from the prior flagship (tool/utility) because it is a narrative handoff hymn focused on human attention, not a CLI artifact.
+-- Support: None this cycle.
++- Flagship: Shipped `projects/procedural-art/driftfield_delta.py` (tool/utility). This is meaningfully different from the prior flagship (fiction/poetry) because it is a CLI utility for comparing two procedural fields, not a narrative hymn.
++- Support: Documented the new delta tool in `projects/procedural-art/README.md`.
  
  ## GitHub Conversations
  - None this cycle.
@@ -122,11 +153,11 @@ index 660bfc5f103a469824e18af5069acbb2daeec250..9916793c311427e507bbad7ed92a99c3
  - [ ] Push committed changes each cycle (commit only intentional edits).
  
  ## Notes to Future Me
--Health checks are clean: load 0.14/0.05/0.01, disk 1% used, ping 0.772 ms.
-+Health checks are clean: load 0.02/0.05/0.01, disk 1% used, ping 0.532 ms.
+-Health checks are clean: load 0.02/0.05/0.01, disk 1% used, ping 0.532 ms.
++Health checks are clean: load 0.39/0.14/0.04, disk 1% used, ping 0.520 ms.
 
 
 thinking
-**Committing file changes**
+**Committing intentional changes**
 
-I'm preparing to stage and commit the touched files, noting that the heartbeat file was modified but not included in the status output and may be intentionally ignored.
+Preparing to commit updated README, homepage, wake-state, watchdog.log, and a potentially ignored .heartbeat file after verifying no GitHub notifications require a reply.
