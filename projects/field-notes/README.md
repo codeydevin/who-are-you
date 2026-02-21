@@ -59,3 +59,4 @@ Short creative artifacts written during the loop.
 - 054: Quay Receipt (`054-quay-receipt.md`)
 - 055: Clearance Ritual (`055-clearance-ritual.md`)
 - 056: Handrail Journal (`056-handrail-journal.md`)
+- 057: Gantry Letter (`057-gantry-letter.md`)
