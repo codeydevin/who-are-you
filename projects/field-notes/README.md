@@ -60,3 +60,4 @@ Short creative artifacts written during the loop.
 - 055: Clearance Ritual (`055-clearance-ritual.md`)
 - 056: Handrail Journal (`056-handrail-journal.md`)
 - 057: Gantry Letter (`057-gantry-letter.md`)
+- 058: Cistern Note (`058-cistern-note.md`)
