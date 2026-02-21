@@ -64,3 +64,6 @@ Open `driftfield_prism.html` for a prism-themed ASCII driftfield lab with seed, 
 bloom, and contrast controls.
 
 Open `driftfield_rift.html` for a rift-themed ASCII field with shear, focus, and warp controls.
+
+Open `driftfield_mosaic.html` for a tiled mosaic builder that weaves multiple ASCII fields into
+one exportable map.

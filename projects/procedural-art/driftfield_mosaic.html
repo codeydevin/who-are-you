@@ -1,0 +1,392 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Driftfield Mosaic</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #171614;
+      --muted: #5e5a55;
+      --paper: #f5f0e8;
+      --accent: #c7622b;
+      --accent-2: #2b6a73;
+      --panel: #efe6da;
+      --shadow: rgba(23, 22, 20, 0.12);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Space Mono", "IBM Plex Mono", "Fira Mono", "Courier New", monospace;
+      background: radial-gradient(circle at 20% 20%, #fff8ef 0%, #f5f0e8 55%, #efe6da 100%);
+      color: var(--ink);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      padding: 32px 24px 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(24px, 4vw, 40px);
+      letter-spacing: 1px;
+    }
+
+    p {
+      margin: 0;
+      color: var(--muted);
+      max-width: 720px;
+      line-height: 1.5;
+    }
+
+    main {
+      display: grid;
+      grid-template-columns: minmax(260px, 1fr) minmax(320px, 2fr);
+      gap: 24px;
+      padding: 16px 24px 32px;
+      flex: 1;
+    }
+
+    .panel {
+      background: var(--panel);
+      border-radius: 18px;
+      padding: 18px;
+      box-shadow: 0 12px 28px var(--shadow);
+    }
+
+    .controls {
+      display: grid;
+      gap: 12px;
+    }
+
+    label {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--muted);
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    input[type="text"],
+    input[type="number"],
+    input[type="range"] {
+      width: 100%;
+    }
+
+    input[type="text"],
+    input[type="number"] {
+      border: 1px solid #d6c8b6;
+      background: #fffaf3;
+      padding: 8px 10px;
+      border-radius: 10px;
+      font-family: inherit;
+    }
+
+    .row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+      gap: 12px;
+    }
+
+    .buttons {
+      display: grid;
+      gap: 10px;
+      margin-top: 8px;
+    }
+
+    button {
+      padding: 10px 14px;
+      border-radius: 10px;
+      border: 1px solid var(--ink);
+      background: var(--ink);
+      color: #fff8ef;
+      font-family: inherit;
+      cursor: pointer;
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    button.secondary {
+      background: transparent;
+      color: var(--ink);
+    }
+
+    button:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 8px 16px var(--shadow);
+    }
+
+    .output {
+      display: grid;
+      gap: 12px;
+    }
+
+    pre {
+      margin: 0;
+      padding: 18px;
+      background: #10100f;
+      color: #f5f0e8;
+      border-radius: 16px;
+      font-size: 12px;
+      line-height: 1.1;
+      overflow: auto;
+      white-space: pre;
+    }
+
+    .meta {
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .chip {
+      padding: 6px 10px;
+      background: #fffaf3;
+      border-radius: 999px;
+      border: 1px solid #e4d6c4;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+    }
+
+    @media (max-width: 900px) {
+      main {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Driftfield Mosaic</h1>
+    <p>An interactive driftfield lab that mosaics multiple ASCII tiles into a single woven map. Adjust the seed,
+      drift, and ridge to shape the texture. Export a text snapshot when it feels right.</p>
+  </header>
+
+  <main>
+    <section class="panel controls">
+      <label>
+        Seed Phrase
+        <input id="phrase" type="text" value="mosaic-tide" />
+      </label>
+      <label>
+        Date (YYYY-MM-DD)
+        <input id="date" type="text" value="2026-02-21" />
+      </label>
+      <div class="row">
+        <label>
+          Rows
+          <input id="rows" type="number" min="6" max="32" value="12" />
+        </label>
+        <label>
+          Columns
+          <input id="cols" type="number" min="12" max="60" value="26" />
+        </label>
+      </div>
+      <div class="row">
+        <label>
+          Tiles
+          <input id="tiles" type="number" min="2" max="5" value="3" />
+        </label>
+        <label>
+          Jitter
+          <input id="jitter" type="range" min="0" max="3" step="0.1" value="1.1" />
+        </label>
+      </div>
+      <label>
+        Contrast
+        <input id="contrast" type="range" min="0.6" max="2.2" step="0.05" value="1.2" />
+      </label>
+      <label>
+        Warp
+        <input id="warp" type="range" min="0" max="3" step="0.05" value="1.4" />
+      </label>
+      <label>
+        Ridge
+        <input id="ridge" type="range" min="0" max="0.8" step="0.02" value="0.32" />
+      </label>
+      <div class="buttons">
+        <button id="generate">Generate Mosaic</button>
+        <button id="randomize" class="secondary">Randomize Seed</button>
+        <button id="export" class="secondary">Export Text</button>
+      </div>
+    </section>
+
+    <section class="panel output">
+      <div class="chips" id="chips"></div>
+      <pre id="mosaic">Loading...</pre>
+      <div class="meta" id="meta"></div>
+    </section>
+  </main>
+
+  <script>
+    const alphabet = ".,:;~^*+=?%$#@";
+
+    const byId = (id) => document.getElementById(id);
+
+    function hashString(text) {
+      let hash = 2166136261;
+      for (let i = 0; i < text.length; i += 1) {
+        hash ^= text.charCodeAt(i);
+        hash = Math.imul(hash, 16777619);
+      }
+      return hash >>> 0;
+    }
+
+    function makeRandom(seed) {
+      let value = seed >>> 0;
+      return () => {
+        value = (value * 1664525 + 1013904223) >>> 0;
+        return value / 4294967296;
+      };
+    }
+
+    function baseNoise(x, y, seed) {
+      const dot = x * 12.9898 + y * 78.233 + seed * 0.0001;
+      const s = Math.sin(dot) * 43758.5453;
+      return s - Math.floor(s);
+    }
+
+    function fieldValue(x, y, seed, warp, ridge) {
+      const wobble = Math.sin((x + seed * 0.03) * 0.6 + y * 0.35) * warp;
+      const shift = Math.cos((y + seed * 0.02) * 0.5 + x * 0.4) * warp;
+      const core = baseNoise(x + wobble, y + shift, seed);
+      const ridgeVal = 1 - Math.abs(0.5 - core) * 2;
+      return core * (1 - ridge) + ridgeVal * ridge;
+    }
+
+    function generateTile(seed, rows, cols, contrast, warp, ridge) {
+      const lines = [];
+      for (let y = 0; y < rows; y += 1) {
+        let line = "";
+        for (let x = 0; x < cols; x += 1) {
+          let v = fieldValue(x, y, seed, warp, ridge);
+          v = Math.pow(v, 1 / Math.max(contrast, 0.01));
+          const idx = Math.max(0, Math.min(alphabet.length - 1, Math.floor(v * alphabet.length)));
+          line += alphabet[idx];
+        }
+        lines.push(line);
+      }
+      return lines;
+    }
+
+    function buildMosaic({ phrase, date, rows, cols, tiles, jitter, contrast, warp, ridge }) {
+      const chips = [];
+      const rowsOut = [];
+      const seedBase = `${date}-${phrase}`;
+      for (let ty = 0; ty < tiles; ty += 1) {
+        const band = [];
+        for (let tx = 0; tx < tiles; tx += 1) {
+          const seedText = `${seedBase}-${tx}-${ty}`;
+          const seed = hashString(seedText) + Math.floor(jitter * 1000);
+          chips.push(seedText);
+          const tile = generateTile(seed, rows, cols, contrast, warp, ridge);
+          band.push(tile);
+        }
+        for (let row = 0; row < rows; row += 1) {
+          let line = "";
+          for (let tx = 0; tx < tiles; tx += 1) {
+            line += band[tx][row];
+            if (tx < tiles - 1) {
+              line += "  ";
+            }
+          }
+          rowsOut.push(line);
+        }
+        if (ty < tiles - 1) {
+          rowsOut.push("");
+        }
+      }
+      return { rowsOut, chips };
+    }
+
+    function randomPhrase() {
+      const vocab = [
+        "harbor",
+        "ember",
+        "rift",
+        "tide",
+        "lantern",
+        "signal",
+        "cairn",
+        "mosaic",
+        "glow",
+        "spiral",
+        "ravel",
+        "quiet",
+      ];
+      const random = makeRandom(Date.now());
+      const pick = () => vocab[Math.floor(random() * vocab.length)];
+      return `${pick()}-${pick()}`;
+    }
+
+    function render() {
+      const payload = {
+        phrase: byId("phrase").value.trim() || "mosaic",
+        date: byId("date").value.trim() || "2026-02-21",
+        rows: Number(byId("rows").value),
+        cols: Number(byId("cols").value),
+        tiles: Number(byId("tiles").value),
+        jitter: Number(byId("jitter").value),
+        contrast: Number(byId("contrast").value),
+        warp: Number(byId("warp").value),
+        ridge: Number(byId("ridge").value),
+      };
+
+      const { rowsOut, chips } = buildMosaic(payload);
+      byId("mosaic").textContent = rowsOut.join("\n");
+      byId("meta").textContent = `Seed: ${payload.date}-${payload.phrase} | ${payload.tiles}x${payload.tiles} tiles`;
+
+      const chipWrap = byId("chips");
+      chipWrap.innerHTML = "";
+      chips.slice(0, 6).forEach((chip) => {
+        const span = document.createElement("span");
+        span.className = "chip";
+        span.textContent = chip;
+        chipWrap.appendChild(span);
+      });
+    }
+
+    function exportText() {
+      const content = byId("mosaic").textContent;
+      const payload = {
+        phrase: byId("phrase").value.trim() || "mosaic",
+        date: byId("date").value.trim() || "2026-02-21",
+      };
+      const filename = `${payload.date}-driftfield-mosaic.txt`;
+      const blob = new Blob([content], { type: "text/plain" });
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(blob);
+      link.download = filename;
+      link.click();
+      URL.revokeObjectURL(link.href);
+    }
+
+    byId("generate").addEventListener("click", render);
+    byId("randomize").addEventListener("click", () => {
+      byId("phrase").value = randomPhrase();
+      render();
+    });
+    byId("export").addEventListener("click", exportText);
+
+    render();
+  </script>
+</body>
+</html>
