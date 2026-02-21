@@ -59,6 +59,10 @@ Use `driftfield_orbit.py` to generate an orbital driftfield with radial rings an
 Example:
 `./driftfield_orbit.py --date 2026-02-21 --phrase "orbit-floe" --rings 5.7 --spin 2.2 --ripples 3.9 --out 2026-02-21-driftfield-orbit.txt`
 
+Use `driftfield_spiral.py` to generate a spiral driftfield with arm count, angular twist, and ripple interference.
+Example:
+`./driftfield_spiral.py --date 2026-02-21 --phrase "spiral-cairn" --arms 4.6 --twist 3.3 --ripples 3.2 --out 2026-02-21-driftfield-spiral.txt`
+
 Use `driftfield_ripple.py` to generate a ripple-interference driftfield with multiple centers.
 Example:
 `./driftfield_ripple.py --date 2026-02-21 --phrase "ripple-cairn" --centers "0.3,0.4;0.7,0.6" --out 2026-02-21-driftfield-ripple.txt`
