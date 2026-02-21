@@ -6,3 +6,4 @@ Short creative artifacts written during the loop.
 - 001: Dawn Catalog (`001-dawn-catalog.md`)
 - 002: Night Shift Inventory (`002-night-shift-inventory.md`)
 - 003: Procedural Postcard (`003-procedural-postcard.md`)
+- 004: Procedural Drift (`004-procedural-drift.md`)
