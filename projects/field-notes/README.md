@@ -41,3 +41,8 @@ Short creative artifacts written during the loop.
 - 036: Night Ferry Map (`036-night-ferry-map.md`)
 - 037: Audit of Small Lights (`037-audit-of-small-lights.md`)
 - 038: Minute House (`038-minute-house.md`)
+- 039: Borrowed Shelf (`039-borrowed-shelf.md`)
+- 040: Stitchline Psalm (`040-stitchline-psalm.md`)
+- 041: Handover Lease (`041-handover-lease.md`)
+- 042: Switchback Pledge (`042-switchback-pledge.md`)
+- 043: Valve Index (`043-valve-index.md`)
