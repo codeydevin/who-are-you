@@ -1,0 +1,291 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Skyline Mesh Console</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600&family=Fraunces:opsz,wght@9..144,600&display=swap');
+
+    :root {
+      --ink: #0f172a;
+      --paper: #f8f4ef;
+      --accent: #f97316;
+      --accent-dark: #c2410c;
+      --mist: rgba(15, 23, 42, 0.08);
+      --panel: rgba(255, 255, 255, 0.8);
+      --shadow: 0 16px 40px rgba(15, 23, 42, 0.14);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background:
+        radial-gradient(circle at top right, rgba(249, 115, 22, 0.25), transparent 55%),
+        radial-gradient(circle at 15% 25%, rgba(14, 116, 144, 0.18), transparent 50%),
+        linear-gradient(120deg, #fef6ec, #f8f4ef 60%, #f2ebe3);
+      color: var(--ink);
+      font-family: "Space Grotesk", "Segoe UI", sans-serif;
+      padding: 24px;
+    }
+
+    .console {
+      width: min(960px, 95vw);
+      background: var(--panel);
+      border-radius: 24px;
+      box-shadow: var(--shadow);
+      padding: 28px;
+      display: grid;
+      gap: 20px;
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(15, 23, 42, 0.06);
+    }
+
+    header {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    h1 {
+      font-family: "Fraunces", serif;
+      font-size: clamp(1.6rem, 2.4vw, 2.2rem);
+      margin: 0;
+    }
+
+    .subtitle {
+      font-size: 0.95rem;
+      color: rgba(15, 23, 42, 0.7);
+    }
+
+    .grid {
+      display: grid;
+      gap: 18px;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    }
+
+    label {
+      display: block;
+      font-size: 0.85rem;
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+
+    input[type="text"],
+    input[type="number"] {
+      width: 100%;
+      border-radius: 12px;
+      border: 1px solid rgba(15, 23, 42, 0.12);
+      padding: 10px 12px;
+      font-size: 0.95rem;
+      background: #fff;
+    }
+
+    .range-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    input[type="range"] {
+      flex: 1;
+      accent-color: var(--accent);
+    }
+
+    .chip {
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: rgba(249, 115, 22, 0.12);
+      color: var(--accent-dark);
+      font-weight: 600;
+      font-size: 0.8rem;
+    }
+
+    .controls {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    button {
+      border: none;
+      background: var(--ink);
+      color: #fff;
+      padding: 10px 18px;
+      border-radius: 999px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 0.2s ease, background 0.2s ease;
+    }
+
+    button:hover {
+      transform: translateY(-2px);
+      background: #0b1220;
+    }
+
+    .skyline {
+      font-family: "Space Grotesk", "Courier New", monospace;
+      background: rgba(15, 23, 42, 0.06);
+      padding: 16px;
+      border-radius: 16px;
+      letter-spacing: 1px;
+      font-size: 1rem;
+      overflow-wrap: anywhere;
+    }
+
+    .meta {
+      display: grid;
+      gap: 8px;
+      font-size: 0.85rem;
+      color: rgba(15, 23, 42, 0.7);
+    }
+
+    .meta strong {
+      color: var(--ink);
+    }
+  </style>
+</head>
+<body>
+  <section class="console">
+    <header>
+      <div>
+        <h1>Skyline Mesh Console</h1>
+        <div class="subtitle">Turn a handful of numbers into a text skyline you can keep.</div>
+      </div>
+      <span class="chip">Interactive toy</span>
+    </header>
+
+    <div class="grid">
+      <div>
+        <label for="signals">Signals (comma or space separated)</label>
+        <input id="signals" type="text" placeholder="0.43, 0.13, 0.04, 23.3, 1" />
+      </div>
+      <div>
+        <label for="seed">Seed (optional)</label>
+        <input id="seed" type="text" placeholder="leave blank for auto" />
+      </div>
+      <div>
+        <label for="length">Length</label>
+        <div class="range-row">
+          <input id="length" type="range" min="20" max="80" value="40" />
+          <span id="length-value">40</span>
+        </div>
+      </div>
+      <div>
+        <label for="density">Density override (optional)</label>
+        <input id="density" type="number" step="0.01" min="0" max="1" placeholder="0.35" />
+      </div>
+    </div>
+
+    <div class="controls">
+      <button id="generate">Generate Skyline</button>
+      <button id="randomize">Random Signals</button>
+    </div>
+
+    <div class="skyline" id="output">|..||...|..|.|..||..|...||.|..|..|..|.</div>
+
+    <div class="meta" id="meta"></div>
+  </section>
+
+  <script>
+    const signalsInput = document.getElementById('signals');
+    const seedInput = document.getElementById('seed');
+    const lengthInput = document.getElementById('length');
+    const lengthValue = document.getElementById('length-value');
+    const densityInput = document.getElementById('density');
+    const output = document.getElementById('output');
+    const meta = document.getElementById('meta');
+
+    const clamp = (value, low = 0, high = 1) => Math.max(low, Math.min(high, value));
+
+    const parseSignals = (raw) => {
+      if (!raw) return [];
+      return raw
+        .split(/[\s,]+/)
+        .map((part) => part.trim())
+        .filter(Boolean)
+        .map((part) => Number(part))
+        .filter((value) => !Number.isNaN(value));
+    };
+
+    const densityFromSignals = (signals) => {
+      if (!signals.length) return 0.35;
+      const maxVal = Math.max(...signals.map((s) => Math.abs(s))) || 1;
+      const avgVal = signals.reduce((sum, s) => sum + Math.abs(s), 0) / signals.length;
+      return clamp(avgVal / maxVal * 0.7 + 0.15, 0.1, 0.85);
+    };
+
+    const seedFromSignals = (signals) => {
+      if (seedInput.value.trim()) return seedInput.value.trim();
+      if (signals.length) return signals.map((s) => s.toFixed(4)).join('-');
+      const today = new Date();
+      return today.toISOString().slice(0, 10);
+    };
+
+    const hashSeed = (seed) => {
+      let hash = 0;
+      for (let i = 0; i < seed.length; i += 1) {
+        hash = (hash << 5) - hash + seed.charCodeAt(i);
+        hash |= 0;
+      }
+      return Math.abs(hash) || 1;
+    };
+
+    const generateLine = (length, density, seed) => {
+      let rng = hashSeed(seed);
+      const line = [];
+      for (let i = 0; i < length; i += 1) {
+        rng = (rng * 9301 + 49297) % 233280;
+        const sample = rng / 233280;
+        line.push(sample < density ? '|' : '.');
+      }
+      return line.join('');
+    };
+
+    const updateSkyline = () => {
+      const signals = parseSignals(signalsInput.value);
+      const densityOverride = densityInput.value === '' ? null : Number(densityInput.value);
+      const density = densityOverride === null ? densityFromSignals(signals) : clamp(densityOverride, 0.05, 0.95);
+      const seed = seedFromSignals(signals);
+      const length = Number(lengthInput.value);
+      const line = generateLine(length, density, seed);
+
+      output.textContent = line;
+
+      meta.innerHTML = `
+        <div><strong>Signals:</strong> ${signals.length ? signals.join(', ') : 'none'}</div>
+        <div><strong>Density:</strong> ${density.toFixed(2)}</div>
+        <div><strong>Seed:</strong> ${seed}</div>
+      `;
+    };
+
+    const randomSignals = () => {
+      const count = 5 + Math.floor(Math.random() * 3);
+      const values = Array.from({ length: count }, () => (Math.random() * 3).toFixed(2));
+      signalsInput.value = values.join(', ');
+      seedInput.value = '';
+      densityInput.value = '';
+      updateSkyline();
+    };
+
+    lengthInput.addEventListener('input', () => {
+      lengthValue.textContent = lengthInput.value;
+      updateSkyline();
+    });
+
+    document.getElementById('generate').addEventListener('click', updateSkyline);
+    document.getElementById('randomize').addEventListener('click', randomSignals);
+
+    randomSignals();
+  </script>
+</body>
+</html>

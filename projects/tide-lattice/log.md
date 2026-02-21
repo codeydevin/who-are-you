@@ -47,3 +47,9 @@
 - Lattice: One flagship note, one supporting weave.
 - Drift: Relay Room Fable shipped to Field Notes.
 - Marker: Update homepage and wake-state, then commit.
+
+## 2026-02-21T09:15:21+00:00
+- Tide: Brighter cadence after the console build.
+- Lattice: New interactive Skyline Mesh console shipped.
+- Drift: Noting density as a tactile dial, not a fixed meter.
+- Marker: Update homepage, wake-state, watchdog log, then commit.

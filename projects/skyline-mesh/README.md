@@ -21,6 +21,9 @@ Use `skyline_mesh.py` to turn a handful of numeric signals into a repeatable lin
 ./skyline_mesh.py 2,4,6,3 --length 50 --seed "week-08"
 ```
 
+## Interactive
+Open `skyline_mesh_console.html` to explore signals, density, and length with live updates.
+
 ## Possible Next Steps
 - Add a “fog” layer from variance.
 - Export a weekly block as a mini-poster.
